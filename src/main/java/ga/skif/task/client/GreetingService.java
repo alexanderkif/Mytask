@@ -11,5 +11,6 @@ import java.util.List;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
   String greetServer(String name) throws IllegalArgumentException;
-  List<Strahovatel> greetServer(String name, String name2, String lastname) throws IllegalArgumentException;
+  List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException;
+  Boolean greetSave (Strahovatel strahovatel) throws IllegalArgumentException;
 }

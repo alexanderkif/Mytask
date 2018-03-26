@@ -11,7 +11,8 @@ public interface GreetingServiceAsync {
   void greetServer(String input, AsyncCallback<String> callback)
       throws IllegalArgumentException;
 
-    void greetServer(String name, String name2, String lastname, AsyncCallback<List<Strahovatel>> async)
+    void greetSearch(String name, String name2, String lastname, AsyncCallback<List<Strahovatel>> async)
             throws IllegalArgumentException;
 
+    void greetSave(Strahovatel strahovatel, AsyncCallback<Boolean> async);
 }

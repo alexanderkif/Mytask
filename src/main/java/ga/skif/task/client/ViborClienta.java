@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import ga.skif.task.server.GreetingServiceImpl;
@@ -72,7 +73,7 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
         searchBtn.getElement().setId("searchBtn");
         absolutePanel1.add(searchBtn, 510, 20);
 
-        final CellTable<Strahovatel> strahTable = new CellTable();
+        final CellTable<Strahovatel> strahTable = new CellTable<>();
         absolutePanel1.add(strahTable, 20, 90);
 
         TextColumn<Strahovatel> fioColumn = new TextColumn<Strahovatel>() {
@@ -85,19 +86,22 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
 
         TextColumn<Strahovatel> dateBirthColumn = new TextColumn<Strahovatel>() {
             @Override
-            public String getValue(Strahovatel strahovatel) {
-                return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(strahovatel.getBirth());
-            }
+            public String getValue(Strahovatel strahovatel) { return DateTimeFormat.getFormat(
+                    DateTimeFormat.PredefinedFormat.DATE_SHORT).format(strahovatel.getBirth());}
         };
         strahTable.addColumn(dateBirthColumn,"Дата рождения");
 
         TextColumn<Strahovatel> passportColumn = new TextColumn<Strahovatel>() {
             @Override
             public String getValue(Strahovatel strahovatel) {
-                return strahovatel.getPassport().toString();
-            }
+                return strahovatel.getPassportSeria().toString()+" №"+strahovatel.getPassportNumber().toString();}
         };
         strahTable.addColumn(passportColumn,"Паспортные данные");
+
+        strahTable.setWidth("90%");
+        strahTable.setColumnWidth(fioColumn, "50%");
+        strahTable.setColumnWidth(dateBirthColumn, "20%");
+        strahTable.setColumnWidth(passportColumn, "30%");
 
         final Button chooseBtn = new Button("Выбрать");
         chooseBtn.getElement().setId("chooseBtn");
@@ -122,29 +126,29 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
 
         searchBtn.addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                greetingService.greetServer(textBoxName.getText(), textBoxName2.getText(), textBoxFamily.getText(),
+                greetingService.greetSearch(textBoxName.getText(), textBoxName2.getText(), textBoxFamily.getText(),
                         new AsyncCallback<List<Strahovatel>>() {
                             @Override
                             public void onFailure(Throwable throwable) {
-                                //do nothing
+                                Window.alert("Поиск неудачен");
                             }
 
                             @Override
                             public void onSuccess(List<Strahovatel> strahovatels) {
-                                strahTable.setRowData(strahovatels);
+                                if (strahovatels.size()==0){
+                                    Window.alert("Ничего не найдено.");
+                                    strahTable.setRowData(strahovatels);
+                                }else {
+                                    Window.alert("Поиск удачен. " + strahovatels.get(0).getFullName());
+                                    strahTable.setRowData(strahovatels);
+                                }
                             }
                         });
             }
         });
 
-        newBtn.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-//                GreetingService greetingService = new GreetingServiceImpl();
-//                List<Strahovatel> strahs =
-//                        greetingService.greetServer(textBoxName.getText(),textBoxName2.getText(),textBoxFamily.getText());
-//                strahTable.setRowData(strahs);
-            }
-        });
+        CreateClient createClient = new CreateClient();
+        newBtn.addClickHandler(createClient);
     }
 
 

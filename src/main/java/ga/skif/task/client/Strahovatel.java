@@ -1,16 +1,19 @@
 package ga.skif.task.client;
 
+import org.bson.Document;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Strahovatel implements Serializable {
 
-    private Integer id;
+    private String id;
     private String lastName;
     private String firstName;
     private String firstName2;
     private Date birth;
-    private Integer passport;
+    private Integer passportSeria;
+    private Integer passportNumber;
 
     public Strahovatel(String lastName, String firstName, String firstName2) {
         this.lastName = lastName;
@@ -21,15 +24,31 @@ public class Strahovatel implements Serializable {
     public Strahovatel() {
     }
 
+    public Integer getPassportSeria() {
+        return passportSeria;
+    }
+
+    public void setPassportSeria(Integer passportSeria) {
+        this.passportSeria = passportSeria;
+    }
+
+    public Integer getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(Integer passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
     public String getFullName(){
         return this.lastName+" "+this.firstName+" "+this.firstName2;
     }
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -63,13 +82,5 @@ public class Strahovatel implements Serializable {
 
     public void setBirth(Date birth) {
         this.birth = birth;
-    }
-
-    public Integer getPassport() {
-        return passport;
-    }
-
-    public void setPassport(Integer passport) {
-        this.passport = passport;
     }
 }
