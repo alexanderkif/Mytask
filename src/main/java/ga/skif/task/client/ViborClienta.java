@@ -1,9 +1,19 @@
 package ga.skif.task.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.TextColumn;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
+import ga.skif.task.server.GreetingServiceImpl;
+
+import java.util.List;
 
 public class ViborClienta  implements ClickHandler, KeyUpHandler {
+
+    private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
     final DialogBox dialogVibor = new DialogBox();
 
@@ -62,6 +72,33 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
         searchBtn.getElement().setId("searchBtn");
         absolutePanel1.add(searchBtn, 510, 20);
 
+        final CellTable<Strahovatel> strahTable = new CellTable();
+        absolutePanel1.add(strahTable, 20, 90);
+
+        TextColumn<Strahovatel> fioColumn = new TextColumn<Strahovatel>() {
+            @Override
+            public String getValue(Strahovatel strahovatel) {
+                return strahovatel.getFullName();
+            }
+        };
+        strahTable.addColumn(fioColumn,"ФИО");
+
+        TextColumn<Strahovatel> dateBirthColumn = new TextColumn<Strahovatel>() {
+            @Override
+            public String getValue(Strahovatel strahovatel) {
+                return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(strahovatel.getBirth());
+            }
+        };
+        strahTable.addColumn(dateBirthColumn,"Дата рождения");
+
+        TextColumn<Strahovatel> passportColumn = new TextColumn<Strahovatel>() {
+            @Override
+            public String getValue(Strahovatel strahovatel) {
+                return strahovatel.getPassport().toString();
+            }
+        };
+        strahTable.addColumn(passportColumn,"Паспортные данные");
+
         final Button chooseBtn = new Button("Выбрать");
         chooseBtn.getElement().setId("chooseBtn");
         absolutePanel1.add(chooseBtn, 170, 270);
@@ -82,5 +119,34 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
                 dialogVibor.hide();
             }
         });
+
+        searchBtn.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+                greetingService.greetServer(textBoxName.getText(), textBoxName2.getText(), textBoxFamily.getText(),
+                        new AsyncCallback<List<Strahovatel>>() {
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                //do nothing
+                            }
+
+                            @Override
+                            public void onSuccess(List<Strahovatel> strahovatels) {
+                                strahTable.setRowData(strahovatels);
+                            }
+                        });
+            }
+        });
+
+        newBtn.addClickHandler(new ClickHandler() {
+            public void onClick(ClickEvent event) {
+//                GreetingService greetingService = new GreetingServiceImpl();
+//                List<Strahovatel> strahs =
+//                        greetingService.greetServer(textBoxName.getText(),textBoxName2.getText(),textBoxFamily.getText());
+//                strahTable.setRowData(strahs);
+            }
+        });
     }
+
+
+
 }

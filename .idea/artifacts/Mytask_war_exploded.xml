@@ -7,7 +7,11 @@
           <element id="module-output" name="Mytask" />
         </element>
         <element id="directory" name="lib">
+          <element id="archive" name="Mytask-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="Mytask" />
+          </element>
           <element id="library" level="project" name="Maven: com.google.gwt:gwt-servlet:2.8.2" />
+          <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:3.4.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

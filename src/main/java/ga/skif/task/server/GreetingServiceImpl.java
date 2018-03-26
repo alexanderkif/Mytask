@@ -1,8 +1,17 @@
 package ga.skif.task.server;
 
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import ga.skif.task.client.GreetingService;
+import ga.skif.task.client.Strahovatel;
 import ga.skif.task.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import org.bson.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The server-side implementation of the RPC service.
@@ -10,6 +19,12 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 @SuppressWarnings("serial")
 public class GreetingServiceImpl extends RemoteServiceServlet implements
     GreetingService {
+
+    String uri = "mongodb://user:fishuser@cluster0-shard-00-00-qbirv.mongodb.net:27017,cluster0-shard-00-01-qbirv.mongodb.net:27017,cluster0-shard-00-02-qbirv.mongodb.net:27017/fish?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
+    MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
+    MongoDatabase database = mongoClient.getDatabase("fish");
+    MongoCollection strahovatels = database.getCollection("strahovatels");
+//    MongoCollection dogovors = database.getCollection("dogovors");
 
   public String greetServer(String input) throws IllegalArgumentException {
     // Verify that the input is valid. 
@@ -29,6 +44,14 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
     return "Hello, " + input + "!<br><br>I am running " + serverInfo
         + ".<br><br>It looks like you are using:<br>" + userAgent;
+  }
+
+  @Override
+  public List<Strahovatel> greetServer(String name, String name2, String lastname) throws IllegalArgumentException {
+
+      return (List<Strahovatel>) strahovatels.find(new Document("name", name)
+              .append("name2", name2).append("lastname", lastname)).into(new ArrayList());
+
   }
 
   /**

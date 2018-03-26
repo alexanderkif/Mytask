@@ -1,8 +1,9 @@
 package ga.skif.task.client;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Strahovatel {
+public class Strahovatel implements Serializable {
 
     private Integer id;
     private String lastName;
@@ -15,6 +16,9 @@ public class Strahovatel {
         this.lastName = lastName;
         this.firstName = firstName;
         this.firstName2 = firstName2;
+    }
+
+    public Strahovatel() {
     }
 
     public String getFullName(){

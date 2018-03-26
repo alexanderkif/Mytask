@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
+import ga.skif.task.server.GreetingServiceImpl;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -81,7 +82,6 @@ public class Mytask implements EntryPoint {
     // Add a handler to send the name to the server
     CreateDogovor handler = new CreateDogovor();
     txtbtnCreate.addClickHandler(handler);
-
 
 //        verticalPanel.add(textBox);
 //        verticalPanel.add(textArea);
