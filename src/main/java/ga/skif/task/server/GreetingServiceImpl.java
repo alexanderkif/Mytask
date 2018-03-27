@@ -30,25 +30,25 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     MongoCollection<Document> strahovatels = database.getCollection("strahovatels");
 //    MongoCollection dogovors = database.getCollection("dogovors");
 
-    public String greetServer(String input) throws IllegalArgumentException {
-        // Verify that the input is valid.
-        if (!FieldVerifier.isValidName(input)) {
-            // If the input is not valid, throw an IllegalArgumentException back to
-            // the client.
-            throw new IllegalArgumentException(
-                    "Name must be at least 4 characters long");
-        }
-
-        String serverInfo = getServletContext().getServerInfo();
-        String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-
-        // Escape data from the client to avoid cross-site script vulnerabilities.
-        input = escapeHtml(input);
-        userAgent = escapeHtml(userAgent);
-
-        return "Hello, " + input + "!<br><br>I am running " + serverInfo
-                + ".<br><br>It looks like you are using:<br>" + userAgent;
-    }
+//    public String greetServer(String input) throws IllegalArgumentException {
+//        // Verify that the input is valid.
+//        if (!FieldVerifier.isValidName(input)) {
+//            // If the input is not valid, throw an IllegalArgumentException back to
+//            // the client.
+//            throw new IllegalArgumentException(
+//                    "Name must be at least 4 characters long");
+//        }
+//
+//        String serverInfo = getServletContext().getServerInfo();
+//        String userAgent = getThreadLocalRequest().getHeader("User-Agent");
+//
+//        // Escape data from the client to avoid cross-site script vulnerabilities.
+//        input = escapeHtml(input);
+//        userAgent = escapeHtml(userAgent);
+//
+//        return "Hello, " + input + "!<br><br>I am running " + serverInfo
+//                + ".<br><br>It looks like you are using:<br>" + userAgent;
+//    }
 
     @Override
     public List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException {
@@ -62,9 +62,39 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
+    public Strahovatel greetSearchFirst(String name, String name2, String lastname, Date birth) throws IllegalArgumentException {
+        Document doc = strahovatels.find(and(
+                eq("firstName", name),
+                eq("firstName2", name2),
+                eq("lastName", lastname),
+                eq("birth", birth)))
+                .first();
+        return toStrahovatel(doc);
+    }
+
+    @Override
     public Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException {
         try {
             strahovatels.insertOne(toDocument(strahovatel));
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+
+
+    @Override
+    public Boolean greetUpdate(String id, Strahovatel strah) throws IllegalArgumentException {
+        try {
+            Document document = new Document("lastName", strah.getLastName());
+            document.append("firstName", strah.getFirstName());
+            document.append("firstName2", strah.getFirstName2());
+            document.append("birth", strah.getBirth());
+            document.append("passportSeria", strah.getPassportSeria());
+            document.append("passportNumber", strah.getPassportNumber());
+            strahovatels.updateOne(eq("id", id),
+                    new Document("$set", document));
         } catch (Exception e) {
             return false;
         }

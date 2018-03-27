@@ -2,6 +2,7 @@ package ga.skif.task.client;
 
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -9,9 +10,11 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import static ga.skif.task.shared.FieldVerifier.strahovatel;
+
 public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
-    final DialogBox dialogBox = new DialogBox();
+    DialogBox dialogBox = new DialogBox();
 
     public void onClick(ClickEvent event) {
         dialogBox.center();
@@ -25,10 +28,10 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
     CreateDogovor() {
 
-        Date today = new Date();
+        final Date today = new Date();
 
-        DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
-        DateTimeFormat yearFormat = DateTimeFormat.getFormat("yyyy");
+        final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
+        final DateTimeFormat yearFormat = DateTimeFormat.getFormat("yyyy");
 
         dialogBox.setText("Форма для ввода данных");
         dialogBox.setAnimationEnabled(true);
@@ -162,9 +165,10 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         absolutePanel.add(label_10, 135, 365);
         label_10.setSize("47px", "24px");
 
-        TextBox textBoxFIO = new TextBox();
+        TextBox textBoxFIO = new TextBox();//textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer
         absolutePanel.add(textBoxFIO, 187, 357);
         textBoxFIO.setSize("559px", "20px");
+        textBoxFIO.setText(strahovatel.getFullName());
 
         Button buttonChange = new Button("Изменить");
         buttonChange.setText("Изменить");
@@ -179,6 +183,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         dateBoxDataRozhdeniya.setFormat(new DateBox.DefaultFormat(dateFormat));
         absolutePanel.add(dateBoxDataRozhdeniya, 161, 400);
         dateBoxDataRozhdeniya.setSize("84px", "16px");
+        dateBoxDataRozhdeniya.setValue(strahovatel.getBirth());
 
         Label label_12 = new Label("Паспорт серия");
         absolutePanel.add(label_12, 350, 406);
@@ -187,6 +192,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         TextBox textBoxPassportSeriya = new TextBox();
         absolutePanel.add(textBoxPassportSeriya, 477, 398);
         textBoxPassportSeriya.setSize("105px", "20px");
+        textBoxPassportSeriya.setText(String.valueOf(strahovatel.getPassportSeria()));
 
         Label label_13 = new Label("№");
         absolutePanel.add(label_13, 617, 406);
@@ -195,6 +201,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         TextBox textBoxPassportNomer = new TextBox();
         absolutePanel.add(textBoxPassportNomer, 653, 398);
         textBoxPassportNomer.setSize("183px", "20px");
+        textBoxPassportNomer.setText(String.valueOf(strahovatel.getPassportNumber()));
 
         Label label_14 = new Label("Адрес недвижимости");
         label_14.setStyleName("gwt-Label-big");
@@ -409,8 +416,11 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
             }
         });
 
-        ViborClienta viborClienta = new ViborClienta();
+        ViborClienta viborClienta = new ViborClienta(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
         buttonVibratb.addClickHandler(viborClienta);
+
+        ChangeClient changeClient = new ChangeClient(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
+        buttonChange.addClickHandler(changeClient);
     }
 
     public static boolean isNumeric(String str) {

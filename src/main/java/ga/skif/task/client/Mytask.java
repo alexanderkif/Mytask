@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static ga.skif.task.shared.FieldVerifier.strahovatel;
+
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */

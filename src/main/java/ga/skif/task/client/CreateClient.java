@@ -3,6 +3,7 @@ package ga.skif.task.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
@@ -10,12 +11,14 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.DateBox;
 
+import static java.util.Arrays.asList;
+
 
 public class CreateClient implements ClickHandler, KeyUpHandler {
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-    final DialogBox dialogCreateClient = new DialogBox();
+    DialogBox dialogCreateClient = new DialogBox();
 
     DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 
@@ -31,7 +34,7 @@ public class CreateClient implements ClickHandler, KeyUpHandler {
         }
     }
 
-    CreateClient() {
+    CreateClient(CellTable<Strahovatel> strahTable) {
         dialogCreateClient.setText("Новый клиент");
         dialogCreateClient.setAnimationEnabled(true);
 
@@ -98,7 +101,7 @@ public class CreateClient implements ClickHandler, KeyUpHandler {
         saveBtn.getElement().setId("chooseBtn");
         absolutePanel2.add(saveBtn, 250, 160);
 
-        final Button closeButton = new Button("Отмена");
+        final Button closeButton = new Button("Отменить");
         closeButton.getElement().setId("closeButton");
         absolutePanel2.add(closeButton, 350, 160);
 
@@ -129,7 +132,7 @@ public class CreateClient implements ClickHandler, KeyUpHandler {
                             @Override
                             public void onSuccess(Boolean status) {
                                 if (status) {
-                                    Window.alert("Cохранено");
+                                    strahTable.setRowData(asList(strahovatel));
                                     dialogCreateClient.hide();
                                 } else {
                                     Window.alert("Не сохранено");
