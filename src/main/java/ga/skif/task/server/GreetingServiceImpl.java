@@ -5,6 +5,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.result.UpdateResult;
 import ga.skif.task.client.GreetingService;
 import ga.skif.task.client.Strahovatel;
 import ga.skif.task.shared.FieldVerifier;
@@ -93,8 +94,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
             document.append("birth", strah.getBirth());
             document.append("passportSeria", strah.getPassportSeria());
             document.append("passportNumber", strah.getPassportNumber());
-            strahovatels.updateOne(eq("id", id),
+            UpdateResult result = strahovatels.updateOne(eq("id", id),
                     new Document("$set", document));
+            System.out.println(result);
         } catch (Exception e) {
             return false;
         }
