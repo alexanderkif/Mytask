@@ -1,12 +1,15 @@
 package ga.skif.task.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -14,9 +17,11 @@ import static ga.skif.task.shared.FieldVerifier.strahovatel;
 
 public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
+    private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
     DialogBox dialogBox = new DialogBox();
 
     public void onClick(ClickEvent event) {
+
         dialogBox.center();
     }
 
@@ -140,6 +145,26 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         TextBox textBoxNomerDogovora = new TextBox();
         absolutePanel.add(textBoxNomerDogovora, 188, 282);
         textBoxNomerDogovora.setSize("155px", "20px");
+        textBoxNomerDogovora.addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent changeEvent) {
+                if (textBoxNomerDogovora.getText().length()==6){
+                    greetingService.checkDogNumber(Integer.valueOf(textBoxNomerDogovora.getText()),
+                            new AsyncCallback<Boolean>(){
+
+                                @Override
+                                public void onFailure(Throwable throwable) {
+
+                                }
+
+                                @Override
+                                public void onSuccess(Boolean b) {
+                                    if (b) textBoxNomerDogovora.setStyleName("error");
+                                }
+                            });
+                }
+            }
+        });
 
         Label label_8 = new Label("Дата заключения");
         absolutePanel.add(label_8, 412, 290);
@@ -169,6 +194,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         absolutePanel.add(textBoxFIO, 187, 357);
         textBoxFIO.setSize("559px", "20px");
         textBoxFIO.setText(strahovatel.getFullName());
+        textBoxFIO.setReadOnly(true);
 
         Button buttonChange = new Button("Изменить");
         buttonChange.setText("Изменить");
@@ -209,6 +235,10 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         label_14.setSize("321px", "24px");
 
         ListBox listBoxCountries = new ListBox();
+        listBoxCountries.addItem("");
+        listBoxCountries.addItem("Россия");
+        listBoxCountries.addItem("Белоруссия");
+        listBoxCountries.addItem("Казахстан");
         absolutePanel.add(listBoxCountries, 32, 466);
         listBoxCountries.setSize("166px", "32px");
 

@@ -1,18 +1,28 @@
 package ga.skif.task.client;
 
+import com.em.validation.client.constraints.NotEmpty;
 import org.bson.Document;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Strahovatel implements Serializable {
-
+    @NotNull
     private String id;
+    @NotEmpty
     private String lastName;
+    @NotEmpty
     private String firstName;
     private String firstName2;
+    @NotNull
     private Date birth;
+    @NotNull
+    @Size(min = 4, max=4, message = "Seriya must be 4 digits.")
     private Integer passportSeria;
+    @NotNull
+    @Size(min = 6, max=6, message = "Number must be 6 digits.")
     private Integer passportNumber;
 
     public Strahovatel(String lastName, String firstName, String firstName2) {
@@ -82,5 +92,18 @@ public class Strahovatel implements Serializable {
 
     public void setBirth(Date birth) {
         this.birth = birth;
+    }
+
+    @Override
+    public String toString() {
+        return "Strahovatel{" +
+                "id='" + id + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", firstName2='" + firstName2 + '\'' +
+                ", birth=" + birth +
+                ", passportSeria=" + passportSeria +
+                ", passportNumber=" + passportNumber +
+                '}';
     }
 }

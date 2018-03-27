@@ -40,7 +40,7 @@ public class Mytask implements EntryPoint {
     TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
       @Override
       public String getValue(Dogovor dogovor) {
-        return dogovor.getId().toString();
+        return dogovor.getNomer().toString();
       }
     };
     cellTable.addColumn(idColumn,"Серия-Номер");

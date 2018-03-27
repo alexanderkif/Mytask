@@ -16,12 +16,26 @@ public class ChangeClient implements ClickHandler, KeyUpHandler {
 
     DialogBox dialogCangeClient = new DialogBox();
 
+    TextBox textBoxFamily1;
+    TextBox textBoxName1;
+    TextBox textBoxName21;
+    DateBox dateBoxDataRozhdeniya2;
+    TextBox textBoxPassportSeriya2;
+    TextBox textBoxPassportNomer2;
+
     final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     @Override
     public void onClick(ClickEvent clickEvent) {
         dialogCangeClient.center();
-        Window.alert("changeClient "+strahovatel.getFullName());
+//        Window.alert("changeClient "+strahovatel.getFullName());
+
+        textBoxFamily1.setText(strahovatel.getLastName());
+        textBoxName1.setText(strahovatel.getFirstName());
+        textBoxName21.setText(strahovatel.getFirstName2());
+        dateBoxDataRozhdeniya2.setValue(strahovatel.getBirth());
+        textBoxPassportSeriya2.setText(strahovatel.getPassportSeria().toString());
+        textBoxPassportNomer2.setText(strahovatel.getPassportNumber().toString());
     }
 
     @Override
@@ -47,20 +61,17 @@ public class ChangeClient implements ClickHandler, KeyUpHandler {
         absolutePanel2.add(label_1, 10, 25);
         label_1.setSize("30px", "24px");
 
-        TextBox textBoxFamily1 = new TextBox();
+        textBoxFamily1 = new TextBox();
         absolutePanel2.add(textBoxFamily1, 60, 17);
         textBoxFamily1.setSize("190px", "24px");
-        textBoxFamily1.setText(strahovatel.getLastName());
 
-        TextBox textBoxName1 = new TextBox();
+        textBoxName1 = new TextBox();
         absolutePanel2.add(textBoxName1, 270, 17);
         textBoxName1.setSize("190px", "24px");
-        textBoxName1.setText(strahovatel.getFirstName());
 
-        TextBox textBoxName21 = new TextBox();
+        textBoxName21 = new TextBox();
         absolutePanel2.add(textBoxName21, 480, 17);
         textBoxName21.setSize("190px", "24px");
-        textBoxName21.setText(strahovatel.getFirstName2());
 
         Label label_2 = new Label("(фамилия)");
         label_2.setStyleName("gwt-Label-mini");
@@ -81,17 +92,16 @@ public class ChangeClient implements ClickHandler, KeyUpHandler {
         absolutePanel2.add(label_11, 30, 110);
         label_11.setSize("120px", "24px");
 
-        DateBox dateBoxDataRozhdeniya2 = new DateBox();
+        dateBoxDataRozhdeniya2 = new DateBox();
         dateBoxDataRozhdeniya2.setFormat(new DateBox.DefaultFormat(dateFormat));
         absolutePanel2.add(dateBoxDataRozhdeniya2, 130, 100);
         dateBoxDataRozhdeniya2.setSize("80px", "16px");
-        dateBoxDataRozhdeniya2.setValue(strahovatel.getBirth());
 
         Label label_12 = new Label("Паспорт серия");
         absolutePanel2.add(label_12, 260, 110);
         label_12.setSize("100px", "24px");
 
-        TextBox textBoxPassportSeriya2 = new TextBox();
+        textBoxPassportSeriya2 = new TextBox();
         absolutePanel2.add(textBoxPassportSeriya2, 360, 100);
         textBoxPassportSeriya2.setSize("80px", "20px");
 
@@ -103,7 +113,7 @@ public class ChangeClient implements ClickHandler, KeyUpHandler {
         absolutePanel2.add(label_id, 10, 3);
 //        label_id.setVisible(false);
 
-        TextBox textBoxPassportNomer2 = new TextBox();
+        textBoxPassportNomer2 = new TextBox();
         absolutePanel2.add(textBoxPassportNomer2, 490, 100);
         textBoxPassportNomer2.setSize("180px", "20px");
 
@@ -174,7 +184,7 @@ public class ChangeClient implements ClickHandler, KeyUpHandler {
                                     dateBoxDataRozhdeniya1.setValue(strah.getBirth());
                                     textBoxPassportSeriya1.setText(strah.getPassportSeria().toString());
                                     textBoxPassportNomer1.setText(strah.getPassportNumber().toString());
-                                    Window.alert("status "+status+"   "+strah.getFullName());
+//                                    Window.alert("status "+status+"   "+strah.getFullName());
                                     dialogCangeClient.hide();
                                 } else {
                                     Window.alert("Не сохранено");

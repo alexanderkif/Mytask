@@ -11,6 +11,7 @@ import ga.skif.task.client.Strahovatel;
 import ga.skif.task.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,11 +55,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     @Override
     public List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException {
         List<Strahovatel> list = new ArrayList<>();
-        strahovatels.find(and(
-                eq("firstName", name),
-                eq("firstName2", name2),
-                eq("lastName", lastname)))
-                .forEach((Block<Document>) s -> list.add(toStrahovatel((Document) s)));
+        if (name.equals("") && name2.equals("") && lastname.equals("")){
+            strahovatels.find()
+                    .forEach((Block<Document>) s -> list.add(toStrahovatel((Document) s)));
+        }else {
+            strahovatels.find(and(
+                    eq("firstName", name),
+                    eq("firstName2", name2),
+                    eq("lastName", lastname)))
+                    .forEach((Block<Document>) s -> list.add(toStrahovatel((Document) s)));
+        }
+        System.out.println("=====greetSearch=====returned===list.get(0)====");
+        System.out.println(list.get(0).toString());
         return list;
     }
 
@@ -70,6 +78,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
                 eq("lastName", lastname),
                 eq("birth", birth)))
                 .first();
+        System.out.println("=====greetSearchFirst=====returned");
+        System.out.println(doc);
         return toStrahovatel(doc);
     }
 
@@ -77,6 +87,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     public Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException {
         try {
             strahovatels.insertOne(toDocument(strahovatel));
+            System.out.println("=====greetSave=====");
+            System.out.println(strahovatel.getId());
+            System.out.println(toDocument(strahovatel));
         } catch (Exception e) {
             return false;
         }
@@ -84,18 +97,19 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
 
-
     @Override
     public Boolean greetUpdate(String id, Strahovatel strah) throws IllegalArgumentException {
         try {
-            Document document = new Document("lastName", strah.getLastName());
-            document.append("firstName", strah.getFirstName());
-            document.append("firstName2", strah.getFirstName2());
-            document.append("birth", strah.getBirth());
-            document.append("passportSeria", strah.getPassportSeria());
-            document.append("passportNumber", strah.getPassportNumber());
-            UpdateResult result = strahovatels.updateOne(eq("id", id),
-                    new Document("$set", document));
+            UpdateResult result = strahovatels.updateOne(eq("_id", new ObjectId(id)), new Document("$set",
+                    new Document("lastName", strah.getLastName())
+                    .append("firstName", strah.getFirstName())
+                    .append("firstName2", strah.getFirstName2())
+                    .append("birth", strah.getBirth())
+                    .append("passportSeria", strah.getPassportSeria())
+                    .append("passportNumber", strah.getPassportNumber())));
+            System.out.println("=====greetUpdate=====returned");
+            System.out.println(id);
+            System.out.println(strah.toString());
             System.out.println(result);
         } catch (Exception e) {
             return false;
@@ -103,12 +117,21 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         return true;
     }
 
+    @Override
+    public boolean checkDogNumber(Integer number) throws IllegalArgumentException {
+        try {
+            return strahovatels.count(eq("number", number)) > 0;
+        } catch (Exception e) {
+            return true;
+        }
+    }
+
     public Strahovatel toStrahovatel(Document document) {
         Strahovatel strahovatel1 = new Strahovatel();
         strahovatel1.setId(document.get("_id").toString());
-        strahovatel1.setLastName((String) document.get("lastName"));
-        strahovatel1.setFirstName((String) document.get("firstName"));
-        strahovatel1.setFirstName2((String) document.get("firstName2"));
+        strahovatel1.setLastName(document.get("lastName").toString());
+        strahovatel1.setFirstName(document.get("firstName").toString());
+        strahovatel1.setFirstName2(document.get("firstName2").toString());
         strahovatel1.setBirth((Date) document.get("birth"));
         strahovatel1.setPassportSeria((Integer) document.get("passportSeria"));
         strahovatel1.setPassportNumber((Integer) document.get("passportNumber"));

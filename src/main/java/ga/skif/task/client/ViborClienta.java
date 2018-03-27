@@ -15,17 +15,26 @@ import ga.skif.task.server.GreetingServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import static ga.skif.task.shared.FieldVerifier.strahovatel;
+import static java.util.Arrays.asList;
 
 public class ViborClienta  implements ClickHandler, KeyUpHandler {
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
     DialogBox dialogVibor = new DialogBox();
+    CellTable<Strahovatel> strahTable;
+    TextBox textBoxFamily;
+    TextBox textBoxName;
+    TextBox textBoxName2;
 
     @Override
     public void onClick(ClickEvent clickEvent) {
         dialogVibor.center();
-        Window.alert("dialogVibor "+strahovatel.getFullName());
+        strahTable.setRowData(asList());
+
+        textBoxFamily.setText(strahovatel.getLastName());
+        textBoxName.setText(strahovatel.getFirstName());
+        textBoxName2.setText(strahovatel.getFirstName2());
     }
 
     @Override
@@ -47,15 +56,15 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
         absolutePanel1.add(label_1, 10, 25);
         label_1.setSize("30px", "24px");
 
-        TextBox textBoxFamily = new TextBox();
+        textBoxFamily = new TextBox();
         absolutePanel1.add(textBoxFamily, 60, 17);
         textBoxFamily.setSize("130px", "24px");
 
-        TextBox textBoxName = new TextBox();
+        textBoxName = new TextBox();
         absolutePanel1.add(textBoxName, 210, 17);
         textBoxName.setSize("130px", "24px");
 
-        TextBox textBoxName2 = new TextBox();
+        textBoxName2 = new TextBox();
         absolutePanel1.add(textBoxName2, 360, 17);
         textBoxName2.setSize("130px", "24px");
 
@@ -78,7 +87,7 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
         searchBtn.getElement().setId("searchBtn");
         absolutePanel1.add(searchBtn, 510, 20);
 
-        final CellTable<Strahovatel> strahTable = new CellTable<>();
+        strahTable = new CellTable<>();
         absolutePanel1.add(strahTable, 20, 90);
 
         TextColumn<Strahovatel> fioColumn = new TextColumn<Strahovatel>() {

@@ -11,7 +11,18 @@
             <element id="module-output" name="Mytask" />
           </element>
           <element id="library" level="project" name="Maven: com.google.gwt:gwt-servlet:2.8.2" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:1.0.0.GA" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:sources:1.0.0.GA" />
+          <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.4.01" />
           <element id="library" level="project" name="Maven: org.mongodb:mongo-java-driver:3.4.2" />
+          <element id="library" level="project" name="Maven: com.googlecode.gwt-validation:gwt-validation:2.0" />
+          <element id="library" level="project" name="Maven: com.google.guava:guava:r09" />
+          <element id="library" level="project" name="Maven: org.reflections:reflections:0.9.5" />
+          <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
+          <element id="library" level="project" name="Maven: dom4j:dom4j:1.6.1" />
+          <element id="library" level="project" name="Maven: org.freemarker:freemarker:2.3.18" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-simple:1.6.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">

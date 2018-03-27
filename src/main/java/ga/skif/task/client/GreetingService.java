@@ -19,4 +19,6 @@ public interface GreetingService extends RemoteService {
     Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException;
 
     Boolean greetUpdate(String id, Strahovatel strahovatel) throws IllegalArgumentException;
+
+    boolean checkDogNumber(Integer number) throws IllegalArgumentException;
 }

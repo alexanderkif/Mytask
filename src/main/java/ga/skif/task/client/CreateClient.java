@@ -122,23 +122,26 @@ public class CreateClient implements ClickHandler, KeyUpHandler {
                 strahovatel.setBirth(dateBoxDataRozhdeniya.getValue());
                 strahovatel.setPassportSeria(Integer.valueOf(textBoxPassportSeriya.getText()));
                 strahovatel.setPassportNumber(Integer.valueOf(textBoxPassportNomer.getText()));
-                greetingService.greetSave(strahovatel,
-                        new AsyncCallback<Boolean>() {
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                Window.alert("Не сохранено");
-                            }
-
-                            @Override
-                            public void onSuccess(Boolean status) {
-                                if (status) {
-                                    strahTable.setRowData(asList(strahovatel));
-                                    dialogCreateClient.hide();
-                                } else {
+                if (!textBoxFamily.getText().equals("") && !textBoxName.getText().equals("") &&
+                        !textBoxName2.getText().equals("")) {
+                    greetingService.greetSave(strahovatel,
+                            new AsyncCallback<Boolean>() {
+                                @Override
+                                public void onFailure(Throwable throwable) {
                                     Window.alert("Не сохранено");
                                 }
-                            }
-                        });
+
+                                @Override
+                                public void onSuccess(Boolean status) {
+                                    if (status) {
+                                        strahTable.setRowData(asList(strahovatel));
+                                        dialogCreateClient.hide();
+                                    } else {
+                                        Window.alert("Не сохранено");
+                                    }
+                                }
+                            });
+                }
             }
         });
     }

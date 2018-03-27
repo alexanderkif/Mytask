@@ -1,24 +1,40 @@
 package ga.skif.task.client;
 
+import com.em.validation.client.constraints.NotEmpty;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.*;
 
-public class Dogovor {
+public class Dogovor implements Serializable {
 
-    private Integer id;
+    @NotNull
+    @Size(min = 6, max=6, message = "Number must be 6 digits.")
+    private Integer nomer;
+    @NotNull
     private Date dataZakl;
+    @NotNull
     private Strahovatel strahovatel;
+    @NotNull
     private AddressOb addressOb;
+    @NotNull
     private Integer strSumma;
+    @NotNull
     private Date start;
+    @NotNull
     private Date end;
-    private List type;
+    @NotEmpty
+    private String type;
+    @NotEmpty
     private  String year;
+    @NotEmpty
     private  String squair;
     private  Date dateRasheta;
     private  String premiya;
 
-    public Dogovor(Integer id, Date dataZakl, Strahovatel strahovatel, Date start, Date end, String premiya) {
-        this.id = id;
+    public Dogovor(Integer nomer, Date dataZakl, Strahovatel strahovatel, Date start, Date end, String premiya) {
+        this.nomer = nomer;
         this.dataZakl = dataZakl;
         this.strahovatel = strahovatel;
         this.start = start;
@@ -26,12 +42,15 @@ public class Dogovor {
         this.premiya = premiya;
     }
 
-    public Integer getId() {
-        return id;
+    public Dogovor() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public Integer getNomer() {
+        return nomer;
+    }
+
+    public void setNomer(Integer id) {
+        this.nomer = nomer;
     }
 
     public Date getDataZakl() {
@@ -82,11 +101,11 @@ public class Dogovor {
         this.end = end;
     }
 
-    public List getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(List type) {
+    public void setType(String type) {
         this.type = type;
     }
 

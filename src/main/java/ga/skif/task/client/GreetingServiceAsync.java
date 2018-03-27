@@ -16,7 +16,12 @@ public interface GreetingServiceAsync {
     void greetSearchFirst(String name, String name2, String lastname, Date birth, AsyncCallback<Strahovatel> async)
             throws IllegalArgumentException;
 
-    void greetSave(Strahovatel strahovatel, AsyncCallback<Boolean> async);
+    void greetSave(Strahovatel strahovatel, AsyncCallback<Boolean> async)
+            throws IllegalArgumentException;
 
-    void greetUpdate(String id, Strahovatel strahovatel, AsyncCallback<Boolean> asyncCallback);
+    void greetUpdate(String id, Strahovatel strahovatel, AsyncCallback<Boolean> asyncCallback)
+            throws IllegalArgumentException;
+
+    void checkDogNumber(Integer number, AsyncCallback<Boolean> asyncCallback)
+            throws IllegalArgumentException;
 }
