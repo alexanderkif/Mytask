@@ -24,7 +24,7 @@ import ga.skif.task.client.Strahovatel;
  */
 public class FieldVerifier {
 
-  public static Strahovatel strahovatel = new Strahovatel("","","");
+
   /**
    * Verifies that the specified name is valid for our service.
    * 

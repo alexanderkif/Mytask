@@ -22,7 +22,10 @@ public interface GreetingService extends RemoteService {
 
     Boolean greetUpdate(String id, Strahovatel strahovatel) throws IllegalArgumentException;
 
-    boolean checkDogNumber(Integer number) throws IllegalArgumentException;
+    boolean checkDogId(Integer id) throws IllegalArgumentException;
 
     boolean createDogovor(Dogovor dogovor) throws IllegalArgumentException;
+
+    List<Dogovor> findDogovor(Integer id) throws IllegalArgumentException;
+
 }

@@ -1,140 +1,116 @@
 package ga.skif.task.client;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
-import ga.skif.task.server.GreetingServiceImpl;
+import com.google.gwt.view.client.SingleSelectionModel;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import static ga.skif.task.shared.FieldVerifier.strahovatel;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Mytask implements EntryPoint {
 
-  /**
-   * This is the entry point method.
-   */
-  public void onModuleLoad() {
+    public static Strahovatel strahovatel = new Strahovatel("","","");
 
-    RootPanel rootPanel = RootPanel.get("vp");
+    private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-    final Button txtbtnCreate = new Button("Создать договор");
-    rootPanel.add(txtbtnCreate, 130, 20);
+    private final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 
-    final Button txtbtnOpen = new Button("Открыть договор");
-    rootPanel.add(txtbtnOpen, 270, 20);
+    static List<Dogovor> list = new ArrayList<>();
 
-    final CellTable<Dogovor> cellTable = new CellTable();
-    rootPanel.add(cellTable, 130, 60);
+    private CellTable<Dogovor> cellTable = new CellTable<>();
 
-    TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
-      @Override
-      public String getValue(Dogovor dogovor) {
-        return dogovor.getNomer().toString();
-      }
-    };
-    cellTable.addColumn(idColumn,"Серия-Номер");
-    TextColumn<Dogovor> dateZaklColumn = new TextColumn<Dogovor>() {
-      @Override
-      public String getValue(Dogovor dogovor) {
-        return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(dogovor.getDataZakl());
-      }
-    };
-    cellTable.addColumn(dateZaklColumn,"Дата заключения");
-    TextColumn<Dogovor> strahovatelColumn = new TextColumn<Dogovor>() {
-      @Override
-      public String getValue(Dogovor dogovor) {
-        return strahovatel.getFullName();
-      }
-    };
-    cellTable.addColumn(strahovatelColumn,"Страхователь");
-    TextColumn<Dogovor> premiyaColumn = new TextColumn<Dogovor>() {
-      @Override
-      public String getValue(Dogovor dogovor) {
-        return dogovor.getPremiya();
-      }
-    };
-    cellTable.addColumn(premiyaColumn,"Премия");
-    TextColumn<Dogovor> srokColumn = new TextColumn<Dogovor>() {
-      @Override
-      public String getValue(Dogovor dogovor) {
-        return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(dogovor.getStart())
-                +" - "+DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_SHORT).format(dogovor.getEnd());
-      }
-    };
-    cellTable.addColumn(srokColumn,"Срок действия");
+    /**
+     * This is the entry point method.
+     */
+    public void onModuleLoad() {
 
-    List<Dogovor> list = new ArrayList<>();
-    list.add(new Dogovor(1, new Date(), new Strahovatel("Иванов", "Иван","Михалыч").getFullName(), new Date(), new Date(), "1000"));
-    list.add(new Dogovor(2, new Date(), new Strahovatel("Петров", "Василий","Сергеевич").getFullName(), new Date(), new Date(), "1000"));
-    list.add(new Dogovor(3, new Date(), new Strahovatel("Сидоров", "Сидор","Иванович").getFullName(), new Date(), new Date(), "1000"));
-    list.add(new Dogovor(4, new Date(), new Strahovatel("Васечкин", "Петр","Петрович").getFullName(), new Date(), new Date(), "1000"));
-    cellTable.setRowData(list);
+        RootPanel rootPanel = RootPanel.get("vp");
 
-    // Add a handler to send the name to the server
-    CreateDogovor handler = new CreateDogovor();
-    txtbtnCreate.addClickHandler(handler);
+        Integer id = 0;
+//        Label labelll = new Label();
 
-//        verticalPanel.add(textBox);
-//        verticalPanel.add(textArea);
-//        verticalPanel.add(cellTable);
+        greetingService.findDogovor(id, new AsyncCallback<List<Dogovor>>() {
+            @Override
+            public void onFailure(Throwable throwable) {
+                Window.alert("Не могу загрузить договоры.");
+            }
 
-//        textBox.addValueChangeHandler(new ValueChangeHandler<String>() {
-//                                          @Override
-//                                          public void onValueChange(ValueChangeEvent<String> event) {
-//                                              textArea.setText(textArea.getText() + "\n" + textBox.getText());
-//                                              textBox.setText("");
-//
-//                                          }
-//                                      }
-//        );
+            @Override
+            public void onSuccess(List<Dogovor> dlist) {
+                list.addAll(dlist);
+                cellTable.setRowData(list);
+//                labelll.setText(dlist.get(0).getId().toString());
+            }
+        });
 
-//        button.addClickHandler(new ClickHandler() {
-//            public void onClick(ClickEvent event) {
-//                if (label.getText().equals("")) {
-//                    TaskService.App.getInstance().getMessage("Hello, World!", new MyAsyncCallback(label));
-//                } else {
-//                    label.setText("");
-//                }
-//            }
-//        });
+        final Button txtbtnCreate = new Button("Создать договор");
+        rootPanel.add(txtbtnCreate, 130, 20);
 
-    // Assume that the host HTML has elements defined whose
-    // IDs are "slot1", "slot2".  In a real app, you probably would not want
-    // to hard-code IDs.  Instead, you could, for example, search for all
-    // elements with a particular CSS class and replace them with widgets.
-    //
+        final Button txtbtnOpen = new Button("Открыть договор");
+        rootPanel.add(txtbtnOpen, 270, 20);
 
-//        rootPanel.add(verticalPanel);
-//        RootPanel.get("slot1").add(button);
-//        RootPanel.get("slot2").add(label);
+//        labelll.setText(list.get(0).getId().toString());
+//        rootPanel.add(labelll,5,5);
 
+        rootPanel.add(cellTable, 130, 60);
+        cellTable.setPageSize(10);
 
-  }
+        final SingleSelectionModel<Dogovor> selectionModel = new SingleSelectionModel<>();
+        cellTable.setSelectionModel(selectionModel);
 
-  private static class MyAsyncCallback implements AsyncCallback<String> {
-    private Label label;
+        TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
+            @Override
+            public String getValue(Dogovor dogovor) {
+                return dogovor.getId().toString();
+            }
+        };
+        cellTable.addColumn(idColumn, "Серия-Номер");
+        TextColumn<Dogovor> dateZaklColumn = new TextColumn<Dogovor>() {
+            @Override
+            public String getValue(Dogovor dogovor) {
+                return dateFormat.format(dogovor.getDataZakl());
+            }
+        };
+        cellTable.addColumn(dateZaklColumn, "Дата заключения");
+        TextColumn<Dogovor> strahovatelColumn = new TextColumn<Dogovor>() {
+            @Override
+            public String getValue(Dogovor dogovor) {
+                return dogovor.getStrahovatel().getFullName();
+            }
+        };
+        cellTable.addColumn(strahovatelColumn, "Страхователь");
+        TextColumn<Dogovor> premiyaColumn = new TextColumn<Dogovor>() {
+            @Override
+            public String getValue(Dogovor dogovor) {
+                return dogovor.getPremiya();
+            }
+        };
+        cellTable.addColumn(premiyaColumn, "Премия");
+        TextColumn<Dogovor> srokColumn = new TextColumn<Dogovor>() {
+            @Override
+            public String getValue(Dogovor dogovor) {
+                return dateFormat.format(dogovor.getStart())
+                        + " - " + dateFormat.format(dogovor.getEnd());
+            }
+        };
+        cellTable.addColumn(srokColumn, "Срок действия");
 
-    public MyAsyncCallback(Label label) {
-      this.label = label;
+        cellTable.setRowData(list);
+
+        // Add a handler to send the name to the server
+        CreateDogovor handler = new CreateDogovor();
+        txtbtnCreate.addClickHandler(handler);
+
     }
-
-    public void onSuccess(String result) {
-      label.getElement().setInnerHTML(result);
-    }
-
-    public void onFailure(Throwable throwable) {
-      label.setText("Failed to receive answer from server!");
-    }
-  }
 }

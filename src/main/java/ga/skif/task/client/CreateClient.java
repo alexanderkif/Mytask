@@ -18,9 +18,9 @@ public class CreateClient implements ClickHandler, KeyUpHandler {
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-    DialogBox dialogCreateClient = new DialogBox();
+    private DialogBox dialogCreateClient = new DialogBox();
 
-    DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
+    private final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     @Override
     public void onClick(ClickEvent clickEvent) {

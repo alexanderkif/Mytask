@@ -27,31 +27,11 @@ import static com.mongodb.client.model.Filters.*;
 public class GreetingServiceImpl extends RemoteServiceServlet implements
         GreetingService {
 
-    String uri = "mongodb://user:fishuser@cluster0-shard-00-00-qbirv.mongodb.net:27017,cluster0-shard-00-01-qbirv.mongodb.net:27017,cluster0-shard-00-02-qbirv.mongodb.net:27017/fish?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
-    MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
-    MongoDatabase database = mongoClient.getDatabase("fish");
-    MongoCollection<Document> strahovatels = database.getCollection("strahovatels");
-    MongoCollection<Document> dogovors = database.getCollection("dogovors");
-
-//    public String greetServer(String input) throws IllegalArgumentException {
-//        // Verify that the input is valid.
-//        if (!FieldVerifier.isValidName(input)) {
-//            // If the input is not valid, throw an IllegalArgumentException back to
-//            // the client.
-//            throw new IllegalArgumentException(
-//                    "Name must be at least 4 characters long");
-//        }
-//
-//        String serverInfo = getServletContext().getServerInfo();
-//        String userAgent = getThreadLocalRequest().getHeader("User-Agent");
-//
-//        // Escape data from the client to avoid cross-site script vulnerabilities.
-//        input = escapeHtml(input);
-//        userAgent = escapeHtml(userAgent);
-//
-//        return "Hello, " + input + "!<br><br>I am running " + serverInfo
-//                + ".<br><br>It looks like you are using:<br>" + userAgent;
-//    }
+    private String uri = "mongodb://user:fishuser@cluster0-shard-00-00-qbirv.mongodb.net:27017,cluster0-shard-00-01-qbirv.mongodb.net:27017,cluster0-shard-00-02-qbirv.mongodb.net:27017/fish?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin";
+    private MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
+    private MongoDatabase database = mongoClient.getDatabase("fish");
+    private MongoCollection<Document> strahovatels = database.getCollection("strahovatels");
+    private MongoCollection<Document> dogovors = database.getCollection("dogovors");
 
     @Override
     public List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException {
@@ -66,8 +46,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
                     eq("lastName", lastname)))
                     .forEach((Block<Document>) s -> list.add(toStrahovatel((Document) s)));
         }
-        System.out.println("=====greetSearch=====returned===list.get(0)====");
-        System.out.println(list.get(0).toString());
         return list;
     }
 
@@ -75,8 +53,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     public Strahovatel greetSearchFirstId(String id) throws IllegalArgumentException {
         Document doc = strahovatels.find(eq("_id", new ObjectId(id)))
                 .first();
-        System.out.println("=====greetSearchFirst=====returned");
-        System.out.println(doc);
         return toStrahovatel(doc);
     }
 
@@ -88,8 +64,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
                 eq("lastName", lastname),
                 eq("birth", birth)))
                 .first();
-        System.out.println("=====greetSearchFirst=====returned");
-        System.out.println(doc);
         return toStrahovatel(doc);
     }
 
@@ -97,9 +71,6 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     public Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException {
         try {
             strahovatels.insertOne(toDocument(strahovatel));
-            System.out.println("=====greetSave=====");
-            System.out.println(strahovatel.getId());
-            System.out.println(toDocument(strahovatel));
         } catch (Exception e) {
             return false;
         }
@@ -110,17 +81,13 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     @Override
     public Boolean greetUpdate(String id, Strahovatel strah) throws IllegalArgumentException {
         try {
-            UpdateResult result = strahovatels.updateOne(eq("_id", new ObjectId(id)), new Document("$set",
+            strahovatels.updateOne(eq("_id", new ObjectId(id)), new Document("$set",
                     new Document("lastName", strah.getLastName())
                             .append("firstName", strah.getFirstName())
                             .append("firstName2", strah.getFirstName2())
                             .append("birth", strah.getBirth())
                             .append("passportSeria", strah.getPassportSeria())
                             .append("passportNumber", strah.getPassportNumber())));
-            System.out.println("=====greetUpdate=====returned");
-            System.out.println(id);
-            System.out.println(strah.toString());
-            System.out.println(result);
         } catch (Exception e) {
             return false;
         }
@@ -128,9 +95,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public boolean checkDogNumber(Integer number) throws IllegalArgumentException {
+    public boolean checkDogId(Integer id) throws IllegalArgumentException {
         try {
-            return strahovatels.count(eq("number", number)) > 0;
+            return dogovors.count(eq("_id", id)) > 0;
         } catch (Exception e) {
             return true;
         }
@@ -140,17 +107,63 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     public boolean createDogovor(Dogovor dogovor) throws IllegalArgumentException {
         try {
             dogovors.insertOne(toDocument(dogovor));
-            System.out.println("=====create dogovor=====");
-            System.out.println(dogovor.getNomer() + " от " + dogovor.getDataZakl());
         } catch (Exception e) {
             return false;
         }
         return true;
     }
 
+    @Override
+    public List<Dogovor> findDogovor(Integer id) throws IllegalArgumentException {
+        List<Dogovor> list = new ArrayList<>();
+        if (id==0) {
+            dogovors.find().into(new ArrayList<>())
+                    .forEach(s -> list.add(toDogovors((Document) s)));
+        } else {
+            dogovors.find(eq("_id", id)).into(new ArrayList<>())
+                    .forEach(s -> list.add(toDogovors((Document) s)));
+        }
+        return list;
+    }
+
+    private Dogovor toDogovors(Document document) {
+        Dogovor dogovor = new Dogovor();
+        dogovor.setId((Integer) document.get("_id"));
+        dogovor.setDataZakl((Date) document.get("dataZakl"));
+        dogovor.setStrahovatel(toStrahovatel((Document) document.get("strahovatel")));//problem
+        dogovor.setAddressOb(toAddressOb((Document) document.get("addressOb")));
+        dogovor.setStrSumma((Integer) document.get("strSumma"));
+        dogovor.setStart((Date) document.get("start"));
+        dogovor.setEnd((Date) document.get("end"));
+        dogovor.setType((String) document.get("type"));
+        dogovor.setYear((String) document.get("year"));
+        dogovor.setSquair((String) document.get("squair"));
+        dogovor.setDateRasheta((Date) document.get("dateRasheta"));
+        dogovor.setPremiya((String) document.get("premiya"));
+        return dogovor;
+    }
+
+    private AddressOb toAddressOb(Document document) {
+        AddressOb addressOb = new AddressOb();
+        addressOb.setState((String) document.get("state"));
+        addressOb.setIndex((String) document.get("index"));
+        addressOb.setKrai((String) document.get("krai"));
+        addressOb.setDistrict((String) document.get("district"));
+        addressOb.setTown((String) document.get("town"));
+        addressOb.setStreet((String) document.get("street"));
+        addressOb.setHome((Integer) document.get("home"));
+        addressOb.setKorpus((String) document.get("korpus"));
+        addressOb.setStroenie((String) document.get("stroenie"));
+        addressOb.setFlat((Integer) document.get("flat"));
+        addressOb.setComment((String) document.get("comment"));
+        return null;
+    }
+
     public Strahovatel toStrahovatel(Document document) {
         Strahovatel strahovatel1 = new Strahovatel();
-        strahovatel1.setId(document.get("_id").toString());
+        try {
+            strahovatel1.setId(document.get("_id").toString());
+        }catch (Exception ignored){}
         strahovatel1.setLastName(document.get("lastName").toString());
         strahovatel1.setFirstName(document.get("firstName").toString());
         strahovatel1.setFirstName2(document.get("firstName2").toString());
@@ -167,6 +180,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         document.append("birth", strahovatel.getBirth());
         document.append("passportSeria", strahovatel.getPassportSeria());
         document.append("passportNumber", strahovatel.getPassportNumber());
+        if (!strahovatel.getId().equals("")) {
+            document.append("_id", strahovatel.getId());
+        }
         return document;
     }
 
@@ -188,9 +204,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
     public Document toDocument(Dogovor dogovor) {
         Document document = new Document();
-        document.append("nomer", dogovor.getNomer());
+        document.append("_id", dogovor.getId());
         document.append("dataZakl", dogovor.getDataZakl());
-        document.append("strahovatel", dogovor.getStrahovatel());
+        document.append("strahovatel", toDocument(dogovor.getStrahovatel()));
         document.append("addressOb", toDocument(dogovor.getAddressOb()));
         document.append("strSumma", dogovor.getStrSumma());
         document.append("start", dogovor.getStart());
@@ -201,20 +217,5 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         document.append("dateRasheta", dogovor.getDateRasheta());
         document.append("premiya", dogovor.getPremiya());
         return document;
-    }
-
-    /**
-     * Escape an html string. Escaping data received from the client helps to
-     * prevent cross-site script vulnerabilities.
-     *
-     * @param html the html string to escape
-     * @return the escaped string
-     */
-    private String escapeHtml(String html) {
-        if (html == null) {
-            return null;
-        }
-        return html.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(
-                ">", "&gt;");
     }
 }

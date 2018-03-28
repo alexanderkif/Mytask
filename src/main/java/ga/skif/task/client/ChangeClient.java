@@ -8,22 +8,21 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import java.util.Date;
-import static ga.skif.task.shared.FieldVerifier.strahovatel;
+import static ga.skif.task.client.Mytask.strahovatel;
 
 public class ChangeClient implements ClickHandler, KeyUpHandler {
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-    DialogBox dialogCangeClient = new DialogBox();
+    private DialogBox dialogCangeClient = new DialogBox();
 
-    TextBox textBoxFamily1;
-    TextBox textBoxName1;
-    TextBox textBoxName21;
-    DateBox dateBoxDataRozhdeniya2;
-    TextBox textBoxPassportSeriya2;
-    TextBox textBoxPassportNomer2;
+    private TextBox textBoxFamily1;
+    private TextBox textBoxName1;
+    private TextBox textBoxName21;
+    private DateBox dateBoxDataRozhdeniya2;
+    private TextBox textBoxPassportSeriya2;
+    private TextBox textBoxPassportNomer2;
 
-    final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
+    private final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
 
     @Override
     public void onClick(ClickEvent clickEvent) {

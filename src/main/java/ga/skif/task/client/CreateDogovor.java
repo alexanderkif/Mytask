@@ -3,23 +3,21 @@ package ga.skif.task.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static ga.skif.task.shared.FieldVerifier.strahovatel;
+import static ga.skif.task.client.Mytask.strahovatel;
 
 public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
-    DialogBox dialogBox = new DialogBox();
+    private DialogBox dialogBox = new DialogBox();
 
     public void onClick(ClickEvent event) {
         dialogBox.center();
@@ -149,25 +147,28 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         TextBox textBoxNomerDogovora = new TextBox();
         absolutePanel.add(textBoxNomerDogovora, 188, 282);
         textBoxNomerDogovora.setSize("155px", "20px");
-        textBoxNomerDogovora.addKeyPressHandler(new KeyPressHandler() {
+        textBoxNomerDogovora.addKeyUpHandler(new KeyUpHandler() {
             @Override
-            public void onKeyPress(KeyPressEvent keyPressEvent) {
+            public void onKeyUp(KeyUpEvent keyUpEvent) {
                 if (textBoxNomerDogovora.getText().length()==6){
-                    greetingService.checkDogNumber(Integer.valueOf(textBoxNomerDogovora.getText()),
+                    greetingService.checkDogId(Integer.valueOf(textBoxNomerDogovora.getText()),
                             new AsyncCallback<Boolean>(){
 
                                 @Override
                                 public void onFailure(Throwable throwable) {
+//                                    Window.alert("error");
                                     dogovorExist.setText("error");
                                 }
 
                                 @Override
                                 public void onSuccess(Boolean b) {
                                     if (b) {
+//                                        Window.alert("yes b="+b);
                                         dogovorExist.setText("yes");
                                         textBoxNomerDogovora.setStyleName("error");
                                     }
                                     else {
+//                                        Window.alert("no b="+b);
                                         dogovorExist.setText("no");
                                         textBoxNomerDogovora.setStyleName("noerror");
                                     }
@@ -203,10 +204,10 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         absolutePanel.add(label_10, 135, 365);
         label_10.setSize("47px", "24px");
 
-        TextBox textBoxFIO = new TextBox();//textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer
+        TextBox textBoxFIO = new TextBox();
         absolutePanel.add(textBoxFIO, 187, 357);
         textBoxFIO.setSize("559px", "20px");
-        textBoxFIO.setText(strahovatel.getFullName());
+//        textBoxFIO.setText(strahovatel.getFullName());
         textBoxFIO.setReadOnly(true);
 
         Button buttonChange = new Button("Изменить");
@@ -222,7 +223,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         dateBoxDataRozhdeniya.setFormat(new DateBox.DefaultFormat(dateFormat));
         absolutePanel.add(dateBoxDataRozhdeniya, 161, 400);
         dateBoxDataRozhdeniya.setSize("84px", "16px");
-        dateBoxDataRozhdeniya.setValue(strahovatel.getBirth());
+//        dateBoxDataRozhdeniya.setValue(strahovatel.getBirth());
 
         Label label_12 = new Label("Паспорт серия");
         absolutePanel.add(label_12, 350, 406);
@@ -231,7 +232,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         TextBox textBoxPassportSeriya = new TextBox();
         absolutePanel.add(textBoxPassportSeriya, 477, 398);
         textBoxPassportSeriya.setSize("105px", "20px");
-        textBoxPassportSeriya.setText(String.valueOf(strahovatel.getPassportSeria()));
+//        textBoxPassportSeriya.setText(String.valueOf(strahovatel.getPassportSeria()));
 
         Label label_13 = new Label("№");
         absolutePanel.add(label_13, 617, 406);
@@ -240,7 +241,7 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         TextBox textBoxPassportNomer = new TextBox();
         absolutePanel.add(textBoxPassportNomer, 653, 398);
         textBoxPassportNomer.setSize("183px", "20px");
-        textBoxPassportNomer.setText(String.valueOf(strahovatel.getPassportNumber()));
+//        textBoxPassportNomer.setText(String.valueOf(strahovatel.getPassportNumber()));
 
         Label label_14 = new Label("Адрес недвижимости");
         label_14.setStyleName("gwt-Label-big");
@@ -475,9 +476,9 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
                         textBoxStroenie.getText(),Integer.valueOf(textBoxKvartira.getText()),
                         textAreaComment.getText());
                 Dogovor dogovor = new Dogovor();
-                dogovor.setNomer(Integer.valueOf(textBoxNomerDogovora.getText()));
+                dogovor.setId(Integer.valueOf(textBoxNomerDogovora.getText()));
                 dogovor.setDataZakl(dateBoxDataZakluchenDogovora.getValue());
-                dogovor.setStrahovatel(strahovatel.getId());
+                dogovor.setStrahovatel(strahovatel);
                 dogovor.setAddressOb(addressOb);
                 dogovor.setStart(dateBoxStart.getValue());
                 dogovor.setEnd(dateBoxEnd.getValue());
@@ -497,7 +498,8 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
                         @Override
                         public void onSuccess(Boolean aBoolean) {
-                            Window.alert("Cохранено");
+//                            Window.alert("Cохранено");
+                            Mytask.list.add(dogovor);
                             dialogBox.hide();
                         }
                     });

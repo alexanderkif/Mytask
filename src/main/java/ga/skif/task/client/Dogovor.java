@@ -11,11 +11,11 @@ public class Dogovor implements Serializable {
 
     @NotNull
     @Size(min = 6, max=6, message = "Number must be 6 digits.")
-    private Integer nomer;
+    private Integer id;
     @NotNull
     private Date dataZakl;
     @NotNull
-    private String strahovatel;
+    private Strahovatel strahovatel;
     @NotNull
     private AddressOb addressOb;
     @NotNull
@@ -33,39 +33,15 @@ public class Dogovor implements Serializable {
     private  Date dateRasheta;
     private  String premiya;
 
-    public Dogovor(Integer nomer, Date dataZakl, String strahovatel, Date start, Date end, String premiya) {
-        this.nomer = nomer;
-        this.dataZakl = dataZakl;
-        this.strahovatel = strahovatel;
-        this.start = start;
-        this.end = end;
-        this.premiya = premiya;
-    }
-
     public Dogovor() {
     }
 
-//    public Dogovor(Integer nomer, Date dataZakl, String strahovatel, AddressOb addressOb, Integer strSumma, Date start, Date end, String type, String year, String squair, Date dateRasheta, String premiya) {
-//        this.nomer = nomer;
-//        this.dataZakl = dataZakl;
-//        this.strahovatel = strahovatel;
-//        this.addressOb = addressOb;
-//        this.strSumma = strSumma;
-//        this.start = start;
-//        this.end = end;
-//        this.type = type;
-//        this.year = year;
-//        this.squair = squair;
-//        this.dateRasheta = dateRasheta;
-//        this.premiya = premiya;
-//    }
-
-    public Integer getNomer() {
-        return nomer;
+    public Integer getId() {
+        return id;
     }
 
-    public void setNomer(Integer id) {
-        this.nomer = nomer;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Date getDataZakl() {
@@ -76,11 +52,11 @@ public class Dogovor implements Serializable {
         this.dataZakl = dataZakl;
     }
 
-    public String getStrahovatel() {
+    public Strahovatel getStrahovatel() {
         return strahovatel;
     }
 
-    public void setStrahovatel(String strahovatel) {
+    public void setStrahovatel(Strahovatel strahovatel) {
         this.strahovatel = strahovatel;
     }
 

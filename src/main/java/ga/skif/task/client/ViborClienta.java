@@ -4,33 +4,38 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import ga.skif.task.server.GreetingServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import static ga.skif.task.shared.FieldVerifier.strahovatel;
+
+import static ga.skif.task.client.Mytask.strahovatel;
 import static java.util.Arrays.asList;
 
 public class ViborClienta  implements ClickHandler, KeyUpHandler {
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
-    DialogBox dialogVibor = new DialogBox();
-    CellTable<Strahovatel> strahTable;
-    TextBox textBoxFamily;
-    TextBox textBoxName;
-    TextBox textBoxName2;
+    private DialogBox dialogVibor = new DialogBox();
+    private CellTable<Strahovatel> strahTable;
+    private ListDataProvider<Strahovatel> dataProvider = new ListDataProvider<Strahovatel>();
+    private TextBox textBoxFamily;
+    private TextBox textBoxName;
+    private TextBox textBoxName2;
 
     @Override
     public void onClick(ClickEvent clickEvent) {
         dialogVibor.center();
-        strahTable.setRowData(asList());
+//        strahTable.setRowData(asList());
+        dataProvider.setList(asList());
 
         textBoxFamily.setText(strahovatel.getLastName());
         textBoxName.setText(strahovatel.getFirstName());
@@ -88,7 +93,14 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
         absolutePanel1.add(searchBtn, 510, 20);
 
         strahTable = new CellTable<>();
-        absolutePanel1.add(strahTable, 20, 90);
+        absolutePanel1.add(strahTable, 20, 80);
+
+        dataProvider.addDataDisplay(strahTable);
+//        dataProvider.setList(strahovatels);
+        SimplePager pager = new SimplePager();
+        absolutePanel1.add(pager,200,235);
+        pager.setDisplay(strahTable);
+        strahTable.setPageSize(5);
 
         TextColumn<Strahovatel> fioColumn = new TextColumn<Strahovatel>() {
             @Override
@@ -116,7 +128,6 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
         strahTable.setColumnWidth(fioColumn, "50%");
         strahTable.setColumnWidth(dateBirthColumn, "20%");
         strahTable.setColumnWidth(passportColumn, "30%");
-        strahTable.setRowData(new ArrayList<>());
 
         final Button chooseBtn = new Button("Выбрать");
         chooseBtn.getElement().setId("chooseBtn");
@@ -152,10 +163,12 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
                             public void onSuccess(List<Strahovatel> strahovatels) {
                                 if (strahovatels.size()==0){
                                     Window.alert("Ничего не найдено.");
-                                    strahTable.setRowData(strahovatels);
+//                                    strahTable.setRowData(strahovatels);
+                                    dataProvider.setList(strahovatels);
                                 }else {
                                     //Window.alert("Поиск удачен. " + strahovatels.get(0).getFullName());
-                                    strahTable.setRowData(strahovatels);
+//                                    strahTable.setRowData(strahovatels);
+                                    dataProvider.setList(strahovatels);
                                 }
                             }
                         });
@@ -188,9 +201,6 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
                     strahovatel.setPassportNumber(strah.getPassportNumber());
                     dialogVibor.hide();
                 }
-//                strahovatel.setFirstName("FirstName");
-//                strahovatel.setFirstName2(strah.getFirstName2());
-//                dialogVibor.hide();
             }
         });
     }
