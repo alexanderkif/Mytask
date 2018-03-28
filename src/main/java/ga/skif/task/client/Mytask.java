@@ -54,7 +54,7 @@ public class Mytask implements EntryPoint {
     TextColumn<Dogovor> strahovatelColumn = new TextColumn<Dogovor>() {
       @Override
       public String getValue(Dogovor dogovor) {
-        return dogovor.getStrahovatel().getFullName();
+        return strahovatel.getFullName();
       }
     };
     cellTable.addColumn(strahovatelColumn,"Страхователь");
@@ -75,10 +75,10 @@ public class Mytask implements EntryPoint {
     cellTable.addColumn(srokColumn,"Срок действия");
 
     List<Dogovor> list = new ArrayList<>();
-    list.add(new Dogovor(1, new Date(), new Strahovatel("Иванов", "Иван","Михалыч"), new Date(), new Date(), "1000"));
-    list.add(new Dogovor(2, new Date(), new Strahovatel("Петров", "Василий","Сергеевич"), new Date(), new Date(), "1000"));
-    list.add(new Dogovor(3, new Date(), new Strahovatel("Сидоров", "Сидор","Иванович"), new Date(), new Date(), "1000"));
-    list.add(new Dogovor(4, new Date(), new Strahovatel("Васечкин", "Петр","Петрович"), new Date(), new Date(), "1000"));
+    list.add(new Dogovor(1, new Date(), new Strahovatel("Иванов", "Иван","Михалыч").getFullName(), new Date(), new Date(), "1000"));
+    list.add(new Dogovor(2, new Date(), new Strahovatel("Петров", "Василий","Сергеевич").getFullName(), new Date(), new Date(), "1000"));
+    list.add(new Dogovor(3, new Date(), new Strahovatel("Сидоров", "Сидор","Иванович").getFullName(), new Date(), new Date(), "1000"));
+    list.add(new Dogovor(4, new Date(), new Strahovatel("Васечкин", "Петр","Петрович").getFullName(), new Date(), new Date(), "1000"));
     cellTable.setRowData(list);
 
     // Add a handler to send the name to the server

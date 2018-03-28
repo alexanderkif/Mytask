@@ -16,9 +16,13 @@ public interface GreetingService extends RemoteService {
 
     Strahovatel greetSearchFirst(String name, String name2, String lastname, Date birth) throws IllegalArgumentException;
 
+    Strahovatel greetSearchFirstId(String id) throws IllegalArgumentException;
+
     Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException;
 
     Boolean greetUpdate(String id, Strahovatel strahovatel) throws IllegalArgumentException;
 
     boolean checkDogNumber(Integer number) throws IllegalArgumentException;
+
+    boolean createDogovor(Dogovor dogovor) throws IllegalArgumentException;
 }

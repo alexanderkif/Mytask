@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -21,7 +22,6 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
     DialogBox dialogBox = new DialogBox();
 
     public void onClick(ClickEvent event) {
-
         dialogBox.center();
     }
 
@@ -142,26 +142,39 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         absolutePanel.add(label_7, 32, 290);
         label_7.setSize("150px", "24px");
 
+        Label dogovorExist = new Label("");
+        absolutePanel.add(dogovorExist,5,5);
+        dogovorExist.setVisible(false);
+
         TextBox textBoxNomerDogovora = new TextBox();
         absolutePanel.add(textBoxNomerDogovora, 188, 282);
         textBoxNomerDogovora.setSize("155px", "20px");
-        textBoxNomerDogovora.addChangeHandler(new ChangeHandler() {
+        textBoxNomerDogovora.addKeyPressHandler(new KeyPressHandler() {
             @Override
-            public void onChange(ChangeEvent changeEvent) {
+            public void onKeyPress(KeyPressEvent keyPressEvent) {
                 if (textBoxNomerDogovora.getText().length()==6){
                     greetingService.checkDogNumber(Integer.valueOf(textBoxNomerDogovora.getText()),
                             new AsyncCallback<Boolean>(){
 
                                 @Override
                                 public void onFailure(Throwable throwable) {
-
+                                    dogovorExist.setText("error");
                                 }
 
                                 @Override
                                 public void onSuccess(Boolean b) {
-                                    if (b) textBoxNomerDogovora.setStyleName("error");
+                                    if (b) {
+                                        dogovorExist.setText("yes");
+                                        textBoxNomerDogovora.setStyleName("error");
+                                    }
+                                    else {
+                                        dogovorExist.setText("no");
+                                        textBoxNomerDogovora.setStyleName("noerror");
+                                    }
                                 }
                             });
+                }else{
+                    textBoxNomerDogovora.setStyleName("error");
                 }
             }
         });
@@ -451,6 +464,50 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
         ChangeClient changeClient = new ChangeClient(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
         buttonChange.addClickHandler(changeClient);
+
+        saveButton.addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+
+                AddressOb addressOb = new AddressOb(listBoxCountries.getSelectedItemText(),textBoxIndex.getText(),
+                        textBoxRespKraiObl.getText(),textBoxRayon.getText(),textBoxNaselPunkt.getText(),
+                        textBoxStreet.getText(),Integer.valueOf(textBoxDom.getText()),textBoxKorpus.getText(),
+                        textBoxStroenie.getText(),Integer.valueOf(textBoxKvartira.getText()),
+                        textAreaComment.getText());
+                Dogovor dogovor = new Dogovor();
+                dogovor.setNomer(Integer.valueOf(textBoxNomerDogovora.getText()));
+                dogovor.setDataZakl(dateBoxDataZakluchenDogovora.getValue());
+                dogovor.setStrahovatel(strahovatel.getId());
+                dogovor.setAddressOb(addressOb);
+                dogovor.setStart(dateBoxStart.getValue());
+                dogovor.setEnd(dateBoxEnd.getValue());
+                dogovor.setStrSumma(Integer.valueOf(strSumma.getText()));
+                dogovor.setType(comboBoxTipNedvizhimosti.getSelectedItemText());
+                dogovor.setYear(textBoxGodPostroiki.getText());
+                dogovor.setSquair(textBoxPloshadb.getText());
+                dogovor.setPremiya(textBoxPremiya.getText());
+                dogovor.setDateRasheta(dateBoxDataRascheta.getValue());
+
+                if (dogovorExist.getText().equals("no")){
+                    greetingService.createDogovor(dogovor, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Window.alert("Не сохранено");
+                        }
+
+                        @Override
+                        public void onSuccess(Boolean aBoolean) {
+                            Window.alert("Cохранено");
+                            dialogBox.hide();
+                        }
+                    });
+                }
+
+                if (dogovorExist.getText().equals("yes")){
+                    //greetingService.updateDogovor()
+                }
+            }
+        });
     }
 
     public static boolean isNumeric(String str) {
@@ -472,37 +529,4 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         }
         return false;
     }
-
-//    private void sendNameToServer() {
-//        // First, we validate the input.
-//        errorLabel.setText("");
-//        String textToServer = nameField.getText();
-//        if (!FieldVerifier.isValidName(textToServer)) {
-//            errorLabel.setText("Please enter at least four characters");
-//            return;
-//        }
-//
-//        // Then, we send the input to the server.
-//        sendButton.setEnabled(false);
-//        textToServerLabel.setText(textToServer);
-//        serverResponseLabel.setText("");
-//        greetingService.greetServer(textToServer, new AsyncCallback<String>() {
-//            public void onFailure(Throwable caught) {
-//                // Show the RPC error message to the user
-//                dialogBox.setText("Remote Procedure Call - Failure");
-//                serverResponseLabel.addStyleName("serverResponseLabelError");
-//                serverResponseLabel.setHTML(SERVER_ERROR);
-//                dialogBox.center();
-//                closeButton.setFocus(true);
-//            }
-//
-//            public void onSuccess(String result) {
-//                dialogBox.setText("Remote Procedure Call");
-//                serverResponseLabel.removeStyleName("serverResponseLabelError");
-//                serverResponseLabel.setHTML(result);
-//                dialogBox.center();
-//                closeButton.setFocus(true);
-//            }
-//        });
-//    }
 }

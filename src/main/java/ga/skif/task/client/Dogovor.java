@@ -15,7 +15,7 @@ public class Dogovor implements Serializable {
     @NotNull
     private Date dataZakl;
     @NotNull
-    private Strahovatel strahovatel;
+    private String strahovatel;
     @NotNull
     private AddressOb addressOb;
     @NotNull
@@ -33,7 +33,7 @@ public class Dogovor implements Serializable {
     private  Date dateRasheta;
     private  String premiya;
 
-    public Dogovor(Integer nomer, Date dataZakl, Strahovatel strahovatel, Date start, Date end, String premiya) {
+    public Dogovor(Integer nomer, Date dataZakl, String strahovatel, Date start, Date end, String premiya) {
         this.nomer = nomer;
         this.dataZakl = dataZakl;
         this.strahovatel = strahovatel;
@@ -44,6 +44,21 @@ public class Dogovor implements Serializable {
 
     public Dogovor() {
     }
+
+//    public Dogovor(Integer nomer, Date dataZakl, String strahovatel, AddressOb addressOb, Integer strSumma, Date start, Date end, String type, String year, String squair, Date dateRasheta, String premiya) {
+//        this.nomer = nomer;
+//        this.dataZakl = dataZakl;
+//        this.strahovatel = strahovatel;
+//        this.addressOb = addressOb;
+//        this.strSumma = strSumma;
+//        this.start = start;
+//        this.end = end;
+//        this.type = type;
+//        this.year = year;
+//        this.squair = squair;
+//        this.dateRasheta = dateRasheta;
+//        this.premiya = premiya;
+//    }
 
     public Integer getNomer() {
         return nomer;
@@ -61,11 +76,11 @@ public class Dogovor implements Serializable {
         this.dataZakl = dataZakl;
     }
 
-    public Strahovatel getStrahovatel() {
+    public String getStrahovatel() {
         return strahovatel;
     }
 
-    public void setStrahovatel(Strahovatel strahovatel) {
+    public void setStrahovatel(String strahovatel) {
         this.strahovatel = strahovatel;
     }
 

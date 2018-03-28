@@ -6,9 +6,10 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.UpdateResult;
+import ga.skif.task.client.AddressOb;
+import ga.skif.task.client.Dogovor;
 import ga.skif.task.client.GreetingService;
 import ga.skif.task.client.Strahovatel;
-import ga.skif.task.shared.FieldVerifier;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -30,7 +31,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     MongoClient mongoClient = new MongoClient(new MongoClientURI(uri));
     MongoDatabase database = mongoClient.getDatabase("fish");
     MongoCollection<Document> strahovatels = database.getCollection("strahovatels");
-//    MongoCollection dogovors = database.getCollection("dogovors");
+    MongoCollection<Document> dogovors = database.getCollection("dogovors");
 
 //    public String greetServer(String input) throws IllegalArgumentException {
 //        // Verify that the input is valid.
@@ -55,10 +56,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     @Override
     public List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException {
         List<Strahovatel> list = new ArrayList<>();
-        if (name.equals("") && name2.equals("") && lastname.equals("")){
+        if (name.equals("") && name2.equals("") && lastname.equals("")) {
             strahovatels.find()
                     .forEach((Block<Document>) s -> list.add(toStrahovatel((Document) s)));
-        }else {
+        } else {
             strahovatels.find(and(
                     eq("firstName", name),
                     eq("firstName2", name2),
@@ -68,6 +69,15 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         System.out.println("=====greetSearch=====returned===list.get(0)====");
         System.out.println(list.get(0).toString());
         return list;
+    }
+
+    @Override
+    public Strahovatel greetSearchFirstId(String id) throws IllegalArgumentException {
+        Document doc = strahovatels.find(eq("_id", new ObjectId(id)))
+                .first();
+        System.out.println("=====greetSearchFirst=====returned");
+        System.out.println(doc);
+        return toStrahovatel(doc);
     }
 
     @Override
@@ -102,11 +112,11 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         try {
             UpdateResult result = strahovatels.updateOne(eq("_id", new ObjectId(id)), new Document("$set",
                     new Document("lastName", strah.getLastName())
-                    .append("firstName", strah.getFirstName())
-                    .append("firstName2", strah.getFirstName2())
-                    .append("birth", strah.getBirth())
-                    .append("passportSeria", strah.getPassportSeria())
-                    .append("passportNumber", strah.getPassportNumber())));
+                            .append("firstName", strah.getFirstName())
+                            .append("firstName2", strah.getFirstName2())
+                            .append("birth", strah.getBirth())
+                            .append("passportSeria", strah.getPassportSeria())
+                            .append("passportNumber", strah.getPassportNumber())));
             System.out.println("=====greetUpdate=====returned");
             System.out.println(id);
             System.out.println(strah.toString());
@@ -124,6 +134,18 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         } catch (Exception e) {
             return true;
         }
+    }
+
+    @Override
+    public boolean createDogovor(Dogovor dogovor) throws IllegalArgumentException {
+        try {
+            dogovors.insertOne(toDocument(dogovor));
+            System.out.println("=====create dogovor=====");
+            System.out.println(dogovor.getNomer() + " от " + dogovor.getDataZakl());
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     public Strahovatel toStrahovatel(Document document) {
@@ -145,6 +167,39 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         document.append("birth", strahovatel.getBirth());
         document.append("passportSeria", strahovatel.getPassportSeria());
         document.append("passportNumber", strahovatel.getPassportNumber());
+        return document;
+    }
+
+    public Document toDocument(AddressOb addressOb) {
+        Document document = new Document();
+        document.append("state", addressOb.getState());
+        document.append("index", addressOb.getIndex());
+        document.append("krai", addressOb.getKrai());
+        document.append("district", addressOb.getDistrict());
+        document.append("town", addressOb.getTown());
+        document.append("street", addressOb.getStreet());
+        document.append("home", addressOb.getHome());
+        document.append("korpus", addressOb.getKorpus());
+        document.append("stroenie", addressOb.getStroenie());
+        document.append("flat", addressOb.getFlat());
+        document.append("comment", addressOb.getComment());
+        return document;
+    }
+
+    public Document toDocument(Dogovor dogovor) {
+        Document document = new Document();
+        document.append("nomer", dogovor.getNomer());
+        document.append("dataZakl", dogovor.getDataZakl());
+        document.append("strahovatel", dogovor.getStrahovatel());
+        document.append("addressOb", toDocument(dogovor.getAddressOb()));
+        document.append("strSumma", dogovor.getStrSumma());
+        document.append("start", dogovor.getStart());
+        document.append("end", dogovor.getEnd());
+        document.append("type", dogovor.getType());
+        document.append("year", dogovor.getYear());
+        document.append("squair", dogovor.getSquair());
+        document.append("dateRasheta", dogovor.getDateRasheta());
+        document.append("premiya", dogovor.getPremiya());
         return document;
     }
 
