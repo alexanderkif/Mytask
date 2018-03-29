@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static ga.skif.task.client.Mytask.strahovatel;
+import static ga.skif.task.client.Mytask.*;
 
 public class CreateDogovor implements ClickHandler, KeyUpHandler {
 
@@ -91,10 +91,15 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         label_3.setSize("137px", "24px");
 
         ListBox comboBoxTipNedvizhimosti = new ListBox();
+        comboBoxTipNedvizhimosti.clear();
         comboBoxTipNedvizhimosti.addItem("");
-        comboBoxTipNedvizhimosti.addItem("Квартира");
-        comboBoxTipNedvizhimosti.addItem("Дом");
-        comboBoxTipNedvizhimosti.addItem("Комната");
+        comboBoxTipNedvizhimosti.addItem(existDogovor.getType());
+        for (String s : listNedvizhimosti) {
+            comboBoxTipNedvizhimosti.addItem(s);
+        }
+//        comboBoxTipNedvizhimosti.addItem("Квартира");
+//        comboBoxTipNedvizhimosti.addItem("Дом");
+//        comboBoxTipNedvizhimosti.addItem("Комната");
         raschetPanel.add(comboBoxTipNedvizhimosti, 165, 48);
         comboBoxTipNedvizhimosti.setSize("166px", "32px");
 
@@ -249,10 +254,15 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         label_14.setSize("321px", "24px");
 
         ListBox listBoxCountries = new ListBox();
+        listBoxCountries.clear();
         listBoxCountries.addItem("");
-        listBoxCountries.addItem("Россия");
-        listBoxCountries.addItem("Белоруссия");
-        listBoxCountries.addItem("Казахстан");
+        for (String s : countries) {
+            listBoxCountries.addItem(s);
+        }
+//        listBoxCountries.addItem("");
+//        listBoxCountries.addItem("Россия");
+//        listBoxCountries.addItem("Белоруссия");
+//        listBoxCountries.addItem("Казахстан");
         absolutePanel.add(listBoxCountries, 32, 466);
         listBoxCountries.setSize("166px", "32px");
 

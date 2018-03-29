@@ -17,6 +17,8 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -26,6 +28,10 @@ public class Mytask implements EntryPoint {
     public static Strahovatel strahovatel = new Strahovatel("","","");
 
     public static Dogovor existDogovor = new Dogovor();
+
+    public static List<String> listNedvizhimosti = asList("Квартира","Дом","Комната");
+
+    public static List<String> countries = asList("Россия","Белоруссия","Казахстан");
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
@@ -122,11 +128,10 @@ public class Mytask implements EntryPoint {
             @Override
             public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
                 existDogovor = dogovorSelectionModel.getSelectedObject();
-                Window.alert(existDogovor.toString());
+//                Window.alert(existDogovor.toString());
             }
         });
 
-//        OpenDogovor handler1 = new OpenDogovor(dogovorSelectionModel.getSelectedObject());
         OpenDogovor handler1 = new OpenDogovor();
         txtbtnOpen.addClickHandler(handler1);
     }

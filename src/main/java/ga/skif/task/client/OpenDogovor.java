@@ -12,8 +12,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static ga.skif.task.client.Mytask.existDogovor;
-import static ga.skif.task.client.Mytask.strahovatel;
+import static ga.skif.task.client.Mytask.*;
 
 public class OpenDogovor implements ClickHandler, KeyUpHandler {
 
@@ -52,7 +51,11 @@ public class OpenDogovor implements ClickHandler, KeyUpHandler {
         strSumma.setText(existDogovor.getStrSumma().toString());
         textBoxGodPostroiki.setText(existDogovor.getYear());
         textBoxPloshadb.setText(existDogovor.getSquair());
-        comboBoxTipNedvizhimosti.setValue(0, existDogovor.getType());
+        comboBoxTipNedvizhimosti.clear();
+        comboBoxTipNedvizhimosti.addItem(existDogovor.getType());
+        for (String s : listNedvizhimosti) {
+            comboBoxTipNedvizhimosti.addItem(s);
+        }
         dateBoxStart.setValue(existDogovor.getStart());
         dateBoxEnd.setValue(existDogovor.getEnd());
         textBoxPremiya.setText(existDogovor.getPremiya());
@@ -63,7 +66,12 @@ public class OpenDogovor implements ClickHandler, KeyUpHandler {
         dateBoxDataRozhdeniya.setValue(existDogovor.getStrahovatel().getBirth());
         textBoxPassportSeriya.setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
         textBoxPassportNomer.setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
+//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
+        listBoxCountries.clear();
         listBoxCountries.addItem(existDogovor.getAddressOb().getState());
+        for (String s : countries) {
+            listBoxCountries.addItem(s);
+        }
         textBoxIndex.setText(existDogovor.getAddressOb().getIndex());
         textBoxRespKraiObl.setText(existDogovor.getAddressOb().getKrai());
         textBoxRayon.setText(existDogovor.getAddressOb().getDistrict());
@@ -74,6 +82,7 @@ public class OpenDogovor implements ClickHandler, KeyUpHandler {
         textBoxStroenie.setText(existDogovor.getAddressOb().getStroenie());
         textBoxKvartira.setText(existDogovor.getAddressOb().getFlat().toString());
         textAreaComment.setText(existDogovor.getAddressOb().getComment());
+        strahovatel = existDogovor.getStrahovatel();
     }
 
     public void onKeyUp(KeyUpEvent event) {
@@ -144,10 +153,10 @@ public class OpenDogovor implements ClickHandler, KeyUpHandler {
         label_3.setSize("137px", "24px");
 
         comboBoxTipNedvizhimosti = new ListBox();
-        comboBoxTipNedvizhimosti.addItem("");
-        comboBoxTipNedvizhimosti.addItem("Квартира");
-        comboBoxTipNedvizhimosti.addItem("Дом");
-        comboBoxTipNedvizhimosti.addItem("Комната");
+//        comboBoxTipNedvizhimosti.addItem("");
+//        comboBoxTipNedvizhimosti.addItem("Квартира");
+//        comboBoxTipNedvizhimosti.addItem("Дом");
+//        comboBoxTipNedvizhimosti.addItem("Комната");
         openRaschetPanel.add(comboBoxTipNedvizhimosti, 165, 48);
         comboBoxTipNedvizhimosti.setSize("166px", "32px");
 
