@@ -93,7 +93,6 @@ public class CreateDogovor implements ClickHandler, KeyUpHandler {
         ListBox comboBoxTipNedvizhimosti = new ListBox();
         comboBoxTipNedvizhimosti.clear();
         comboBoxTipNedvizhimosti.addItem("");
-        comboBoxTipNedvizhimosti.addItem(existDogovor.getType());
         for (String s : listNedvizhimosti) {
             comboBoxTipNedvizhimosti.addItem(s);
         }
