@@ -7,21 +7,21 @@ import java.io.Serializable;
 
 public class AddressOb implements Serializable {
     @NotEmpty
-    String state;
-    String index;
+    private String state;
+    private String index;
     @NotEmpty
-    String krai;
-    String district;
+    private String krai;
+    private String district;
     @NotEmpty
-    String town;
+    private String town;
     @NotEmpty
-    String street;
-    Integer home;
-    String korpus;
-    String stroenie;
+    private String street;
+    private Integer home;
+    private String korpus;
+    private String stroenie;
     @NotNull
-    Integer flat;
-    String comment;
+    private Integer flat;
+    private String comment;
 
     public AddressOb() {
     }
@@ -38,6 +38,23 @@ public class AddressOb implements Serializable {
         this.stroenie = stroenie;
         this.flat = flat;
         this.comment = comment;
+    }
+
+    @Override
+    public String toString() {
+        return "AddressOb{" +
+                "state='" + state + '\'' +
+                ", index='" + index + '\'' +
+                ", krai='" + krai + '\'' +
+                ", district='" + district + '\'' +
+                ", town='" + town + '\'' +
+                ", street='" + street + '\'' +
+                ", home=" + home +
+                ", korpus='" + korpus + '\'' +
+                ", stroenie='" + stroenie + '\'' +
+                ", flat=" + flat +
+                ", comment='" + comment + '\'' +
+                '}';
     }
 
     public String getState() {

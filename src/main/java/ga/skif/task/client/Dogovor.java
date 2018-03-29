@@ -36,6 +36,24 @@ public class Dogovor implements Serializable {
     public Dogovor() {
     }
 
+    @Override
+    public String toString() {
+        return "Dogovor{" +
+                "id=" + id +
+                ", dataZakl=" + dataZakl +
+                ", strahovatel=" + strahovatel +
+                ", addressOb=" + addressOb +
+                ", strSumma=" + strSumma +
+                ", start=" + start +
+                ", end=" + end +
+                ", type='" + type + '\'' +
+                ", year='" + year + '\'' +
+                ", squair='" + squair + '\'' +
+                ", dateRasheta=" + dateRasheta +
+                ", premiya='" + premiya + '\'' +
+                '}';
+    }
+
     public Integer getId() {
         return id;
     }

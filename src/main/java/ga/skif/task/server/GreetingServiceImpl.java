@@ -156,7 +156,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         addressOb.setStroenie((String) document.get("stroenie"));
         addressOb.setFlat((Integer) document.get("flat"));
         addressOb.setComment((String) document.get("comment"));
-        return null;
+        return addressOb;
     }
 
     public Strahovatel toStrahovatel(Document document) {

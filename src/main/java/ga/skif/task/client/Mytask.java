@@ -2,13 +2,16 @@ package ga.skif.task.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.cellview.client.AbstractCellTable;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import java.util.ArrayList;
@@ -21,6 +24,8 @@ import java.util.List;
 public class Mytask implements EntryPoint {
 
     public static Strahovatel strahovatel = new Strahovatel("","","");
+
+    public static Dogovor existDogovor = new Dogovor();
 
     private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
 
@@ -55,19 +60,18 @@ public class Mytask implements EntryPoint {
         });
 
         final Button txtbtnCreate = new Button("Создать договор");
+        txtbtnCreate.getElement().setId("txtbtnCreate");
         rootPanel.add(txtbtnCreate, 130, 20);
 
         final Button txtbtnOpen = new Button("Открыть договор");
+        txtbtnOpen.getElement().setId("txtbtnOpen");
         rootPanel.add(txtbtnOpen, 270, 20);
 
 //        labelll.setText(list.get(0).getId().toString());
 //        rootPanel.add(labelll,5,5);
 
         rootPanel.add(cellTable, 130, 60);
-        cellTable.setPageSize(10);
-
-        final SingleSelectionModel<Dogovor> selectionModel = new SingleSelectionModel<>();
-        cellTable.setSelectionModel(selectionModel);
+//        cellTable.setPageSize(10);
 
         TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
             @Override
@@ -112,5 +116,18 @@ public class Mytask implements EntryPoint {
         CreateDogovor handler = new CreateDogovor();
         txtbtnCreate.addClickHandler(handler);
 
+        final SingleSelectionModel<Dogovor> dogovorSelectionModel = new SingleSelectionModel<>();
+        cellTable.setSelectionModel(dogovorSelectionModel);
+        dogovorSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+            @Override
+            public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
+                existDogovor = dogovorSelectionModel.getSelectedObject();
+                Window.alert(existDogovor.toString());
+            }
+        });
+
+//        OpenDogovor handler1 = new OpenDogovor(dogovorSelectionModel.getSelectedObject());
+        OpenDogovor handler1 = new OpenDogovor();
+        txtbtnOpen.addClickHandler(handler1);
     }
 }
