@@ -43,6 +43,8 @@ public class Mytask implements EntryPoint {
         HandlerManager eventBus = new HandlerManager(null);
         AppController app = new AppController(eventBus);
         app.goTo(RootPanel.get());
+//        MainPresenter main = new MainPresenter(new MainView(), eventBus);
+//        main.go(RootPanel.get());
 
     }
 }

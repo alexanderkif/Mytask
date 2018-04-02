@@ -34,7 +34,7 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
     @Override
     public void onClick(ClickEvent clickEvent) {
         dialogVibor.center();
-//        strahTable.setRowData(asList());
+//        strahTable.setRowDataCellTable(asList());
         dataProvider.setList(asList());
 
         textBoxFamily.setText(strahovatel.getLastName());
@@ -163,11 +163,11 @@ public class ViborClienta  implements ClickHandler, KeyUpHandler {
                             public void onSuccess(List<Strahovatel> strahovatels) {
                                 if (strahovatels.size()==0){
                                     Window.alert("Ничего не найдено.");
-//                                    strahTable.setRowData(strahovatels);
+//                                    strahTable.setRowDataCellTable(strahovatels);
                                     dataProvider.setList(strahovatels);
                                 }else {
                                     //Window.alert("Поиск удачен. " + strahovatels.get(0).getFullName());
-//                                    strahTable.setRowData(strahovatels);
+//                                    strahTable.setRowDataCellTable(strahovatels);
                                     dataProvider.setList(strahovatels);
                                 }
                             }
