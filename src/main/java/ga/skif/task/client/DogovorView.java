@@ -1,25 +1,19 @@
 package ga.skif.task.client;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 
-import java.util.Date;
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import static ga.skif.task.client.Mytask.*;
+import static ga.skif.task.client.Mytask.existDogovor;
+import static ga.skif.task.client.Mytask.strahovatel;
 
-public class DogovorView implements HasWidgets, DogovorPresenter.Display {
+public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHandler {
 
-    private GreetingServiceAsync greetingService = GWT.create(GreetingService.class);
-//    private DialogBox openDialogBox = new DialogBox();
 
+    private DialogBox openDialogBox;
     private TextBox strSumma;
     private TextBox textBoxGodPostroiki;
     private TextBox textBoxPloshadb;
@@ -45,59 +39,32 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
     private TextBox textBoxStroenie;
     private TextBox textBoxKvartira;
     private TextArea textAreaComment;
-    VerticalPanel container;
-
-
-    public void init() {
-        strSumma.setText(existDogovor.getStrSumma().toString());
-        textBoxGodPostroiki.setText(existDogovor.getYear());
-        textBoxPloshadb.setText(existDogovor.getSquair());
-        comboBoxTipNedvizhimosti.clear();
-        comboBoxTipNedvizhimosti.addItem(existDogovor.getType());
-        for (String s : listNedvizhimosti) {
-            comboBoxTipNedvizhimosti.addItem(s);
-        }
-        dateBoxStart.setValue(existDogovor.getStart());
-        dateBoxEnd.setValue(existDogovor.getEnd());
-        textBoxPremiya.setText(existDogovor.getPremiya());
-        dateBoxDataRascheta.setValue(existDogovor.getDateRasheta());
-        textBoxNomerDogovora.setText(existDogovor.getId().toString());
-        dateBoxDataZakluchenDogovora.setValue(existDogovor.getDataZakl());
-        textBoxFIO.setText(existDogovor.getStrahovatel().getFullName());
-        dateBoxDataRozhdeniya.setValue(existDogovor.getStrahovatel().getBirth());
-        textBoxPassportSeriya.setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
-        textBoxPassportNomer.setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
-//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
-        listBoxCountries.clear();
-        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
-        for (String s : countries) {
-            listBoxCountries.addItem(s);
-        }
-        textBoxIndex.setText(existDogovor.getAddressOb().getIndex());
-        textBoxRespKraiObl.setText(existDogovor.getAddressOb().getKrai());
-        textBoxRayon.setText(existDogovor.getAddressOb().getDistrict());
-        textBoxNaselPunkt.setText(existDogovor.getAddressOb().getTown());
-        textBoxStreet.setText(existDogovor.getAddressOb().getStreet());
-        textBoxDom.setText(existDogovor.getAddressOb().getHome().toString());
-        textBoxKorpus.setText(existDogovor.getAddressOb().getKorpus());
-        textBoxStroenie.setText(existDogovor.getAddressOb().getStroenie());
-        textBoxKvartira.setText(existDogovor.getAddressOb().getFlat().toString());
-        textAreaComment.setText(existDogovor.getAddressOb().getComment());
-        strahovatel = existDogovor.getStrahovatel();
-    }
+    private VerticalPanel container;
+    private final Button saveButton;
+    private final Button closeButton;
+    private Label error;
+    private Button btnRasschitat;
 
     DogovorView() {
 
-        final Date today = new Date();
-
-        final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
-        final DateTimeFormat yearFormat = DateTimeFormat.getFormat("yyyy");
-
-//        openDialogBox.setText("Форма ввода данных");
-//        openDialogBox.setAnimationEnabled(true);
+        openDialogBox = new DialogBox();
+        openDialogBox.setText("Форма ввода данных");
+        openDialogBox.setAnimationEnabled(true);
+//        openDialogBox.center();
+        openDialogBox.show();
 
         container = new VerticalPanel();
+        container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         HorizontalPanel raschetPanel = new HorizontalPanel();
+        raschetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        raschetPanel.setBorderWidth(2);
+
+        openDialogBox.setWidget(container);
+
+        Label raschetLabel = new Label("Расчет");
+        raschetLabel.setWidth("60px");
+        container.add(raschetLabel);
+        raschetLabel.setStyleName("raschetLabel");
 
         raschetPanel.setStyleName("dialogVPanel");
         container.add(raschetPanel);
@@ -105,16 +72,13 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         raschetPanel.setStyleName("raschetPanel");
 
         VerticalPanel inRaschetPanel = new VerticalPanel();
+        inRaschetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         raschetPanel.add(inRaschetPanel);
         HorizontalPanel firstRowInRaschetPanel = new HorizontalPanel();
         inRaschetPanel.add(firstRowInRaschetPanel);
         VerticalPanel leftRaschet = new VerticalPanel();
+        leftRaschet.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         firstRowInRaschetPanel.add(leftRaschet);
-
-//        Label raschetLabel = new Label("Расчет");
-//        raschetLabel.setWidth("60px");
-//        raschetPanel.add(raschetLabel);
-//        raschetLabel.setStyleName("raschetLabel");
 
         HorizontalPanel row1 = new HorizontalPanel();
 
@@ -134,6 +98,9 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         label.setSize("150px", "24px");
 
         comboBoxTipNedvizhimosti = new ListBox();
+        comboBoxTipNedvizhimosti.addItem("Квартира");
+        comboBoxTipNedvizhimosti.addItem("Дом");
+        comboBoxTipNedvizhimosti.addItem("Комната");
         row2.add(comboBoxTipNedvizhimosti);
         comboBoxTipNedvizhimosti.setSize("166px", "32px");
 
@@ -162,6 +129,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         leftRaschet.add(row4);
 
         VerticalPanel rightRaschet = new VerticalPanel();
+        rightRaschet.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         firstRowInRaschetPanel.add(rightRaschet);
 
         HorizontalPanel row5 = new HorizontalPanel();
@@ -188,18 +156,19 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         rightRaschet.add(row5);
         HorizontalPanel row6 = new HorizontalPanel();
 
-        Label error = new Label("");
+        error = new Label("");
         error.setStyleName("error_text");
         row6.add(error);
         error.setSize("400px", "80px");
 
         rightRaschet.add(row6);
 
-        Button btnRasschitat = new Button("New button");
+        btnRasschitat = new Button("New button");
         btnRasschitat.setText("Рассчитать");
         inRaschetPanel.add(btnRasschitat);
 
         HorizontalPanel bottomRashetPanel = new HorizontalPanel();
+        bottomRashetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
         Label label_5 = new Label("Дата расчета");
         bottomRashetPanel.add(label_5);
@@ -223,51 +192,17 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         inRaschetPanel.add(bottomRashetPanel);
 
         HorizontalPanel nomerData = new HorizontalPanel();
+        nomerData.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
         Label label_7 = new Label("№ договора");
         nomerData.add(label_7);
         label_7.setSize("150px", "24px");
 
-        Label dogovorExist = new Label("");
-//        nomerData.add(dogovorExist);
-        dogovorExist.setVisible(false);
-
         textBoxNomerDogovora = new TextBox();
         nomerData.add(textBoxNomerDogovora);
         textBoxNomerDogovora.setSize("155px", "20px");
-        textBoxNomerDogovora.setReadOnly(true);
-//        textBoxNomerDogovora.addKeyUpHandler(new KeyUpHandler() {
-//            @Override
-//            public void onKeyUp(KeyUpEvent keyUpEvent) {
-//                if (textBoxNomerDogovora.getText().length()==6){
-//                    greetingService.checkDogId(Integer.valueOf(textBoxNomerDogovora.getText()),
-//                            new AsyncCallback<Boolean>(){
-//
-//                                @Override
-//                                public void onFailure(Throwable throwable) {
-////                                    Window.alert("error");
-//                                    dogovorExist.setText("error");
-//                                }
-//
-//                                @Override
-//                                public void onSuccess(Boolean b) {
-//                                    if (b) {
-////                                        Window.alert("yes b="+b);
-//                                        dogovorExist.setText("yes");
-//                                        textBoxNomerDogovora.setStyleName("error");
-//                                    }
-//                                    else {
-////                                        Window.alert("no b="+b);
-//                                        dogovorExist.setText("no");
-//                                        textBoxNomerDogovora.setStyleName("noerror");
-//                                    }
-//                                }
-//                            });
-//                }else{
-//                    textBoxNomerDogovora.setStyleName("error");
-//                }
-//            }
-//        });
+//        textBoxNomerDogovora.setReadOnly(true);
+//        textBoxNomerDogovora.addKeyUpHandler();
 
         Label label_8 = new Label("Дата заключения");
         nomerData.add(label_8);
@@ -341,28 +276,28 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         container.add(label_14);
         label_14.setSize("321px", "24px");
 
-        HorizontalPanel countries = new HorizontalPanel();
+        HorizontalPanel countriesPanel = new HorizontalPanel();
 
         listBoxCountries = new ListBox();
         listBoxCountries.addItem("Россия");
         listBoxCountries.addItem("Белоруссия");
         listBoxCountries.addItem("Казахстан");
-        countries.add(listBoxCountries);
+        countriesPanel.add(listBoxCountries);
         listBoxCountries.setSize("166px", "32px");
 
         textBoxIndex = new TextBox();
-        countries.add(textBoxIndex);
+        countriesPanel.add(textBoxIndex);
         textBoxIndex.setSize("91px", "20px");
 
         textBoxRespKraiObl = new TextBox();
-        countries.add(textBoxRespKraiObl);
+        countriesPanel.add(textBoxRespKraiObl);
         textBoxRespKraiObl.setSize("228px", "20px");
 
         textBoxRayon = new TextBox();
-        countries.add(textBoxRayon);
+        countriesPanel.add(textBoxRayon);
         textBoxRayon.setSize("281px", "20px");
 
-        container.add(countries);
+        container.add(countriesPanel);
         HorizontalPanel contriesLabel = new HorizontalPanel();
 
         Label label_15 = new Label("государство");
@@ -466,113 +401,16 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         HorizontalPanel butt = new HorizontalPanel();
 
 //        dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
-        final Button saveButton = new Button("Сохранить");
+        saveButton = new Button("Сохранить");
         saveButton.getElement().setId("saveButton");
         butt.add(saveButton);
 
-        final Button closeButton = new Button("К списку договоров");
+        closeButton = new Button("К списку договоров");
         closeButton.getElement().setId("closeButton");
         butt.add(closeButton);
 
         container.add(butt);
 //        openDialogBox.setWidget(openAbsolutePanel);
-
-        init();
-
-        // Add a handler to close the DialogBox
-        closeButton.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-//                openDialogBox.hide();
-            }
-        });
-
-        //Кнопка Рассчитать
-        btnRasschitat.addClickHandler(new ClickHandler() {
-            public void onClick(ClickEvent event) {
-
-                Integer strSum = 0;
-                Double koTH = 0.0, koGP = 0.0, koPL = 0.0;
-                String errString = "";
-
-                if (!isInteger(strSumma.getText())) {
-                    errString += "Страховая сумма должна быть целым числом. ";
-                } else {
-                    strSum = Integer.valueOf(strSumma.getText());
-                }
-
-                if (Objects.equals(comboBoxTipNedvizhimosti.getSelectedItemText(), "")) {
-                    errString += "Тип недвижимости должен быть выбран. ";
-                } else {
-                    switch (comboBoxTipNedvizhimosti.getSelectedItemText()) {
-                        case "Квартира":
-                            koTH = 1.7;
-                            break;
-                        case "Дом":
-                            koTH = 1.5;
-                            break;
-                        default:
-                            koTH = 1.3;
-                    }
-                }
-
-                if (!isInteger(textBoxGodPostroiki.getText()) || textBoxGodPostroiki.getText().length() != 4) {
-                    errString += "Введите год постройки (4 цифры). ";
-                } else {
-                    if (Integer.valueOf(textBoxGodPostroiki.getText())>Integer.valueOf(yearFormat.format(today))) {
-                        errString += "Дом еще не построен. ";
-                    }else{
-                        if (Integer.valueOf(textBoxGodPostroiki.getText()) < 2000) {
-                            koGP = 1.3;
-                        } else {
-                            if (Integer.valueOf(textBoxGodPostroiki.getText()) < 2014) {
-                                koGP = 1.6;
-                            } else {
-                                koGP = 2.0;
-                            }
-                        }
-                    }
-                }
-
-                if (!isNumeric(textBoxPloshadb.getText())) {
-                    errString += "Введите правильно площадь. ";
-                } else {
-                    if (Double.valueOf(textBoxPloshadb.getText()) < 50) {
-                        koPL = 1.2;
-                    } else {
-                        if (Double.valueOf(textBoxPloshadb.getText()) < 100) {
-                            koPL = 1.5;
-                        } else {
-                            koPL = 2.0;
-                        }
-                    }
-                }
-
-                if (dateBoxStart.getValue().getTime() - today.getTime() < -1000*60*60*24){
-                    errString += "Дата начала договора не может быть меньше текущей даты. ";
-                }
-
-                if (dateBoxEnd.getValue().getTime() - dateBoxStart.getValue().getTime() < 0){
-                    errString += "Дата окончания договора не может быть меньше даты начала. ";
-                }
-
-                if (TimeUnit.DAYS.convert(
-                        dateBoxEnd.getValue().getTime() - dateBoxStart.getValue().getTime(),
-                        TimeUnit.MILLISECONDS)>365){
-                    errString += "Договор не может действовать дольше года. ";
-                }
-
-                error.setText(errString);
-
-                if (errString.equals("")) {
-                    dateBoxDataRascheta.setValue(today);
-                    //Страховая премия = (Страховая сумма / кол-во дней) * Коэф.ТН * Коэф.ГП * Коэф.Пл
-                    double prem = ((int) (strSum * koTH * koGP * koPL * 100 /TimeUnit.DAYS.convert(
-                                    dateBoxEnd.getValue().getTime() - dateBoxStart.getValue().getTime(),
-                                    TimeUnit.MILLISECONDS)))/100.0;
-                    textBoxPremiya.setText(String.valueOf(prem));
-                }
-            }
-        });
 
         ViborClienta viborClienta = new ViborClienta(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
         buttonVibratb.addClickHandler(viborClienta);
@@ -580,70 +418,28 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         ChangeClient changeClient = new ChangeClient(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
         buttonChange.addClickHandler(changeClient);
 
-        saveButton.addClickHandler(new ClickHandler() {
-            @Override
-            public void onClick(ClickEvent clickEvent) {
-
-                AddressOb addressOb = new AddressOb(listBoxCountries.getSelectedItemText(),textBoxIndex.getText(),
-                        textBoxRespKraiObl.getText(),textBoxRayon.getText(),textBoxNaselPunkt.getText(),
-                        textBoxStreet.getText(),Integer.valueOf(textBoxDom.getText()),textBoxKorpus.getText(),
-                        textBoxStroenie.getText(),Integer.valueOf(textBoxKvartira.getText()),
-                        textAreaComment.getText());
-                Dogovor dogovor = new Dogovor();
-                dogovor.setId(Integer.valueOf(textBoxNomerDogovora.getText()));
-                dogovor.setDataZakl(dateBoxDataZakluchenDogovora.getValue());
-                dogovor.setStrahovatel(strahovatel);
-                dogovor.setAddressOb(addressOb);
-                dogovor.setStart(dateBoxStart.getValue());
-                dogovor.setEnd(dateBoxEnd.getValue());
-                dogovor.setStrSumma(Integer.valueOf(strSumma.getText()));
-                dogovor.setType(comboBoxTipNedvizhimosti.getSelectedItemText());
-                dogovor.setYear(textBoxGodPostroiki.getText());
-                dogovor.setSquair(textBoxPloshadb.getText());
-                dogovor.setPremiya(textBoxPremiya.getText());
-                dogovor.setDateRasheta(dateBoxDataRascheta.getValue());
-
-                if (dogovorExist.getText().equals("no")){
-                    greetingService.createDogovor(dogovor, new AsyncCallback<Boolean>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Window.alert("Не сохранено");
-                        }
-
-                        @Override
-                        public void onSuccess(Boolean aBoolean) {
-//                            Window.alert("Cохранено");
-                            Mytask.list.add(dogovor);
-//                            openDialogBox.hide();
-                        }
-                    });
-                }
-
-                if (dogovorExist.getText().equals("yes")){
-//                    greetingService.updateDogovor()
-                }
-            }
-        });
+//        saveButton.addClickHandler();
     }
 
-    private static boolean isNumeric(String str) {
-        try {
-            double d = Double.parseDouble(str);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
+    @Override
+    public HasClickHandlers closeButtonHandler() {
+        return closeButton;
     }
 
-    private static boolean isInteger(String str) {
-        try {
-            double d = Double.parseDouble(str);
-            if (d % 1 == 0) {
-                return true;
-            }
-        } catch (NumberFormatException ignored) {
-        }
-        return false;
+    //Кнопка Рассчитать
+    @Override
+    public HasClickHandlers raschetButtonHandler() {
+        return btnRasschitat;
+    }
+
+    @Override
+    public HasClickHandlers saveButtonHandler() {
+        return saveButton;
+    }
+
+    @Override
+    public HasKeyUpHandlers numberKeyUpHandler() {
+        return textBoxNomerDogovora;
     }
 
     @Override
@@ -651,6 +447,10 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         return container;
     }
 
+    @Override
+    public DogovorView getViewInstance() {
+        return this;
+    }
 
     @Override
     public void add(Widget w) {
@@ -672,4 +472,163 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display {
         return container.remove(w);
     }
 
+    public DialogBox getOpenDialogBox() {
+        return openDialogBox;
+    }
+
+    public TextBox getStrSumma() {
+        return strSumma;
+    }
+
+    public TextBox getTextBoxGodPostroiki() {
+        return textBoxGodPostroiki;
+    }
+
+    public TextBox getTextBoxPloshadb() {
+        return textBoxPloshadb;
+    }
+
+    public ListBox getComboBoxTipNedvizhimosti() {
+        return comboBoxTipNedvizhimosti;
+    }
+
+    public DateBox getDateBoxStart() {
+        return dateBoxStart;
+    }
+
+    public DateBox getDateBoxEnd() {
+        return dateBoxEnd;
+    }
+
+    public TextBox getTextBoxPremiya() {
+        return textBoxPremiya;
+    }
+
+    public DateBox getDateBoxDataRascheta() {
+        return dateBoxDataRascheta;
+    }
+
+    public TextBox getTextBoxNomerDogovora() {
+        return textBoxNomerDogovora;
+    }
+
+    public DateBox getDateBoxDataZakluchenDogovora() {
+        return dateBoxDataZakluchenDogovora;
+    }
+
+    public TextBox getTextBoxFIO() {
+        return textBoxFIO;
+    }
+
+    public DateBox getDateBoxDataRozhdeniya() {
+        return dateBoxDataRozhdeniya;
+    }
+
+    public TextBox getTextBoxPassportSeriya() {
+        return textBoxPassportSeriya;
+    }
+
+    public TextBox getTextBoxPassportNomer() {
+        return textBoxPassportNomer;
+    }
+
+    public ListBox getListBoxCountries() {
+        return listBoxCountries;
+    }
+
+    public TextBox getTextBoxIndex() {
+        return textBoxIndex;
+    }
+
+    public TextBox getTextBoxRespKraiObl() {
+        return textBoxRespKraiObl;
+    }
+
+    public TextBox getTextBoxRayon() {
+        return textBoxRayon;
+    }
+
+    public TextBox getTextBoxNaselPunkt() {
+        return textBoxNaselPunkt;
+    }
+
+    public TextBox getTextBoxStreet() {
+        return textBoxStreet;
+    }
+
+    public TextBox getTextBoxDom() {
+        return textBoxDom;
+    }
+
+    public TextBox getTextBoxKorpus() {
+        return textBoxKorpus;
+    }
+
+    public TextBox getTextBoxStroenie() {
+        return textBoxStroenie;
+    }
+
+    public TextBox getTextBoxKvartira() {
+        return textBoxKvartira;
+    }
+
+    public TextArea getTextAreaComment() {
+        return textAreaComment;
+    }
+
+    public Button getSaveButton() {
+        return saveButton;
+    }
+
+    public Button getCloseButton() {
+        return closeButton;
+    }
+
+    public Label getError() {
+        return error;
+    }
+
+    public Button getBtnRasschitat() {
+        return btnRasschitat;
+    }
+
+    @Override
+    public void onClick(ClickEvent clickEvent) {
+
+        strSumma.setText(existDogovor.getStrSumma().toString());
+        textBoxGodPostroiki.setText(existDogovor.getYear());
+        textBoxPloshadb.setText(existDogovor.getSquair());
+        comboBoxTipNedvizhimosti.clear();
+        comboBoxTipNedvizhimosti.addItem(existDogovor.getType());
+        for (String s : listNedvizhimosti) {
+            comboBoxTipNedvizhimosti.addItem(s);
+        }
+        dateBoxStart.setValue(existDogovor.getStart());
+        dateBoxEnd.setValue(existDogovor.getEnd());
+        textBoxPremiya.setText(existDogovor.getPremiya());
+        dateBoxDataRascheta.setValue(existDogovor.getDateRasheta());
+        textBoxNomerDogovora.setText(existDogovor.getId().toString());
+        dateBoxDataZakluchenDogovora.setValue(existDogovor.getDataZakl());
+        textBoxFIO.setText(existDogovor.getStrahovatel().getFullName());
+        dateBoxDataRozhdeniya.setValue(existDogovor.getStrahovatel().getBirth());
+        textBoxPassportSeriya.setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
+        textBoxPassportNomer.setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
+//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
+        listBoxCountries.clear();
+        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
+        for (String s : countries) {
+            listBoxCountries.addItem(s);
+        }
+        textBoxIndex.setText(existDogovor.getAddressOb().getIndex());
+        textBoxRespKraiObl.setText(existDogovor.getAddressOb().getKrai());
+        textBoxRayon.setText(existDogovor.getAddressOb().getDistrict());
+        textBoxNaselPunkt.setText(existDogovor.getAddressOb().getTown());
+        textBoxStreet.setText(existDogovor.getAddressOb().getStreet());
+        textBoxDom.setText(existDogovor.getAddressOb().getHome().toString());
+        textBoxKorpus.setText(existDogovor.getAddressOb().getKorpus());
+        textBoxStroenie.setText(existDogovor.getAddressOb().getStroenie());
+        textBoxKvartira.setText(existDogovor.getAddressOb().getFlat().toString());
+        textAreaComment.setText(existDogovor.getAddressOb().getComment());
+        strahovatel = existDogovor.getStrahovatel();
+    }
 }

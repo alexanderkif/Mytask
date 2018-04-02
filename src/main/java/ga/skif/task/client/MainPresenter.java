@@ -2,11 +2,10 @@ package ga.skif.task.client;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -20,12 +19,12 @@ public class MainPresenter {
     private HasWidgets container;
 
     public interface Display{
-        void setOpenButtonHandler(ClickHandler openHandler);
-        void setCreateButtonHandler(ClickHandler clickHandler);
-        void setSelectionModelCellTable(SingleSelectionModel<Dogovor> dogovorSelectionModel);
+        HasClickHandlers setOpenButtonHandler();
+        HasClickHandlers setCreateButtonHandler();
+        SelectionChangeEvent.HasSelectionChangedHandlers setSelectionModelCellTable();
         void setRowDataCellTable(List<Dogovor> list);
         Widget asWidget();
-//        MainView getViewInstance();
+        MainView getViewInstance();
     }
 
     final Display display;
@@ -39,17 +38,18 @@ public class MainPresenter {
 
     public void init(){
 //        CreateDogovor handler = new CreateDogovor();
-        display.setCreateButtonHandler(new ClickHandler() {
+        display.setCreateButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 existDogovor = new Dogovor();
                 DogovorPresenter dogovorPresenter = new DogovorPresenter(new DogovorView(), eventBus);
                 dogovorPresenter.go(container);
+//                eventBus.fireEvent(new CreateButtonEvent());
             }
         });
 
 //        OpenDogovor handler2 = new OpenDogovor();
-        display.setOpenButtonHandler(new ClickHandler() {
+        display.setOpenButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 existDogovor = dogovorSelectionModel.getSelectedObject();
@@ -71,8 +71,7 @@ public class MainPresenter {
             }
         });
 
-        display.setSelectionModelCellTable(dogovorSelectionModel);
-        dogovorSelectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        display.setSelectionModelCellTable().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
                 existDogovor = dogovorSelectionModel.getSelectedObject();

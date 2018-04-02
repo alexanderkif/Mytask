@@ -1,33 +1,32 @@
 package ga.skif.task.client;
 
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 
 import java.util.Iterator;
 import java.util.List;
 
+import static ga.skif.task.client.Mytask.dateFormat;
+
 public class MainView implements HasWidgets, MainPresenter.Display {
     VerticalPanel container;
     HorizontalPanel firstRowPanel;
-//    HorizontalPanel rightPanel;
-    //    Button logout;
-    Button createDogovorButton;
+    Button createButton;
     Button openDogovorButton;
     CellTable<Dogovor> cellTable;
-    private final DateTimeFormat dateFormat = DateTimeFormat.getFormat("dd.MM.yyyy");
-//    private MainView instance;
+    final SingleSelectionModel<Dogovor> dogovorSelectionModel;
 
     public MainView() {
         firstRowPanel = new HorizontalPanel();
         container = new VerticalPanel();
-        createDogovorButton = new Button("Создать договор");
+        createButton = new Button("Создать договор");
         openDogovorButton = new Button("Открыть договор");
         cellTable = new CellTable<>();
-        firstRowPanel.add(createDogovorButton);
+        firstRowPanel.add(createButton);
         firstRowPanel.add(openDogovorButton);
         container.add(firstRowPanel);
         container.add(cellTable);
@@ -68,6 +67,9 @@ public class MainView implements HasWidgets, MainPresenter.Display {
         };
         cellTable.addColumn(srokColumn, "Срок действия");
 
+        dogovorSelectionModel = new SingleSelectionModel<>();
+        cellTable.setSelectionModel(dogovorSelectionModel);
+
 //        cellTable.setRowDataCellTable(list);
     }
 
@@ -76,6 +78,10 @@ public class MainView implements HasWidgets, MainPresenter.Display {
         return container;
     }
 
+    @Override
+    public MainView getViewInstance() {
+        return this;
+    }
 
     @Override
     public void add(Widget w) {
@@ -98,18 +104,18 @@ public class MainView implements HasWidgets, MainPresenter.Display {
     }
 
     @Override
-    public void setOpenButtonHandler(ClickHandler openHandler) {
-        openDogovorButton.addClickHandler(openHandler);
+    public HasClickHandlers setOpenButtonHandler() {
+        return openDogovorButton;
     }
 
     @Override
-    public void setCreateButtonHandler(ClickHandler createHandler) {
-        createDogovorButton.addClickHandler(createHandler);
+    public HasClickHandlers setCreateButtonHandler() {
+        return createButton;
     }
 
     @Override
-    public void setSelectionModelCellTable(SingleSelectionModel<Dogovor> dogovorSelectionModel) {
-        cellTable.setSelectionModel(dogovorSelectionModel);
+    public SelectionChangeEvent.HasSelectionChangedHandlers setSelectionModelCellTable() {
+        return dogovorSelectionModel;
     }
 
     @Override

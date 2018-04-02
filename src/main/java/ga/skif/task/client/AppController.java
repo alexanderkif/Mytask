@@ -27,7 +27,8 @@ public class AppController {
 //            }
 //        });
 
-//        eventBus.addHandler(CreateDogovorEvent.TYPE, new CreateDogovorEventHandler(){
+
+//        eventBus.addHandler(CreateButtonEvent.TYPE, new CreateDogovorEventHandler(){
 //            @Override
 //            public void onCreate(CreateDogovorEvent event) {
 //                mainPresenter.go(RootPanel.get());
