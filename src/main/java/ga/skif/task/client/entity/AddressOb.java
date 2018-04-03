@@ -1,4 +1,4 @@
-package ga.skif.task.client;
+package ga.skif.task.client.entity;
 
 import com.em.validation.client.constraints.NotEmpty;
 

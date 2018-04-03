@@ -1,6 +1,5 @@
 package ga.skif.task.client;
 
-import ga.skif.task.shared.FieldVerifier;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -22,12 +21,12 @@ public class MytaskTest extends GWTTestCase {
    * Tests the FieldVerifier.
    */
   public void testFieldVerifier() {
-    assertFalse(FieldVerifier.isValidName(null));
-    assertFalse(FieldVerifier.isValidName(""));
-    assertFalse(FieldVerifier.isValidName("a"));
-    assertFalse(FieldVerifier.isValidName("ab"));
-    assertFalse(FieldVerifier.isValidName("abc"));
-    assertTrue(FieldVerifier.isValidName("abcd"));
+//    assertFalse(FieldVerifier.isValidName(null));
+//    assertFalse(FieldVerifier.isValidName(""));
+//    assertFalse(FieldVerifier.isValidName("a"));
+//    assertFalse(FieldVerifier.isValidName("ab"));
+//    assertFalse(FieldVerifier.isValidName("abc"));
+//    assertTrue(FieldVerifier.isValidName("abcd"));
   }
 
   /**

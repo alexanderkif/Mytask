@@ -10,8 +10,9 @@ h1 {
   text-align: center;
 }
 
-.label {
+.gwt-label-dog {
     text-align: right;
+    padding: 10px;
 }
 
 .sendButton {
@@ -51,6 +52,8 @@ h1 {
 
 .gwt-Label-big {
     font-size: 20px;
+    text-align: left;
+    padding: 10px;
 }
 
 .gwt-Label-mini {

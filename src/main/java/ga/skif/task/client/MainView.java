@@ -6,6 +6,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import ga.skif.task.client.entity.Dogovor;
 
 import java.util.Iterator;
 import java.util.List;
@@ -16,7 +17,7 @@ public class MainView implements HasWidgets, MainPresenter.Display {
     VerticalPanel container;
     HorizontalPanel firstRowPanel;
     Button createButton;
-    Button openDogovorButton;
+    Button openButton;
     CellTable<Dogovor> cellTable;
     final SingleSelectionModel<Dogovor> dogovorSelectionModel;
 
@@ -24,10 +25,10 @@ public class MainView implements HasWidgets, MainPresenter.Display {
         firstRowPanel = new HorizontalPanel();
         container = new VerticalPanel();
         createButton = new Button("Создать договор");
-        openDogovorButton = new Button("Открыть договор");
+        openButton = new Button("Открыть договор");
         cellTable = new CellTable<>();
         firstRowPanel.add(createButton);
-        firstRowPanel.add(openDogovorButton);
+        firstRowPanel.add(openButton);
         container.add(firstRowPanel);
         container.add(cellTable);
         TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
@@ -105,7 +106,7 @@ public class MainView implements HasWidgets, MainPresenter.Display {
 
     @Override
     public HasClickHandlers setOpenButtonHandler() {
-        return openDogovorButton;
+        return openButton;
     }
 
     @Override

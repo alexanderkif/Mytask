@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import ga.skif.task.client.entity.Dogovor;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MainPresenter {
 
     final Display display;
     final HandlerManager eventBus;
-    final SingleSelectionModel<Dogovor> dogovorSelectionModel = new SingleSelectionModel<>();
+//    SingleSelectionModel<Dogovor> dogovorSelectionModel = new SingleSelectionModel<>();
 
     public MainPresenter(Display display, HandlerManager eventBus){
         this.display = display;
@@ -42,8 +43,9 @@ public class MainPresenter {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 existDogovor = new Dogovor();
-                DogovorPresenter dogovorPresenter = new DogovorPresenter(new DogovorView(), eventBus);
-                dogovorPresenter.go(container);
+//                DogovorPresenter dogovorPresenter =
+                        new DogovorPresenter(new DogovorView(), eventBus);
+//                dogovorPresenter.go(container);
 //                eventBus.fireEvent(new CreateButtonEvent());
             }
         });
@@ -52,9 +54,10 @@ public class MainPresenter {
         display.setOpenButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                existDogovor = dogovorSelectionModel.getSelectedObject();
-                DogovorPresenter dogovorPresenter = new DogovorPresenter(new DogovorView(), eventBus);
-                dogovorPresenter.go(container);
+                existDogovor = ((SingleSelectionModel<Dogovor>) display.setSelectionModelCellTable()).getSelectedObject();
+//                DogovorPresenter dogovorPresenter =
+                        new DogovorPresenter(new DogovorView(), eventBus);
+//                dogovorPresenter.go(container);
             }
         });
 
@@ -74,10 +77,12 @@ public class MainPresenter {
         display.setSelectionModelCellTable().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
-                existDogovor = dogovorSelectionModel.getSelectedObject();
+                existDogovor = ((SingleSelectionModel<Dogovor>) display.setSelectionModelCellTable()).getSelectedObject();
             }
         });
     }
+
+
 
     public void go(final HasWidgets container){
         init();

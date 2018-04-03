@@ -7,6 +7,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
+import ga.skif.task.client.entity.Strahovatel;
 
 import static ga.skif.task.client.Mytask.strahovatel;
 

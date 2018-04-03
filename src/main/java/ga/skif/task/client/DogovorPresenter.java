@@ -7,6 +7,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
+import ga.skif.task.client.entity.AddressOb;
+import ga.skif.task.client.entity.Dogovor;
 
 import java.util.Date;
 import java.util.Objects;
@@ -16,7 +18,7 @@ import static ga.skif.task.client.Mytask.*;
 
 public class DogovorPresenter {
 
-    private String dogovorExist;
+    private String dogovorInBase;
 
     public interface Display {
         HasClickHandlers closeButtonHandler();
@@ -37,10 +39,14 @@ public class DogovorPresenter {
     public DogovorPresenter(Display display, HandlerManager eventBus) {
         this.display = display;
         this.eventBus = eventBus;
+//        Window.alert("DogovorPresenter "+existDogovor.toString());
+        init();
         if (existDogovor.getId().toString().length() > 0) {
             display.getViewInstance().getTextBoxNomerDogovora().setReadOnly(true);
+            display.getViewInstance().getDateBoxDataZakluchenDogovora().setValue(existDogovor.getDataZakl());
         } else {
             display.getViewInstance().getTextBoxNomerDogovora().setReadOnly(false);
+            display.getViewInstance().getDateBoxDataZakluchenDogovora().setValue(today);
         }
     }
 
@@ -80,7 +86,7 @@ public class DogovorPresenter {
                 dogovor.setPremiya(d.getTextBoxPremiya().getText());
                 dogovor.setDateRasheta(d.getDateBoxDataRascheta().getValue());
 
-                if (dogovorExist.equals("no")) {
+                if (dogovorInBase.equals("no")) {
                     greetingService.createDogovor(dogovor, new AsyncCallback<Boolean>() {
                         @Override
                         public void onFailure(Throwable throwable) {
@@ -96,7 +102,7 @@ public class DogovorPresenter {
                     });
                 }
 
-                if (dogovorExist.equals("yes")) {
+                if (dogovorInBase.equals("yes")) {
 //                    greetingService.updateDogovor()
                 }
             }
@@ -113,18 +119,18 @@ public class DogovorPresenter {
                                 @Override
                                 public void onFailure(Throwable throwable) {
 //                                    Window.alert("error");
-                                    dogovorExist = "error";
+                                    dogovorInBase = "error";
                                 }
 
                                 @Override
                                 public void onSuccess(Boolean b) {
                                     if (b) {
 //                                        Window.alert("yes b="+b);
-                                        dogovorExist = "yes";
+                                        dogovorInBase = "yes";
                                         d.getTextBoxNomerDogovora().setStyleName("error");
                                     } else {
 //                                        Window.alert("no b="+b);
-                                        dogovorExist = "no";
+                                        dogovorInBase = "no";
                                         d.getTextBoxNomerDogovora().setStyleName("noerror");
                                     }
                                 }
@@ -224,41 +230,41 @@ public class DogovorPresenter {
             }
         });
 
-//        d.getStrSumma().setText(existDogovor.getStrSumma().toString());
-//        d.getTextBoxGodPostroiki().setText(existDogovor.getYear());
-//        d.getTextBoxPloshadb().setText(existDogovor.getSquair());
-//        d.getComboBoxTipNedvizhimosti().clear();
-//        d.getComboBoxTipNedvizhimosti().addItem(existDogovor.getType());
-//        for (String s : listNedvizhimosti) {
-//            d.getComboBoxTipNedvizhimosti().addItem(s);
-//        }
-//        d.getDateBoxStart().setValue(existDogovor.getStart());
-//        d.getDateBoxEnd().setValue(existDogovor.getEnd());
-//        d.getTextBoxPremiya().setText(existDogovor.getPremiya());
-//        d.getDateBoxDataRascheta().setValue(existDogovor.getDateRasheta());
-//        d.getTextBoxNomerDogovora().setText(existDogovor.getId().toString());
+        d.getStrSumma().setText(existDogovor.getStrSumma().toString());
+        d.getTextBoxGodPostroiki().setText(existDogovor.getYear());
+        d.getTextBoxPloshadb().setText(existDogovor.getSquair());
+        d.getComboBoxTipNedvizhimosti().clear();
+        d.getComboBoxTipNedvizhimosti().addItem(existDogovor.getType());
+        for (String s : listNedvizhimosti) {
+            d.getComboBoxTipNedvizhimosti().addItem(s);
+        }
+        d.getDateBoxStart().setValue(existDogovor.getStart());
+        d.getDateBoxEnd().setValue(existDogovor.getEnd());
+        d.getTextBoxPremiya().setText(existDogovor.getPremiya());
+        d.getDateBoxDataRascheta().setValue(existDogovor.getDateRasheta());
+        d.getTextBoxNomerDogovora().setText(existDogovor.getId().toString());
 //        d.getDateBoxDataZakluchenDogovora().setValue(existDogovor.getDataZakl());
-//        d.getTextBoxFIO().setText(existDogovor.getStrahovatel().getFullName());
-//        d.getDateBoxDataRozhdeniya().setValue(existDogovor.getStrahovatel().getBirth());
-//        d.getTextBoxPassportSeriya().setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
-//        d.getTextBoxPassportNomer().setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
-////        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
-//        d.getListBoxCountries().clear();
-//        d.getListBoxCountries().addItem(existDogovor.getAddressOb().getState());
-//        for (String s : countries) {
-//            d.getListBoxCountries().addItem(s);
-//        }
-//        d.getTextBoxIndex().setText(existDogovor.getAddressOb().getIndex());
-//        d.getTextBoxRespKraiObl().setText(existDogovor.getAddressOb().getKrai());
-//        d.getTextBoxRayon().setText(existDogovor.getAddressOb().getDistrict());
-//        d.getTextBoxNaselPunkt().setText(existDogovor.getAddressOb().getTown());
-//        d.getTextBoxStreet().setText(existDogovor.getAddressOb().getStreet());
-//        d.getTextBoxDom().setText(existDogovor.getAddressOb().getHome().toString());
-//        d.getTextBoxKorpus().setText(existDogovor.getAddressOb().getKorpus());
-//        d.getTextBoxStroenie().setText(existDogovor.getAddressOb().getStroenie());
-//        d.getTextBoxKvartira().setText(existDogovor.getAddressOb().getFlat().toString());
-//        d.getTextAreaComment().setText(existDogovor.getAddressOb().getComment());
-//        strahovatel = existDogovor.getStrahovatel();
+        d.getTextBoxFIO().setText(existDogovor.getStrahovatel().getFullName());
+        d.getDateBoxDataRozhdeniya().setValue(existDogovor.getStrahovatel().getBirth());
+        d.getTextBoxPassportSeriya().setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
+        d.getTextBoxPassportNomer().setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
+//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
+        d.getListBoxCountries().clear();
+        d.getListBoxCountries().addItem(existDogovor.getAddressOb().getState());
+        for (String s : countries) {
+            d.getListBoxCountries().addItem(s);
+        }
+        d.getTextBoxIndex().setText(existDogovor.getAddressOb().getIndex());
+        d.getTextBoxRespKraiObl().setText(existDogovor.getAddressOb().getKrai());
+        d.getTextBoxRayon().setText(existDogovor.getAddressOb().getDistrict());
+        d.getTextBoxNaselPunkt().setText(existDogovor.getAddressOb().getTown());
+        d.getTextBoxStreet().setText(existDogovor.getAddressOb().getStreet());
+        d.getTextBoxDom().setText(existDogovor.getAddressOb().getHome().toString());
+        d.getTextBoxKorpus().setText(existDogovor.getAddressOb().getKorpus());
+        d.getTextBoxStroenie().setText(existDogovor.getAddressOb().getStroenie());
+        d.getTextBoxKvartira().setText(existDogovor.getAddressOb().getFlat().toString());
+        d.getTextAreaComment().setText(existDogovor.getAddressOb().getComment());
+        strahovatel = existDogovor.getStrahovatel();
 
     }
 

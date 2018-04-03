@@ -2,6 +2,8 @@ package ga.skif.task.client;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import ga.skif.task.client.entity.Dogovor;
+import ga.skif.task.client.entity.Strahovatel;
 
 import java.util.Date;
 import java.util.List;

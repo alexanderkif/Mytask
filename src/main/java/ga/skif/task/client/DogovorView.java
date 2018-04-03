@@ -1,6 +1,7 @@
 package ga.skif.task.client;
 
 import com.google.gwt.event.dom.client.*;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 
@@ -10,8 +11,7 @@ import static ga.skif.task.client.Mytask.*;
 import static ga.skif.task.client.Mytask.existDogovor;
 import static ga.skif.task.client.Mytask.strahovatel;
 
-public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHandler {
-
+public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
     private DialogBox openDialogBox;
     private TextBox strSumma;
@@ -54,10 +54,11 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         openDialogBox.show();
 
         container = new VerticalPanel();
-        container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
+        container.setSpacing(5);
         HorizontalPanel raschetPanel = new HorizontalPanel();
         raschetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
-        raschetPanel.setBorderWidth(2);
+        raschetPanel.setBorderWidth(1);
 
         openDialogBox.setWidget(container);
 
@@ -73,11 +74,13 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         VerticalPanel inRaschetPanel = new VerticalPanel();
         inRaschetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        inRaschetPanel.setSpacing(5);
         raschetPanel.add(inRaschetPanel);
         HorizontalPanel firstRowInRaschetPanel = new HorizontalPanel();
         inRaschetPanel.add(firstRowInRaschetPanel);
         VerticalPanel leftRaschet = new VerticalPanel();
         leftRaschet.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        leftRaschet.setSpacing(5);
         firstRowInRaschetPanel.add(leftRaschet);
 
         HorizontalPanel row1 = new HorizontalPanel();
@@ -85,6 +88,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label strSummaLabel = new Label("Страховая сумма");
         row1.add(strSummaLabel);
         strSummaLabel.setSize("150px", "24px");
+        strSummaLabel.setStyleName("gwt-label-dog");
 
         strSumma = new TextBox();
         row1.add(strSumma);
@@ -96,6 +100,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label = new Label("Тип недвижимости");
         row2.add(label);
         label.setSize("150px", "24px");
+        label.setStyleName("gwt-label-dog");
 
         comboBoxTipNedvizhimosti = new ListBox();
         comboBoxTipNedvizhimosti.addItem("Квартира");
@@ -110,6 +115,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_1 = new Label("Год постройки");
         row3.add(label_1);
         label_1.setSize("150px", "24px");
+        label_1.setStyleName("gwt-label-dog");
 
         textBoxGodPostroiki = new TextBox();
         row3.add(textBoxGodPostroiki);
@@ -121,6 +127,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_2 = new Label("Площадь, кв.м");
         row4.add(label_2);
         label_2.setSize("150px", "24px");
+        label_2.setStyleName("gwt-label-dog");
 
         textBoxPloshadb = new TextBox();
         row4.add(textBoxPloshadb);
@@ -130,6 +137,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         VerticalPanel rightRaschet = new VerticalPanel();
         rightRaschet.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        rightRaschet.setSpacing(5);
         firstRowInRaschetPanel.add(rightRaschet);
 
         HorizontalPanel row5 = new HorizontalPanel();
@@ -137,6 +145,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_3 = new Label("Срок действия с");
         row5.add(label_3);
         label_3.setSize("137px", "24px");
+        label_3.setStyleName("gwt-label-dog");
 
         dateBoxStart = new DateBox();
         dateBoxStart.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -147,6 +156,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_4 = new Label("по");
         row5.add(label_4);
         label_4.setSize("32px", "24px");
+        label_4.setStyleName("gwt-label-dog");
 
         dateBoxEnd = new DateBox();
         dateBoxEnd.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -169,10 +179,12 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         HorizontalPanel bottomRashetPanel = new HorizontalPanel();
         bottomRashetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        bottomRashetPanel.setSpacing(5);
 
         Label label_5 = new Label("Дата расчета");
         bottomRashetPanel.add(label_5);
         label_5.setSize("150px", "24px");
+        label_5.setStyleName("gwt-label-dog");
 
         dateBoxDataRascheta = new DateBox();
         dateBoxDataRascheta.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -183,6 +195,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_6 = new Label("Премия");
         bottomRashetPanel.add(label_6);
         label_6.setSize("94px", "24px");
+        label_6.setStyleName("gwt-label-dog");
 
         textBoxPremiya = new TextBox();
         bottomRashetPanel.add(textBoxPremiya);
@@ -193,10 +206,12 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         HorizontalPanel nomerData = new HorizontalPanel();
         nomerData.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        nomerData.setSpacing(5);
 
         Label label_7 = new Label("№ договора");
         nomerData.add(label_7);
         label_7.setSize("150px", "24px");
+        label_7.setStyleName("gwt-label-dog");
 
         textBoxNomerDogovora = new TextBox();
         nomerData.add(textBoxNomerDogovora);
@@ -207,6 +222,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_8 = new Label("Дата заключения");
         nomerData.add(label_8);
         label_8.setSize("137px", "24px");
+        label_8.setStyleName("gwt-label-dog");
 
         dateBoxDataZakluchenDogovora = new DateBox();
         dateBoxDataZakluchenDogovora.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -222,6 +238,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         label_9.setSize("228px", "24px");
 
         HorizontalPanel fio = new HorizontalPanel();
+        fio.setSpacing(5);
 
         Button buttonVibratb = new Button("Выбрать");
         fio.add(buttonVibratb);
@@ -230,6 +247,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_10 = new Label("ФИО");
         fio.add(label_10);
         label_10.setSize("47px", "24px");
+        label_10.setStyleName("gwt-label-dog");
 
         textBoxFIO = new TextBox();
         fio.add(textBoxFIO);
@@ -243,10 +261,12 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         container.add(fio);
         HorizontalPanel dataPass = new HorizontalPanel();
+        dataPass.setSpacing(5);
 
         Label label_11 = new Label("Дата рождения");
         dataPass.add(label_11);
         label_11.setSize("137px", "24px");
+        label_11.setStyleName("gwt-label-dog");
 
         dateBoxDataRozhdeniya = new DateBox();
         dateBoxDataRozhdeniya.setFormat(new DateBox.DefaultFormat(dateFormat));
@@ -256,6 +276,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_12 = new Label("Паспорт серия");
         dataPass.add(label_12);
         label_12.setSize("121px", "24px");
+        label_12.setStyleName("gwt-label-dog");
 
         textBoxPassportSeriya = new TextBox();
         dataPass.add(textBoxPassportSeriya);
@@ -264,6 +285,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_13 = new Label("№");
         dataPass.add(label_13);
         label_13.setSize("30px", "24px");
+        label_13.setStyleName("gwt-label-dog");
 
         textBoxPassportNomer = new TextBox();
         dataPass.add(textBoxPassportNomer);
@@ -277,6 +299,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         label_14.setSize("321px", "24px");
 
         HorizontalPanel countriesPanel = new HorizontalPanel();
+        countriesPanel.setSpacing(5);
 
         listBoxCountries = new ListBox();
         listBoxCountries.addItem("Россия");
@@ -322,6 +345,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         container.add(contriesLabel);
         HorizontalPanel nas = new HorizontalPanel();
+        nas.setSpacing(5);
 
         textBoxNaselPunkt = new TextBox();
         nas.add(textBoxNaselPunkt);
@@ -392,6 +416,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
         Label label_26 = new Label("Комментарий к договору (не печатается на полисе)");
         comm.add(label_26);
         label_26.setSize("137px", "84px");
+        label_26.setStyleName("gwt-label-dog");
 
         textAreaComment = new TextArea();
         comm.add(textAreaComment);
@@ -399,6 +424,8 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
         container.add(comm);
         HorizontalPanel butt = new HorizontalPanel();
+        butt.setSpacing(5);
+        butt.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
 
 //        dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
         saveButton = new Button("Сохранить");
@@ -590,45 +617,5 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display,ClickHa
 
     public Button getBtnRasschitat() {
         return btnRasschitat;
-    }
-
-    @Override
-    public void onClick(ClickEvent clickEvent) {
-
-        strSumma.setText(existDogovor.getStrSumma().toString());
-        textBoxGodPostroiki.setText(existDogovor.getYear());
-        textBoxPloshadb.setText(existDogovor.getSquair());
-        comboBoxTipNedvizhimosti.clear();
-        comboBoxTipNedvizhimosti.addItem(existDogovor.getType());
-        for (String s : listNedvizhimosti) {
-            comboBoxTipNedvizhimosti.addItem(s);
-        }
-        dateBoxStart.setValue(existDogovor.getStart());
-        dateBoxEnd.setValue(existDogovor.getEnd());
-        textBoxPremiya.setText(existDogovor.getPremiya());
-        dateBoxDataRascheta.setValue(existDogovor.getDateRasheta());
-        textBoxNomerDogovora.setText(existDogovor.getId().toString());
-        dateBoxDataZakluchenDogovora.setValue(existDogovor.getDataZakl());
-        textBoxFIO.setText(existDogovor.getStrahovatel().getFullName());
-        dateBoxDataRozhdeniya.setValue(existDogovor.getStrahovatel().getBirth());
-        textBoxPassportSeriya.setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
-        textBoxPassportNomer.setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
-//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
-        listBoxCountries.clear();
-        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
-        for (String s : countries) {
-            listBoxCountries.addItem(s);
-        }
-        textBoxIndex.setText(existDogovor.getAddressOb().getIndex());
-        textBoxRespKraiObl.setText(existDogovor.getAddressOb().getKrai());
-        textBoxRayon.setText(existDogovor.getAddressOb().getDistrict());
-        textBoxNaselPunkt.setText(existDogovor.getAddressOb().getTown());
-        textBoxStreet.setText(existDogovor.getAddressOb().getStreet());
-        textBoxDom.setText(existDogovor.getAddressOb().getHome().toString());
-        textBoxKorpus.setText(existDogovor.getAddressOb().getKorpus());
-        textBoxStroenie.setText(existDogovor.getAddressOb().getStroenie());
-        textBoxKvartira.setText(existDogovor.getAddressOb().getFlat().toString());
-        textAreaComment.setText(existDogovor.getAddressOb().getComment());
-        strahovatel = existDogovor.getStrahovatel();
     }
 }

@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.DateBox;
+import ga.skif.task.client.entity.Strahovatel;
 
 import static java.util.Arrays.asList;
 
