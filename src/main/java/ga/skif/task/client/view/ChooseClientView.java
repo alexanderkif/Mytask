@@ -1,12 +1,16 @@
-package ga.skif.task.client;
+package ga.skif.task.client.view;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import ga.skif.task.client.entity.Strahovatel;
+import ga.skif.task.client.presenter.ChooseClientPresenter;
 
 import java.util.Iterator;
 
@@ -22,8 +26,9 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
     private Button chooseBtn;
     private Button newBtn;
     private Button closeButton;
+    final SingleSelectionModel<Strahovatel> strahSelectionModel;
 
-    ChooseClientView(){
+    public ChooseClientView(){
 
         dialogVibor.setText("Выбор клиентов");
         dialogVibor.setAnimationEnabled(true);
@@ -117,6 +122,9 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
 
         dialogVibor.setWidget(absolutePanel1);
 
+        strahSelectionModel = new SingleSelectionModel<>();
+        strahTable.setSelectionModel(strahSelectionModel);
+
     }
 
 
@@ -138,6 +146,16 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
     @Override
     public boolean remove(Widget widget) {
         return false;
+    }
+
+    @Override
+    public HasClickHandlers chooseBtnHandler() {
+        return chooseBtn;
+    }
+
+    @Override
+    public SelectionChangeEvent.HasSelectionChangedHandlers setSelectionModelCellTable() {
+        return strahSelectionModel;
     }
 
     @Override

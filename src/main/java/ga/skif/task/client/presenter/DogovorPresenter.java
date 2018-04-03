@@ -1,14 +1,18 @@
-package ga.skif.task.client;
+package ga.skif.task.client.presenter;
 
 import com.google.gwt.event.dom.client.*;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
+import ga.skif.task.client.view.ChooseClientView;
+import ga.skif.task.client.view.DogovorView;
+import ga.skif.task.client.Mytask;
 import ga.skif.task.client.entity.AddressOb;
 import ga.skif.task.client.entity.Dogovor;
+import ga.skif.task.client.event.ChooseClientEvent;
+import ga.skif.task.client.event.ChooseClientEventHandler;
 
 import java.util.Date;
 import java.util.Objects;
@@ -32,12 +36,12 @@ public class DogovorPresenter {
     }
 
     final Display display;
-    final HandlerManager eventBus;
+    final SimpleEventBus eventBus;
     final DateTimeFormat yearFormat = DateTimeFormat.getFormat("yyyy");
     final Date today = new Date();
 
 
-    public DogovorPresenter(Display display, HandlerManager eventBus) {
+    public DogovorPresenter(Display display, SimpleEventBus eventBus) {
         this.display = display;
         this.eventBus = eventBus;
 //        Window.alert("DogovorPresenter "+existDogovor.toString());
@@ -54,6 +58,26 @@ public class DogovorPresenter {
     public void init() {
 
         DogovorView d = display.getViewInstance();
+
+        d.getOpenDialogBox().center();
+
+        eventBus.addHandler(ChooseClientEvent.TYPE, new ChooseClientEventHandler(){
+           @Override
+           public void onChooseClient(ChooseClientEvent event){
+               d.getTextBoxFIO().setText(strahovatel.getFullName());
+               d.getDateBoxDataRozhdeniya().setValue(strahovatel.getBirth());
+               d.getTextBoxPassportSeriya().setText(strahovatel.getPassportSeria().toString());
+               d.getTextBoxPassportNomer().setText(strahovatel.getPassportNumber().toString());
+           }
+        });
+//
+//        bus.addHandler(GWTEvent.TYPE, new GWTEventHandler() {
+//            @Override
+//            public void onEvent(GWTEvent event) {
+//                label.setText(shape.corners());
+//            }
+//        });
+
 
 //        display.closeButtonHandler().addClickHandler(new ClickHandler() {
         d.getCloseButton().addClickHandler(new ClickHandler() {

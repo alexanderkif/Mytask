@@ -2,8 +2,9 @@ package ga.skif.task.client;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import ga.skif.task.client.service.GreetingService;
+import ga.skif.task.client.service.GreetingServiceAsync;
 
 /**
  * GWT JUnit tests must extend GWTTestCase.

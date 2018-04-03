@@ -1,15 +1,17 @@
-package ga.skif.task.client;
+package ga.skif.task.client.presenter;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import ga.skif.task.client.view.DogovorView;
+import ga.skif.task.client.view.MainView;
 import ga.skif.task.client.entity.Dogovor;
 
 import java.util.List;
@@ -29,10 +31,10 @@ public class MainPresenter {
     }
 
     final Display display;
-    final HandlerManager eventBus;
-//    SingleSelectionModel<Dogovor> dogovorSelectionModel = new SingleSelectionModel<>();
+    final SimpleEventBus eventBus;
+//    SingleSelectionModel<Dogovor> strahSelectionModel = new SingleSelectionModel<>();
 
-    public MainPresenter(Display display, HandlerManager eventBus){
+    public MainPresenter(Display display, SimpleEventBus eventBus){
         this.display = display;
         this.eventBus = eventBus;
     }
@@ -55,9 +57,8 @@ public class MainPresenter {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 existDogovor = ((SingleSelectionModel<Dogovor>) display.setSelectionModelCellTable()).getSelectedObject();
-//                DogovorPresenter dogovorPresenter =
+                if (existDogovor.getId().toString().length()>0)
                         new DogovorPresenter(new DogovorView(), eventBus);
-//                dogovorPresenter.go(container);
             }
         });
 

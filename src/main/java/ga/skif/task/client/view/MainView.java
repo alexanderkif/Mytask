@@ -1,4 +1,4 @@
-package ga.skif.task.client;
+package ga.skif.task.client.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.*;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import ga.skif.task.client.entity.Dogovor;
+import ga.skif.task.client.presenter.MainPresenter;
 
 import java.util.Iterator;
 import java.util.List;
@@ -22,14 +23,17 @@ public class MainView implements HasWidgets, MainPresenter.Display {
     final SingleSelectionModel<Dogovor> dogovorSelectionModel;
 
     public MainView() {
-        firstRowPanel = new HorizontalPanel();
         container = new VerticalPanel();
+        container.setStyleName("root");
+        firstRowPanel = new HorizontalPanel();
+        firstRowPanel.setSpacing(5);
         createButton = new Button("Создать договор");
         openButton = new Button("Открыть договор");
-        cellTable = new CellTable<>();
         firstRowPanel.add(createButton);
         firstRowPanel.add(openButton);
         container.add(firstRowPanel);
+        cellTable = new CellTable<>();
+        cellTable.setWidth("100%");
         container.add(cellTable);
         TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
             @Override

@@ -11,6 +11,8 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.DateBox;
 import ga.skif.task.client.entity.Strahovatel;
+import ga.skif.task.client.service.GreetingService;
+import ga.skif.task.client.service.GreetingServiceAsync;
 
 import static java.util.Arrays.asList;
 
@@ -35,7 +37,7 @@ public class CreateClient implements ClickHandler, KeyUpHandler {
         }
     }
 
-    CreateClient(CellTable<Strahovatel> strahTable) {
+    public CreateClient(CellTable<Strahovatel> strahTable) {
         dialogCreateClient.setText("Новый клиент");
         dialogCreateClient.setAnimationEnabled(true);
 

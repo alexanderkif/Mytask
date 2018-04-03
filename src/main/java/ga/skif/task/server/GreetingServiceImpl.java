@@ -7,7 +7,7 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import ga.skif.task.client.entity.AddressOb;
 import ga.skif.task.client.entity.Dogovor;
-import ga.skif.task.client.GreetingService;
+import ga.skif.task.client.service.GreetingService;
 import ga.skif.task.client.entity.Strahovatel;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import org.bson.Document;

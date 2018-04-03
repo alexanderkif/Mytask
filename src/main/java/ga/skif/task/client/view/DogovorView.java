@@ -1,15 +1,13 @@
-package ga.skif.task.client;
+package ga.skif.task.client.view;
 
-import com.google.gwt.event.dom.client.*;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
+import ga.skif.task.client.ChangeClient;
+import ga.skif.task.client.presenter.DogovorPresenter;
 
 import java.util.Iterator;
 
 import static ga.skif.task.client.Mytask.*;
-import static ga.skif.task.client.Mytask.existDogovor;
-import static ga.skif.task.client.Mytask.strahovatel;
 
 public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
@@ -47,13 +45,11 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
     private Button buttonChange;
     private Button buttonVibratb;
 
-    DogovorView() {
+    public DogovorView() {
 
         openDialogBox = new DialogBox();
         openDialogBox.setText("Форма ввода данных");
         openDialogBox.setAnimationEnabled(true);
-//        openDialogBox.center();
-        openDialogBox.show();
 
         container = new VerticalPanel();
         container.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -64,11 +60,6 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
         openDialogBox.setWidget(container);
 
-        Label raschetLabel = new Label("Расчет");
-        raschetLabel.setWidth("60px");
-        container.add(raschetLabel);
-        raschetLabel.setStyleName("raschetLabel");
-
         raschetPanel.setStyleName("dialogVPanel");
         container.add(raschetPanel);
 //        raschetPanel.setSize("840px", "232px");
@@ -77,6 +68,11 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
         VerticalPanel inRaschetPanel = new VerticalPanel();
         inRaschetPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
         inRaschetPanel.setSpacing(5);
+
+        Label raschetLabel = new Label("Расчет");
+        inRaschetPanel.add(raschetLabel);
+        raschetLabel.setStyleName("raschetLabel");
+
         raschetPanel.add(inRaschetPanel);
         HorizontalPanel firstRowInRaschetPanel = new HorizontalPanel();
         inRaschetPanel.add(firstRowInRaschetPanel);

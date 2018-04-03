@@ -42,12 +42,17 @@ h1 {
 
 .raschetPanel {
   border: 1px solid lightgray;
+  margin: auto;
+    margin-top: 20px;
 }
 
 .raschetLabel {
   background-color: white;
   color: dodgerblue;
   text-align: center;
+    width: 70px;
+    margin-top: -13px;
+    margin-left: -60%;
 }
 
 .gwt-Label-big {
@@ -57,7 +62,7 @@ h1 {
 }
 
 .gwt-Label-mini {
-    color: Blue;
+    color: dodgerblue;
 }
 
 textarea {
@@ -74,4 +79,9 @@ textarea {
 
 .error_text {
     color: red;
+}
+
+.root {
+    margin: auto;
+    width: 80%;
 }

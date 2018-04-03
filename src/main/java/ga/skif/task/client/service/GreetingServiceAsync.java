@@ -1,4 +1,4 @@
-package ga.skif.task.client;
+package ga.skif.task.client.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import ga.skif.task.client.entity.Dogovor;

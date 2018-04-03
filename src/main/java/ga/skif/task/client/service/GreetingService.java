@@ -1,4 +1,4 @@
-package ga.skif.task.client;
+package ga.skif.task.client.service;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;

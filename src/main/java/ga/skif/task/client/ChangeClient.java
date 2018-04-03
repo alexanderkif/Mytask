@@ -8,6 +8,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
 import ga.skif.task.client.entity.Strahovatel;
+import ga.skif.task.client.service.GreetingService;
+import ga.skif.task.client.service.GreetingServiceAsync;
 
 import static ga.skif.task.client.Mytask.strahovatel;
 
@@ -45,7 +47,7 @@ public class ChangeClient implements ClickHandler, KeyUpHandler {
         }
     }
 
-    ChangeClient(TextBox textBoxFIO1, DateBox dateBoxDataRozhdeniya1, TextBox textBoxPassportSeriya1, TextBox textBoxPassportNomer1) {
+    public ChangeClient(TextBox textBoxFIO1, DateBox dateBoxDataRozhdeniya1, TextBox textBoxPassportSeriya1, TextBox textBoxPassportNomer1) {
 
         dialogCangeClient.setText("Клиент");
         dialogCangeClient.setAnimationEnabled(true);

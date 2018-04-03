@@ -1,16 +1,17 @@
 package ga.skif.task.client;
 
-import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.RootPanel;
+import ga.skif.task.client.presenter.MainPresenter;
+import ga.skif.task.client.view.MainView;
 
 public class AppController {
-    HandlerManager eventBus;
+    SimpleEventBus eventBus;
     MainPresenter mainPresenter;
     HasWidgets container;
 
-    public AppController(HandlerManager manager){
-        this.eventBus = manager;
+    public AppController(SimpleEventBus eventBus){
+        this.eventBus = eventBus;
         mainPresenter = new MainPresenter(new MainView(), eventBus);
         bindEvents();
     }
