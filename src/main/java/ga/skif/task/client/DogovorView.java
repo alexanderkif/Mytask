@@ -44,6 +44,8 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
     private final Button closeButton;
     private Label error;
     private Button btnRasschitat;
+    private Button buttonChange;
+    private Button buttonVibratb;
 
     DogovorView() {
 
@@ -240,7 +242,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
         HorizontalPanel fio = new HorizontalPanel();
         fio.setSpacing(5);
 
-        Button buttonVibratb = new Button("Выбрать");
+        buttonVibratb = new Button("Выбрать");
         fio.add(buttonVibratb);
         buttonVibratb.setSize("75px", "28px");
 
@@ -254,7 +256,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
         textBoxFIO.setSize("559px", "20px");
         textBoxFIO.setReadOnly(true);
 
-        Button buttonChange = new Button("Изменить");
+        buttonChange = new Button("Изменить");
         buttonChange.setText("Изменить");
         fio.add(buttonChange);
         buttonChange.setSize("84px", "28px");
@@ -439,8 +441,8 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
         container.add(butt);
 //        openDialogBox.setWidget(openAbsolutePanel);
 
-        ViborClienta viborClienta = new ViborClienta(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
-        buttonVibratb.addClickHandler(viborClienta);
+//        ViborClienta viborClienta = new ViborClienta(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
+//        buttonVibratb.addClickHandler(viborClienta);
 
         ChangeClient changeClient = new ChangeClient(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
         buttonChange.addClickHandler(changeClient);
@@ -448,26 +450,31 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 //        saveButton.addClickHandler();
     }
 
-    @Override
-    public HasClickHandlers closeButtonHandler() {
-        return closeButton;
-    }
-
-    //Кнопка Рассчитать
-    @Override
-    public HasClickHandlers raschetButtonHandler() {
-        return btnRasschitat;
-    }
-
-    @Override
-    public HasClickHandlers saveButtonHandler() {
-        return saveButton;
-    }
-
-    @Override
-    public HasKeyUpHandlers numberKeyUpHandler() {
-        return textBoxNomerDogovora;
-    }
+//    @Override
+//    public HasClickHandlers closeButtonHandler() {
+//        return closeButton;
+//    }
+//
+//    //Кнопка Рассчитать
+//    @Override
+//    public HasClickHandlers raschetButtonHandler() {
+//        return btnRasschitat;
+//    }
+//
+//    @Override
+//    public HasClickHandlers saveButtonHandler() {
+//        return saveButton;
+//    }
+//
+//    @Override
+//    public HasKeyUpHandlers numberKeyUpHandler() {
+//        return textBoxNomerDogovora;
+//    }
+//
+//    @Override
+//    public HasClickHandlers chooseClientHandler() {
+//        return buttonVibratb;
+//    }
 
     @Override
     public Widget asWidget() {
@@ -617,5 +624,13 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
     public Button getBtnRasschitat() {
         return btnRasschitat;
+    }
+
+    public Button getButtonChange() {
+        return buttonChange;
+    }
+
+    public Button getButtonVibratb() {
+        return buttonVibratb;
     }
 }

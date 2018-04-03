@@ -21,10 +21,11 @@ public class DogovorPresenter {
     private String dogovorInBase;
 
     public interface Display {
-        HasClickHandlers closeButtonHandler();
-        HasClickHandlers raschetButtonHandler();
-        HasClickHandlers saveButtonHandler();
-        HasKeyUpHandlers numberKeyUpHandler();
+//        HasClickHandlers closeButtonHandler();
+//        HasClickHandlers raschetButtonHandler();
+//        HasClickHandlers saveButtonHandler();
+//        HasKeyUpHandlers numberKeyUpHandler();
+//        HasClickHandlers chooseClientHandler();
 
         Widget asWidget();
         DogovorView getViewInstance();
@@ -59,6 +60,13 @@ public class DogovorPresenter {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 d.getOpenDialogBox().hide();
+            }
+        });
+
+        d.getButtonVibratb().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                new ChooseClientPresenter(new ChooseClientView(), eventBus);
             }
         });
 
@@ -288,14 +296,4 @@ public class DogovorPresenter {
         return false;
     }
 
-    public void go(final HasWidgets container) {
-        init();
-//        container.clear();
-//        container.add(display.asWidget());
-
-    }
-
-    public Display getView() {
-        return display;
-    }
 }

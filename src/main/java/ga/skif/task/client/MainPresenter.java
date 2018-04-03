@@ -82,8 +82,6 @@ public class MainPresenter {
         });
     }
 
-
-
     public void go(final HasWidgets container){
         init();
         this.container = container;
@@ -91,7 +89,4 @@ public class MainPresenter {
         container.add(display.asWidget());
     }
 
-    public Display getView(){
-        return display;
-    }
 }
