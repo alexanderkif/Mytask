@@ -33,7 +33,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     private MongoCollection<Document> dogovors = database.getCollection("dogovors");
 
     @Override
-    public List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException {
+    public List<Strahovatel> getListStrahovatels(String name, String name2, String lastname) throws IllegalArgumentException {
         List<Strahovatel> list = new ArrayList<>();
         if (name.equals("") && name2.equals("") && lastname.equals("")) {
             strahovatels.find()
@@ -49,14 +49,14 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public Strahovatel greetSearchFirstId(String id) throws IllegalArgumentException {
+    public Strahovatel getStrahovatelById(String id) throws IllegalArgumentException {
         Document doc = strahovatels.find(eq("_id", new ObjectId(id)))
                 .first();
         return toStrahovatel(doc);
     }
 
     @Override
-    public Strahovatel greetSearchFirst(String name, String name2, String lastname, Date birth) throws IllegalArgumentException {
+    public Strahovatel getStrahovatelByFioAndBirth(String name, String name2, String lastname, Date birth) throws IllegalArgumentException {
         Document doc = strahovatels.find(and(
                 eq("firstName", name),
                 eq("firstName2", name2),
@@ -67,7 +67,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException {
+    public Boolean saveStrahovatel(Strahovatel strahovatel) throws IllegalArgumentException {
         try {
             strahovatels.insertOne(toDocument(strahovatel));
         } catch (Exception e) {
@@ -78,7 +78,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
 
     @Override
-    public Boolean greetUpdate(String id, Strahovatel strah) throws IllegalArgumentException {
+    public Boolean updateStrahovatelById(String id, Strahovatel strah) throws IllegalArgumentException {
         try {
             strahovatels.updateOne(eq("_id", new ObjectId(id)), new Document("$set",
                     new Document("lastName", strah.getLastName())

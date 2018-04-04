@@ -1,8 +1,9 @@
 package ga.skif.task.client.view;
 
+import com.google.gwt.event.dom.client.HasClickHandlers;
+import com.google.gwt.event.dom.client.HasKeyUpHandlers;
 import com.google.gwt.user.client.ui.*;
 import com.google.gwt.user.datepicker.client.DateBox;
-import ga.skif.task.client.ChangeClient;
 import ga.skif.task.client.presenter.DogovorPresenter;
 
 import java.util.Iterator;
@@ -320,26 +321,28 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
         container.add(countriesPanel);
         HorizontalPanel contriesLabel = new HorizontalPanel();
+        contriesLabel.setSpacing(5);
+        contriesLabel.setStyleName("countrieslabels");
 
         Label label_15 = new Label("государство");
         label_15.setStyleName("gwt-Label-mini");
         contriesLabel.add(label_15);
-        label_15.setSize("107px", "16px");
+        label_15.setSize("166px", "16px");
 
         Label label_16 = new Label("индекс");
         label_16.setStyleName("gwt-Label-mini");
         contriesLabel.add(label_16);
-        label_16.setSize("75px", "16px");
+        label_16.setSize("91px", "16px");
 
         Label label_17 = new Label("республика, край, область");
         label_17.setStyleName("gwt-Label-mini");
         contriesLabel.add(label_17);
-        label_17.setSize("193px", "16px");
+        label_17.setSize("228px", "16px");
 
         Label label_18 = new Label("район");
         label_18.setStyleName("gwt-Label-mini");
         contriesLabel.add(label_18);
-        label_18.setSize("107px", "16px");
+        label_18.setSize("281px", "16px");
 
         container.add(contriesLabel);
         HorizontalPanel nas = new HorizontalPanel();
@@ -371,36 +374,38 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
         container.add(nas);
         HorizontalPanel nasLabel = new HorizontalPanel();
+        nasLabel.setSpacing(5);
+        nasLabel.setStyleName("countrieslabels");
 
         Label label_19 = new Label("населенный пункт");
         label_19.setStyleName("gwt-Label-mini");
         nasLabel.add(label_19);
-        label_19.setSize("137px", "16px");
+        label_19.setSize("155px", "16px");
 
         Label label_20 = new Label("улица");
         label_20.setStyleName("gwt-Label-mini");
         nasLabel.add(label_20);
-        label_20.setSize("107px", "16px");
+        label_20.setSize("281px", "16px");
 
         Label label_21 = new Label("дом");
         label_21.setStyleName("gwt-Label-mini");
         nasLabel.add(label_21);
-        label_21.setSize("55px", "16px");
+        label_21.setSize("74px", "16px");
 
         Label label_22 = new Label("корпус");
         label_22.setStyleName("gwt-Label-mini");
         nasLabel.add(label_22);
-        label_22.setSize("68px", "16px");
+        label_22.setSize("74px", "16px");
 
         Label label_23 = new Label("строение");
         label_23.setStyleName("gwt-Label-mini");
         nasLabel.add(label_23);
-        label_23.setSize("68px", "16px");
+        label_23.setSize("65px", "16px");
 
         Label label_24 = new Label("квартира");
         label_24.setStyleName("gwt-Label-mini");
         nasLabel.add(label_24);
-        label_24.setSize("68px", "16px");
+        label_24.setSize("74px", "16px");
 
         container.add(nasLabel);
 
@@ -424,6 +429,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
         HorizontalPanel butt = new HorizontalPanel();
         butt.setSpacing(5);
         butt.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        butt.setStyleName("buttpanel");
 
 //        dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
         saveButton = new Button("Сохранить");
@@ -440,37 +446,42 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 //        ViborClienta viborClienta = new ViborClienta(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
 //        buttonVibratb.addClickHandler(viborClienta);
 
-        ChangeClient changeClient = new ChangeClient(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
-        buttonChange.addClickHandler(changeClient);
+//        ChangeClient changeClient = new ChangeClient(textBoxFIO,dateBoxDataRozhdeniya,textBoxPassportSeriya,textBoxPassportNomer);
+//        buttonChange.addClickHandler(changeClient);
 
 //        saveButton.addClickHandler();
     }
 
-//    @Override
-//    public HasClickHandlers closeButtonHandler() {
-//        return closeButton;
-//    }
-//
-//    //Кнопка Рассчитать
-//    @Override
-//    public HasClickHandlers raschetButtonHandler() {
-//        return btnRasschitat;
-//    }
-//
-//    @Override
-//    public HasClickHandlers saveButtonHandler() {
-//        return saveButton;
-//    }
-//
-//    @Override
-//    public HasKeyUpHandlers numberKeyUpHandler() {
-//        return textBoxNomerDogovora;
-//    }
-//
-//    @Override
-//    public HasClickHandlers chooseClientHandler() {
-//        return buttonVibratb;
-//    }
+    @Override
+    public HasClickHandlers closeButtonHandler() {
+        return closeButton;
+    }
+
+    @Override
+    public HasClickHandlers changeClientHandler() {
+        return buttonChange;
+    }
+
+    //Кнопка Рассчитать
+    @Override
+    public HasClickHandlers raschetButtonHandler() {
+        return btnRasschitat;
+    }
+
+    @Override
+    public HasClickHandlers saveButtonHandler() {
+        return saveButton;
+    }
+
+    @Override
+    public HasKeyUpHandlers numberKeyUpHandler() {
+        return textBoxNomerDogovora;
+    }
+
+    @Override
+    public HasClickHandlers chooseClientHandler() {
+        return buttonVibratb;
+    }
 
     @Override
     public Widget asWidget() {

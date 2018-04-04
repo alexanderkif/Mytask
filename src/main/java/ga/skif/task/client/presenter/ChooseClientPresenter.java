@@ -7,8 +7,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import ga.skif.task.client.view.ClientView;
 import ga.skif.task.client.view.ChooseClientView;
-import ga.skif.task.client.CreateClient;
 import ga.skif.task.client.entity.Strahovatel;
 import ga.skif.task.client.event.ChooseClientEvent;
 
@@ -22,8 +22,9 @@ public class ChooseClientPresenter {
     public interface Display {
         HasClickHandlers chooseBtnHandler();
         SelectionChangeEvent.HasSelectionChangedHandlers setSelectionModelCellTable();
-//        HasClickHandlers raschetButtonHandler();
-//        HasClickHandlers saveButtonHandler();
+        HasClickHandlers newButtonHandler();
+        HasClickHandlers closeButtonHandler();
+        HasClickHandlers searchButtonHandler();
 //        HasKeyUpHandlers numberKeyUpHandler();
 
         Widget asWidget();
@@ -39,15 +40,7 @@ public class ChooseClientPresenter {
     public ChooseClientPresenter(Display display, SimpleEventBus eventBus) {
         this.display = display;
         this.eventBus = eventBus;
-//        Window.alert("DogovorPresenter "+existDogovor.toString());
         init();
-//        if (existDogovor.getId().toString().length() > 0) {
-//            display.getViewInstance().getTextBoxNomerDogovora().setReadOnly(true);
-//            display.getViewInstance().getDateBoxDataZakluchenDogovora().setValue(existDogovor.getDataZakl());
-//        } else {
-//            display.getViewInstance().getTextBoxNomerDogovora().setReadOnly(false);
-//            display.getViewInstance().getDateBoxDataZakluchenDogovora().setValue(today);
-//        }
     }
 
     public void init() {
@@ -65,20 +58,23 @@ public class ChooseClientPresenter {
         d.getDialogVibor().center();
         d.getDataProvider().setList(asList());
 
+        Window.alert(strahovatel.toString());
+        Window.alert(existDogovor.toString());
+
 //        d.getTextBoxFamily().setText(strahovatel.getLastName());
 //        d.getTextBoxName().setText(strahovatel.getFirstName());
 //        d.getTextBoxName2().setText(strahovatel.getFirstName2());
 
-        d.getCloseButton().addClickHandler(new ClickHandler() {
+        display.closeButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 d.getDialogVibor().hide();
             }
         });
 
-        d.getSearchBtn().addClickHandler(new ClickHandler() {
+        display.searchButtonHandler().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                greetingService.greetSearch(d.getTextBoxName().getText(), d.getTextBoxName2().getText(), d.getTextBoxFamily().getText(),
+                greetingService.getListStrahovatels(d.getTextBoxName().getText(), d.getTextBoxName2().getText(), d.getTextBoxFamily().getText(),
                         new AsyncCallback<List<Strahovatel>>() {
                             @Override
                             public void onFailure(Throwable throwable) {
@@ -101,12 +97,16 @@ public class ChooseClientPresenter {
             }
         });
 
-        d.getNewBtn().addClickHandler(new CreateClient(d.getStrahTable()));
+        display.newButtonHandler().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                strahovatel = new Strahovatel("","","");
+                ((SingleSelectionModel<Strahovatel>)display.setSelectionModelCellTable()).clear();
+                new ClientPresenter(new ClientView(), eventBus);
+            }
+        });
 
-//        final SingleSelectionModel<Strahovatel> selectionModel = new SingleSelectionModel<>();
-//        d.getStrahTable().setSelectionModel(selectionModel);
-
-        d.setSelectionModelCellTable().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+        display.setSelectionModelCellTable().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
                 Strahovatel strah = ((SingleSelectionModel<Strahovatel>)display.setSelectionModelCellTable()).getSelectedObject();

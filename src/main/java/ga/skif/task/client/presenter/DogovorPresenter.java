@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
+import ga.skif.task.client.view.ClientView;
 import ga.skif.task.client.view.ChooseClientView;
 import ga.skif.task.client.view.DogovorView;
 import ga.skif.task.client.Mytask;
@@ -25,11 +26,12 @@ public class DogovorPresenter {
     private String dogovorInBase;
 
     public interface Display {
-//        HasClickHandlers closeButtonHandler();
-//        HasClickHandlers raschetButtonHandler();
-//        HasClickHandlers saveButtonHandler();
-//        HasKeyUpHandlers numberKeyUpHandler();
-//        HasClickHandlers chooseClientHandler();
+        HasClickHandlers closeButtonHandler();
+        HasClickHandlers raschetButtonHandler();
+        HasClickHandlers saveButtonHandler();
+        HasKeyUpHandlers numberKeyUpHandler();
+        HasClickHandlers chooseClientHandler();
+        HasClickHandlers changeClientHandler();
 
         Widget asWidget();
         DogovorView getViewInstance();
@@ -61,41 +63,44 @@ public class DogovorPresenter {
 
         d.getOpenDialogBox().center();
 
+        Window.alert(strahovatel.toString());
+        Window.alert(existDogovor.toString());
+
         eventBus.addHandler(ChooseClientEvent.TYPE, new ChooseClientEventHandler(){
            @Override
            public void onChooseClient(ChooseClientEvent event){
+//               TO DO update dogovor
+//               strahovatel = existDogovor.getStrahovatel();
                d.getTextBoxFIO().setText(strahovatel.getFullName());
                d.getDateBoxDataRozhdeniya().setValue(strahovatel.getBirth());
                d.getTextBoxPassportSeriya().setText(strahovatel.getPassportSeria().toString());
                d.getTextBoxPassportNomer().setText(strahovatel.getPassportNumber().toString());
+               Window.alert("ChooseClientEvent.TYPE");
            }
         });
-//
-//        bus.addHandler(GWTEvent.TYPE, new GWTEventHandler() {
-//            @Override
-//            public void onEvent(GWTEvent event) {
-//                label.setText(shape.corners());
-//            }
-//        });
 
-
-//        display.closeButtonHandler().addClickHandler(new ClickHandler() {
-        d.getCloseButton().addClickHandler(new ClickHandler() {
+        display.closeButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 d.getOpenDialogBox().hide();
             }
         });
 
-        d.getButtonVibratb().addClickHandler(new ClickHandler() {
+        display.chooseClientHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 new ChooseClientPresenter(new ChooseClientView(), eventBus);
             }
         });
 
-//        display.saveButtonHandler().addClickHandler(new ClickHandler() {
-        d.getSaveButton().addClickHandler(new ClickHandler() {
+        display.changeClientHandler().addClickHandler(new ClickHandler() {
+            @Override
+            public void onClick(ClickEvent clickEvent) {
+                new ClientPresenter(new ClientView(), eventBus);
+            }
+        });
+
+        display.saveButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
 
@@ -140,8 +145,7 @@ public class DogovorPresenter {
             }
         });
 
-//        display.numberKeyUpHandler().addKeyUpHandler(new KeyUpHandler() {
-        d.getTextBoxNomerDogovora().addKeyUpHandler(new KeyUpHandler() {
+        display.numberKeyUpHandler().addKeyUpHandler(new KeyUpHandler() {
             @Override
             public void onKeyUp(KeyUpEvent keyUpEvent) {
                 if (d.getTextBoxNomerDogovora().getText().length() == 6) {
@@ -173,8 +177,7 @@ public class DogovorPresenter {
             }
         });
 
-//        display.raschetButtonHandler().addClickHandler(new ClickHandler() {
-        d.getBtnRasschitat().addClickHandler(new ClickHandler() {
+        display.raschetButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
 

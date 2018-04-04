@@ -159,6 +159,21 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
     }
 
     @Override
+    public HasClickHandlers newButtonHandler() {
+        return newBtn;
+    }
+
+    @Override
+    public HasClickHandlers closeButtonHandler() {
+        return closeButton;
+    }
+
+    @Override
+    public HasClickHandlers searchButtonHandler() {
+        return searchBtn;
+    }
+
+    @Override
     public Widget asWidget() {
         return null;
     }
@@ -188,21 +203,21 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
         return textBoxName2;
     }
 
-    public Button getSearchBtn() {
-        return searchBtn;
-    }
+//    public Button getSearchBtn() {
+//        return searchBtn;
+//    }
 
-    public Button getChooseBtn() {
-        return chooseBtn;
-    }
-
-    public Button getNewBtn() {
-        return newBtn;
-    }
-
-    public Button getCloseButton() {
-        return closeButton;
-    }
+//    public Button getChooseBtn() {
+//        return chooseBtn;
+//    }
+//
+//    public Button getNewBtn() {
+//        return newBtn;
+//    }
+//
+//    public Button getCloseButton() {
+//        return closeButton;
+//    }
 
     public DialogBox getDialogVibor() {
         return dialogVibor;

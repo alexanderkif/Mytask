@@ -14,15 +14,15 @@ import java.util.List;
 @RemoteServiceRelativePath("greet")
 public interface GreetingService extends RemoteService {
 
-    List<Strahovatel> greetSearch(String name, String name2, String lastname) throws IllegalArgumentException;
+    List<Strahovatel> getListStrahovatels(String name, String name2, String lastname) throws IllegalArgumentException;
 
-    Strahovatel greetSearchFirst(String name, String name2, String lastname, Date birth) throws IllegalArgumentException;
+    Strahovatel getStrahovatelByFioAndBirth(String name, String name2, String lastname, Date birth) throws IllegalArgumentException;
 
-    Strahovatel greetSearchFirstId(String id) throws IllegalArgumentException;
+    Strahovatel getStrahovatelById(String id) throws IllegalArgumentException;
 
-    Boolean greetSave(Strahovatel strahovatel) throws IllegalArgumentException;
+    Boolean saveStrahovatel(Strahovatel strahovatel) throws IllegalArgumentException;
 
-    Boolean greetUpdate(String id, Strahovatel strahovatel) throws IllegalArgumentException;
+    Boolean updateStrahovatelById(String id, Strahovatel strahovatel) throws IllegalArgumentException;
 
     boolean checkDogId(Integer id) throws IllegalArgumentException;
 
