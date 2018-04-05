@@ -30,5 +30,5 @@ public interface GreetingService extends RemoteService {
 
     List<Dogovor> findDogovor(Integer id) throws IllegalArgumentException;
 
-    boolean updateDogovor(Integer id, Dogovor dogovor) throws IllegalArgumentException;
+    boolean updateDogovor(Dogovor dogovor) throws IllegalArgumentException;
 }

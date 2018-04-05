@@ -66,7 +66,7 @@ public class ClientPresenter {
 //                String id = strahovatel[0].getId();
                 Strahovatel strah = new Strahovatel();
                 strah.setLastName(d.getTextBoxFamily1().getText());
-                strah.setFirstName(d.getTextBoxName21().getText());
+                strah.setFirstName(d.getTextBoxName1().getText());
                 strah.setFirstName2(d.getTextBoxName21().getText());
                 strah.setBirth(d.getDateBoxDataRozhdeniya2().getValue());
                 strah.setPassportSeria(Integer.valueOf(d.getTextBoxPassportSeriya2().getText()));
@@ -106,6 +106,7 @@ public class ClientPresenter {
                         }
                         @Override
                         public void onSuccess(Boolean aBoolean) {
+                            strahovatel = strah;
                             d.getDialogClient().hide();
                         }
                     });

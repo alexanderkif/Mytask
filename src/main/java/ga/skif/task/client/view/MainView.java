@@ -2,11 +2,14 @@ package ga.skif.task.client.view;
 
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.user.cellview.client.CellTable;
+import com.google.gwt.user.cellview.client.SimplePager;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.*;
+import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import ga.skif.task.client.entity.Dogovor;
+import ga.skif.task.client.entity.Strahovatel;
 import ga.skif.task.client.presenter.MainPresenter;
 
 import java.util.Iterator;
@@ -20,6 +23,7 @@ public class MainView implements HasWidgets, MainPresenter.Display {
     Button createButton;
     Button openButton;
     CellTable<Dogovor> cellTable;
+    private ListDataProvider<Dogovor> dataProvider = new ListDataProvider<Dogovor>();
     final SingleSelectionModel<Dogovor> dogovorSelectionModel;
 
     public MainView() {
@@ -35,6 +39,13 @@ public class MainView implements HasWidgets, MainPresenter.Display {
         cellTable = new CellTable<>();
         cellTable.setWidth("100%");
         container.add(cellTable);
+
+        dataProvider.addDataDisplay(cellTable);
+        SimplePager pager = new SimplePager();
+        container.add(pager);
+        pager.setDisplay(cellTable);
+        cellTable.setPageSize(20);
+
         TextColumn<Dogovor> idColumn = new TextColumn<Dogovor>() {
             @Override
             public String getValue(Dogovor dogovor) {
@@ -123,9 +134,8 @@ public class MainView implements HasWidgets, MainPresenter.Display {
         return dogovorSelectionModel;
     }
 
-    @Override
-    public void setRowDataCellTable(List<Dogovor> list) {
-        cellTable.setRowData(list);
+    public ListDataProvider<Dogovor> getDataProvider() {
+        return dataProvider;
     }
 
 }

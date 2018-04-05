@@ -99,7 +99,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     @Override
     public boolean checkDogId(Integer id) throws IllegalArgumentException {
         try {
-            return dogovors.count(eq("_id", id)) > 0;
+            System.out.println("checkDogId(Integer id = "+id);
+            System.out.println(dogovors.count(eq("_id", id)));
+            return dogovors.count(eq("_id", id)) > 0L;
         } catch (Exception e) {
             return true;
         }
@@ -129,9 +131,10 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
     @Override
-    public boolean updateDogovor(Integer id, Dogovor dogovor) throws IllegalArgumentException {
+    public boolean updateDogovor(Dogovor dogovor) throws IllegalArgumentException {
         try {
-            dogovors.updateOne(eq("_id", id),
+            System.out.println("Come IN id "+dogovor.getId()+", dogovor "+dogovor);
+            dogovors.updateOne(eq("_id", dogovor.getId()),
                     new Document("$set", toDocument(dogovor)));
         } catch (Exception e) {
             return false;
@@ -219,7 +222,8 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
     public Document toDocument(Dogovor dogovor) {
         Document document = new Document();
-        if (dogovor.getId()!=null) {
+        System.out.println("====toDocument id:"+dogovor.getId());
+        if (dogovor.getId().toString().length()>5) {
             document.append("_id", dogovor.getId());
         }
         document.append("dataZakl", dogovor.getDataZakl());
@@ -233,6 +237,7 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
         document.append("squair", dogovor.getSquair());
         document.append("dateRasheta", dogovor.getDateRasheta());
         document.append("premiya", dogovor.getPremiya());
+        System.out.println("document = "+document);
         return document;
     }
 }

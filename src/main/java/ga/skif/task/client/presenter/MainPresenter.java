@@ -10,6 +10,8 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import ga.skif.task.client.event.ListUpdateEvent;
+import ga.skif.task.client.event.ListUpdateEventHandler;
 import ga.skif.task.client.view.DogovorView;
 import ga.skif.task.client.view.MainView;
 import ga.skif.task.client.entity.Dogovor;
@@ -25,7 +27,6 @@ public class MainPresenter {
         HasClickHandlers setOpenButtonHandler();
         HasClickHandlers setCreateButtonHandler();
         SelectionChangeEvent.HasSelectionChangedHandlers setSelectionModelCellTable();
-        void setRowDataCellTable(List<Dogovor> list);
         Widget asWidget();
         MainView getViewInstance();
     }
@@ -40,18 +41,23 @@ public class MainPresenter {
     }
 
     public void init(){
-//        CreateDogovor handler = new CreateDogovor();
+
         display.setCreateButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 existDogovor = new Dogovor();
                 clickDogovor = "create";
-//                DogovorPresenter dogovorPresenter =
-                        new DogovorPresenter(new DogovorView(), eventBus);
-//                dogovorPresenter.go(container);
-//                eventBus.fireEvent(new CreateButtonEvent());
+                new DogovorPresenter(new DogovorView(), eventBus);
             }
         });
+
+        eventBus.addHandler(ListUpdateEvent.TYPE, new ListUpdateEventHandler(){
+            @Override
+            public void onListUpdate(ListUpdateEvent chooseClientEvent) {
+                display.getViewInstance().getDataProvider().refresh();
+            }
+        });
+
 
 //        OpenDogovor handler2 = new OpenDogovor();
         display.setOpenButtonHandler().addClickHandler(new ClickHandler() {
@@ -73,7 +79,7 @@ public class MainPresenter {
             @Override
             public void onSuccess(List<Dogovor> dlist) {
                 list.addAll(dlist);
-                display.setRowDataCellTable(list);
+                display.getViewInstance().getDataProvider().setList(list);
             }
         });
 

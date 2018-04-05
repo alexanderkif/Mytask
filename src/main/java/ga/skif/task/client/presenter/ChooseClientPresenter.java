@@ -105,7 +105,7 @@ public class ChooseClientPresenter {
         display.newButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-//                strahovatel = new Strahovatel("", "", "");
+                strahovatel = new Strahovatel("", "", "");
                 clickClient = "create";
                 ((SingleSelectionModel<Strahovatel>) display.setSelectionModelCellTable()).clear();
                 new ClientPresenter(new ClientView(), eventBus);

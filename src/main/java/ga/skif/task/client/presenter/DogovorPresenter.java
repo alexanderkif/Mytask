@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
+import ga.skif.task.client.event.ListUpdateEvent;
 import ga.skif.task.client.view.ClientView;
 import ga.skif.task.client.view.ChooseClientView;
 import ga.skif.task.client.view.DogovorView;
@@ -105,6 +106,7 @@ public class DogovorPresenter {
             d.getTextBoxNomerDogovora().setReadOnly(false);
             d.getDateBoxDataRascheta().setValue(today);
             d.getDateBoxStart().setValue(today);
+            d.getDateBoxDataZakluchenDogovora().setValue(today);
         }
 
         eventBus.addHandler(ChooseClientEvent.TYPE, new ChooseClientEventHandler() {
@@ -145,7 +147,6 @@ public class DogovorPresenter {
         display.saveButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-
                 AddressOb addressOb = new AddressOb(d.getListBoxCountries().getSelectedItemText(), d.getTextBoxIndex().getText(),
                         d.getTextBoxRespKraiObl().getText(), d.getTextBoxRayon().getText(), d.getTextBoxNaselPunkt().getText(),
                         d.getTextBoxStreet().getText(), Integer.valueOf(d.getTextBoxDom().getText()), d.getTextBoxKorpus().getText(),
@@ -164,44 +165,52 @@ public class DogovorPresenter {
                 dogovor.setSquair(d.getTextBoxPloshadb().getText());
                 dogovor.setPremiya(d.getTextBoxPremiya().getText());
                 dogovor.setDateRasheta(d.getDateBoxDataRascheta().getValue());
+//                Window.alert("dogovor.getId() "+dogovor.getId());
+                greetingService.checkDogId(dogovor.getId(), new AsyncCallback<Boolean>() {
+                    @Override
+                    public void onFailure(Throwable throwable) {}
+                    @Override
+                    public void onSuccess(Boolean b) {
+                        if (b) {
+                            greetingService.updateDogovor(dogovor, new AsyncCallback<Boolean>() {
+                                @Override
+                                public void onFailure(Throwable throwable) {
+                                    Window.alert("Не сохранено");
+                                }
 
-                if (dogovorInBase.equals("no")) {
-                    greetingService.createDogovor(dogovor, new AsyncCallback<Boolean>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Window.alert("Не сохранено");
-                        }
+                                @Override
+                                public void onSuccess(Boolean aBoolean) {
+//                                    Window.alert("updateDogovor Success");
+                                    Mytask.list.remove(dogovor);
+                                    Mytask.list.add(dogovor);
+                                    d.getOpenDialogBox().hide();
+                                    eventBus.fireEvent(new ListUpdateEvent());
+                                }
+                            });
+                        } else {
+                            greetingService.createDogovor(dogovor, new AsyncCallback<Boolean>() {
+                                @Override
+                                public void onFailure(Throwable throwable) {
+                                    Window.alert("Не сохранено");
+                                }
 
-                        @Override
-                        public void onSuccess(Boolean aBoolean) {
-//                            Window.alert("Cохранено");
-                            Mytask.list.add(dogovor);
-                            d.getOpenDialogBox().hide();
+                                @Override
+                                public void onSuccess(Boolean aBoolean) {
+                                    Mytask.list.add(dogovor);
+                                    d.getOpenDialogBox().hide();
+                                    eventBus.fireEvent(new ListUpdateEvent());
+                                }
+                            });
                         }
-                    });
-                }
-
-                if (dogovorInBase.equals("yes")) {
-                    greetingService.updateDogovor(dogovor.getId(), dogovor, new AsyncCallback<Boolean>() {
-                        @Override
-                        public void onFailure(Throwable throwable) {
-                            Window.alert("Не сохранено");
-                        }
-
-                        @Override
-                        public void onSuccess(Boolean aBoolean) {
-                            Mytask.list.add(dogovor);
-                            d.getOpenDialogBox().hide();
-                        }
-                    });
-                }
+                    }
+                });
             }
         });
 
         display.numberKeyUpHandler().addKeyUpHandler(new KeyUpHandler() {
             @Override
             public void onKeyUp(KeyUpEvent keyUpEvent) {
-                if (d.getTextBoxNomerDogovora().getText().length() == 6) {
+                if (Integer.valueOf(d.getTextBoxNomerDogovora().getText()).toString().length() == 6) {
                     greetingService.checkDogId(Integer.valueOf(d.getTextBoxNomerDogovora().getText()),
                             new AsyncCallback<Boolean>() {
 

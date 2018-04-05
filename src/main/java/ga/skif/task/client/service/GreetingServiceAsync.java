@@ -36,6 +36,6 @@ public interface GreetingServiceAsync {
     void findDogovor(Integer id, AsyncCallback<List<Dogovor>> dlist)
             throws IllegalArgumentException;
 
-    void updateDogovor(Integer id, Dogovor dogovor, AsyncCallback<Boolean> asyncCallback)
+    void updateDogovor(Dogovor dogovor, AsyncCallback<Boolean> asyncCallback)
             throws IllegalArgumentException;
 }
