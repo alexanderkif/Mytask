@@ -11,6 +11,7 @@ import ga.skif.task.client.view.ClientView;
 import ga.skif.task.client.entity.Strahovatel;
 import ga.skif.task.client.event.ChooseClientEvent;
 
+import static ga.skif.task.client.Mytask.clickClient;
 import static ga.skif.task.client.Mytask.greetingService;
 import static ga.skif.task.client.Mytask.strahovatel;
 
@@ -41,7 +42,7 @@ public class ClientPresenter {
 
         d.getDialogClient().center();
 
-        Window.alert(strahovatel.toString());
+//        Window.alert(strahovatel.toString());
 
         try {
             d.getTextBoxFamily1().setText(strahovatel.getLastName());
@@ -71,27 +72,44 @@ public class ClientPresenter {
                 strah.setPassportSeria(Integer.valueOf(d.getTextBoxPassportSeriya2().getText()));
                 strah.setPassportNumber(Integer.valueOf(d.getTextBoxPassportNomer2().getText()));
 
-//                eventBus.fireEvent(new ChooseClientEvent());
+                if (clickClient.equals("update")) {
+                    greetingService.updateStrahovatelById(strahovatel.getId(), strah,
+                            new AsyncCallback<Boolean>() {
 
-                greetingService.updateStrahovatelById(strahovatel.getId(), strah,
-                        new AsyncCallback<Boolean>() {
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                Window.alert("Не сохранено");
-                            }
-
-                            @Override
-                            public void onSuccess(Boolean status) {
-                                if (status) {
-//                                    strahovatel = strah;
-                                    eventBus.fireEvent(new ChooseClientEvent());
-                                    d.getDialogClient().hide();
-                                } else {
+                                @Override
+                                public void onFailure(Throwable throwable) {
                                     Window.alert("Не сохранено");
                                 }
-                            }
-                        });
+
+                                @Override
+                                public void onSuccess(Boolean status) {
+                                    if (status) {
+                                        strahovatel.setLastName(strah.getLastName());
+                                        strahovatel.setFirstName(strah.getFirstName());
+                                        strahovatel.setFirstName2(strah.getFirstName2());
+                                        strahovatel.setBirth(strah.getBirth());
+                                        strahovatel.setPassportSeria(strah.getPassportSeria());
+                                        strahovatel.setPassportNumber(strah.getPassportNumber());
+                                        eventBus.fireEvent(new ChooseClientEvent());
+                                        d.getDialogClient().hide();
+                                    } else {
+                                        Window.alert("Не сохранено");
+                                    }
+                                }
+                            });
+                }
+                if (clickClient.equals("create")){
+                    greetingService.saveStrahovatel(strah, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Window.alert("Не сохранено");
+                        }
+                        @Override
+                        public void onSuccess(Boolean aBoolean) {
+                            d.getDialogClient().hide();
+                        }
+                    });
+                }
             }
         });
     }

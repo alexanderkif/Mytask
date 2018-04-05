@@ -80,13 +80,16 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     @Override
     public Boolean updateStrahovatelById(String id, Strahovatel strah) throws IllegalArgumentException {
         try {
+            System.out.println("id = "+id+" ||| "+strah.toString());
             strahovatels.updateOne(eq("_id", new ObjectId(id)), new Document("$set",
-                    new Document("lastName", strah.getLastName())
-                            .append("firstName", strah.getFirstName())
-                            .append("firstName2", strah.getFirstName2())
-                            .append("birth", strah.getBirth())
-                            .append("passportSeria", strah.getPassportSeria())
-                            .append("passportNumber", strah.getPassportNumber())));
+                    toDocument(strah)
+//                    new Document("lastName", strah.getLastName())
+//                            .append("firstName", strah.getFirstName())
+//                            .append("firstName2", strah.getFirstName2())
+//                            .append("birth", strah.getBirth())
+//                            .append("passportSeria", strah.getPassportSeria())
+//                            .append("passportNumber", strah.getPassportNumber())
+            ));
         } catch (Exception e) {
             return false;
         }
@@ -123,6 +126,17 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
                     .forEach(s -> list.add(toDogovors((Document) s)));
         }
         return list;
+    }
+
+    @Override
+    public boolean updateDogovor(Integer id, Dogovor dogovor) throws IllegalArgumentException {
+        try {
+            dogovors.updateOne(eq("_id", id),
+                    new Document("$set", toDocument(dogovor)));
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     private Dogovor toDogovors(Document document) {
@@ -173,15 +187,17 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
     }
 
     public Document toDocument(Strahovatel strahovatel) {
+        System.out.println("toDocument "+strahovatel.toString());
         Document document = new Document("lastName", strahovatel.getLastName());
         document.append("firstName", strahovatel.getFirstName());
         document.append("firstName2", strahovatel.getFirstName2());
         document.append("birth", strahovatel.getBirth());
         document.append("passportSeria", strahovatel.getPassportSeria());
         document.append("passportNumber", strahovatel.getPassportNumber());
-        if (!strahovatel.getId().equals("")) {
+        if (null!=strahovatel.getId()){
             document.append("_id", strahovatel.getId());
         }
+        System.out.println("return Document: "+document);
         return document;
     }
 
@@ -203,7 +219,9 @@ public class GreetingServiceImpl extends RemoteServiceServlet implements
 
     public Document toDocument(Dogovor dogovor) {
         Document document = new Document();
-        document.append("_id", dogovor.getId());
+        if (dogovor.getId()!=null) {
+            document.append("_id", dogovor.getId());
+        }
         document.append("dataZakl", dogovor.getDataZakl());
         document.append("strahovatel", toDocument(dogovor.getStrahovatel()));
         document.append("addressOb", toDocument(dogovor.getAddressOb()));

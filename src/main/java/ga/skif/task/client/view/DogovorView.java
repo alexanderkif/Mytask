@@ -187,6 +187,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
 
         dateBoxDataRascheta = new DateBox();
         dateBoxDataRascheta.setFormat(new DateBox.DefaultFormat(dateFormat));
+
         bottomRashetPanel.add(dateBoxDataRascheta);
         dateBoxDataRascheta.setSize("84px", "16px");
         dateBoxDataRascheta.setEnabled(false);
@@ -227,7 +228,7 @@ public class DogovorView implements HasWidgets, DogovorPresenter.Display{
         dateBoxDataZakluchenDogovora.setFormat(new DateBox.DefaultFormat(dateFormat));
         nomerData.add(dateBoxDataZakluchenDogovora);
         dateBoxDataZakluchenDogovora.setSize("84px", "16px");
-        dateBoxDataZakluchenDogovora.setEnabled(false);
+//        dateBoxDataZakluchenDogovora.setEnabled(false);
 
         container.add(nomerData);
 

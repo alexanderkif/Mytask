@@ -33,51 +33,76 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
         dialogVibor.setText("Выбор клиентов");
         dialogVibor.setAnimationEnabled(true);
 
-        AbsolutePanel absolutePanel1 = new AbsolutePanel();
-        absolutePanel1.setSize("580px", "300px");
+        VerticalPanel verticalPanel = new VerticalPanel();
+        verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        verticalPanel.setSpacing(5);
+//        verticalPanel.setWidth("700px");
+
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        horizontalPanel.setSpacing(5);
+        verticalPanel.add(horizontalPanel);
 
         Label label_1 = new Label("ФИО");
-        absolutePanel1.add(label_1, 10, 25);
+        horizontalPanel.add(label_1);
         label_1.setSize("30px", "24px");
+        label_1.setStyleName("gwt-label-dog");
 
         textBoxFamily = new TextBox();
-        absolutePanel1.add(textBoxFamily, 60, 17);
-        textBoxFamily.setSize("130px", "24px");
+        horizontalPanel.add(textBoxFamily);
+        textBoxFamily.setSize("200px", "24px");
 
         textBoxName = new TextBox();
-        absolutePanel1.add(textBoxName, 210, 17);
-        textBoxName.setSize("130px", "24px");
+        horizontalPanel.add(textBoxName);
+        textBoxName.setSize("200px", "24px");
 
         textBoxName2 = new TextBox();
-        absolutePanel1.add(textBoxName2, 360, 17);
-        textBoxName2.setSize("130px", "24px");
-
-        Label label_2 = new Label("(фамилия)");
-        label_2.setStyleName("gwt-Label-mini");
-        absolutePanel1.add(label_2, 85, 55);
-        label_2.setSize("68px", "16px");
-
-        Label label_3 = new Label("(имя)");
-        label_3.setStyleName("gwt-Label-mini");
-        absolutePanel1.add(label_3, 235, 55);
-        label_3.setSize("68px", "16px");
-
-        Label label_4 = new Label("(отчество)");
-        label_4.setStyleName("gwt-Label-mini");
-        absolutePanel1.add(label_4, 385, 55);
-        label_4.setSize("68px", "16px");
+        horizontalPanel.add(textBoxName2);
+        textBoxName2.setSize("200px", "24px");
 
         searchBtn = new Button("Поиск");
         searchBtn.getElement().setId("searchBtn");
-        absolutePanel1.add(searchBtn, 510, 20);
+        horizontalPanel.add(searchBtn);
+
+        HorizontalPanel labelPanel = new HorizontalPanel();
+        labelPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        labelPanel.setSpacing(5);
+        verticalPanel.add(labelPanel);
+
+        Label label_2 = new Label("(фамилия)");
+        label_2.setStyleName("gwt-Label-mini");
+        labelPanel.add(label_2);
+        label_2.setSize("200px", "16px");
+
+        Label label_3 = new Label("(имя)");
+        label_3.setStyleName("gwt-Label-mini");
+        labelPanel.add(label_3);
+        label_3.setSize("200px", "16px");
+
+        Label label_4 = new Label("(отчество)");
+        label_4.setStyleName("gwt-Label-mini");
+        labelPanel.add(label_4);
+        label_4.setSize("200px", "16px");
+
+        HorizontalPanel tablePanel = new HorizontalPanel();
+        tablePanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        tablePanel.setWidth("100%");
+        tablePanel.setSpacing(5);
+        verticalPanel.add(tablePanel);
 
         strahTable = new CellTable<>();
-        absolutePanel1.add(strahTable, 20, 80);
+        strahTable.setWidth("90%");
+        tablePanel.add(strahTable);
+
+        HorizontalPanel pagerPanel = new HorizontalPanel();
+        pagerPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        pagerPanel.setSpacing(5);
+        verticalPanel.add(pagerPanel);
 
         dataProvider.addDataDisplay(strahTable);
 //        dataProvider.setList(strahovatels);
         SimplePager pager = new SimplePager();
-        absolutePanel1.add(pager,200,235);
+        pagerPanel.add(pager);
         pager.setDisplay(strahTable);
         strahTable.setPageSize(5);
 
@@ -108,19 +133,24 @@ public class ChooseClientView implements HasWidgets, ChooseClientPresenter.Displ
         strahTable.setColumnWidth(dateBirthColumn, "20%");
         strahTable.setColumnWidth(passportColumn, "30%");
 
+        HorizontalPanel buttonPanel = new HorizontalPanel();
+        buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        buttonPanel.setSpacing(5);
+        verticalPanel.add(buttonPanel);
+
         chooseBtn = new Button("Выбрать");
         chooseBtn.getElement().setId("chooseBtn");
-        absolutePanel1.add(chooseBtn, 170, 270);
+        buttonPanel.add(chooseBtn);
 
         newBtn = new Button("Новый");
         newBtn.getElement().setId("newBtn");
-        absolutePanel1.add(newBtn, 250, 270);
+        buttonPanel.add(newBtn);
 
         closeButton = new Button("Закрыть");
         closeButton.getElement().setId("closeButton");
-        absolutePanel1.add(closeButton, 320, 270);
+        buttonPanel.add(closeButton);
 
-        dialogVibor.setWidget(absolutePanel1);
+        dialogVibor.setWidget(verticalPanel);
 
         strahSelectionModel = new SingleSelectionModel<>();
         strahTable.setSelectionModel(strahSelectionModel);

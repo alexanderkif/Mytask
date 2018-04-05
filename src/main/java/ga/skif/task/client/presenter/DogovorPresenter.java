@@ -27,13 +27,19 @@ public class DogovorPresenter {
 
     public interface Display {
         HasClickHandlers closeButtonHandler();
+
         HasClickHandlers raschetButtonHandler();
+
         HasClickHandlers saveButtonHandler();
+
         HasKeyUpHandlers numberKeyUpHandler();
+
         HasClickHandlers chooseClientHandler();
+
         HasClickHandlers changeClientHandler();
 
         Widget asWidget();
+
         DogovorView getViewInstance();
     }
 
@@ -46,15 +52,7 @@ public class DogovorPresenter {
     public DogovorPresenter(Display display, SimpleEventBus eventBus) {
         this.display = display;
         this.eventBus = eventBus;
-//        Window.alert("DogovorPresenter "+existDogovor.toString());
         init();
-        if (existDogovor.getId().toString().length() > 0) {
-            display.getViewInstance().getTextBoxNomerDogovora().setReadOnly(true);
-            display.getViewInstance().getDateBoxDataZakluchenDogovora().setValue(existDogovor.getDataZakl());
-        } else {
-            display.getViewInstance().getTextBoxNomerDogovora().setReadOnly(false);
-            display.getViewInstance().getDateBoxDataZakluchenDogovora().setValue(today);
-        }
     }
 
     public void init() {
@@ -63,20 +61,61 @@ public class DogovorPresenter {
 
         d.getOpenDialogBox().center();
 
-        Window.alert(strahovatel.toString());
-        Window.alert(existDogovor.toString());
+//        Window.alert(strahovatel.toString());
+//        Window.alert(existDogovor.toString());
 
-        eventBus.addHandler(ChooseClientEvent.TYPE, new ChooseClientEventHandler(){
-           @Override
-           public void onChooseClient(ChooseClientEvent event){
-//               TO DO update dogovor
-//               strahovatel = existDogovor.getStrahovatel();
-               d.getTextBoxFIO().setText(strahovatel.getFullName());
-               d.getDateBoxDataRozhdeniya().setValue(strahovatel.getBirth());
-               d.getTextBoxPassportSeriya().setText(strahovatel.getPassportSeria().toString());
-               d.getTextBoxPassportNomer().setText(strahovatel.getPassportNumber().toString());
-               Window.alert("ChooseClientEvent.TYPE");
-           }
+        if (clickDogovor.equals("open")) {
+            d.getStrSumma().setText(existDogovor.getStrSumma().toString());
+            d.getTextBoxGodPostroiki().setText(existDogovor.getYear());
+            d.getTextBoxPloshadb().setText(existDogovor.getSquair());
+            d.getComboBoxTipNedvizhimosti().clear();
+            d.getComboBoxTipNedvizhimosti().addItem(existDogovor.getType());
+            for (String s : listNedvizhimosti) {
+                d.getComboBoxTipNedvizhimosti().addItem(s);
+            }
+            d.getDateBoxEnd().setValue(existDogovor.getEnd());
+            d.getTextBoxPremiya().setText(existDogovor.getPremiya());
+            d.getDateBoxDataRascheta().setValue(existDogovor.getDateRasheta());
+            d.getTextBoxNomerDogovora().setText(existDogovor.getId().toString());
+            d.getDateBoxDataZakluchenDogovora().setValue(existDogovor.getDataZakl());
+            d.getDateBoxStart().setValue(existDogovor.getStart());
+            d.getTextBoxFIO().setText(existDogovor.getStrahovatel().getFullName());
+            d.getDateBoxDataRozhdeniya().setValue(existDogovor.getStrahovatel().getBirth());
+            d.getTextBoxPassportSeriya().setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
+            d.getTextBoxPassportNomer().setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
+//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
+            d.getListBoxCountries().clear();
+            d.getListBoxCountries().addItem(existDogovor.getAddressOb().getState());
+            for (String s : countries) {
+                d.getListBoxCountries().addItem(s);
+            }
+            d.getTextBoxIndex().setText(existDogovor.getAddressOb().getIndex());
+            d.getTextBoxRespKraiObl().setText(existDogovor.getAddressOb().getKrai());
+            d.getTextBoxRayon().setText(existDogovor.getAddressOb().getDistrict());
+            d.getTextBoxNaselPunkt().setText(existDogovor.getAddressOb().getTown());
+            d.getTextBoxStreet().setText(existDogovor.getAddressOb().getStreet());
+            d.getTextBoxDom().setText(existDogovor.getAddressOb().getHome().toString());
+            d.getTextBoxKorpus().setText(existDogovor.getAddressOb().getKorpus());
+            d.getTextBoxStroenie().setText(existDogovor.getAddressOb().getStroenie());
+            d.getTextBoxKvartira().setText(existDogovor.getAddressOb().getFlat().toString());
+            d.getTextAreaComment().setText(existDogovor.getAddressOb().getComment());
+            strahovatel = existDogovor.getStrahovatel();
+            d.getTextBoxNomerDogovora().setReadOnly(true);
+        }else{
+            d.getTextBoxNomerDogovora().setReadOnly(false);
+            d.getDateBoxDataRascheta().setValue(today);
+            d.getDateBoxStart().setValue(today);
+        }
+
+        eventBus.addHandler(ChooseClientEvent.TYPE, new ChooseClientEventHandler() {
+            @Override
+            public void onChooseClient(ChooseClientEvent event) {
+                d.getTextBoxFIO().setText(strahovatel.getFullName());
+                d.getDateBoxDataRozhdeniya().setValue(strahovatel.getBirth());
+                d.getTextBoxPassportSeriya().setText(strahovatel.getPassportSeria().toString());
+                d.getTextBoxPassportNomer().setText(strahovatel.getPassportNumber().toString());
+//               Window.alert("ChooseClientEvent.TYPE");
+            }
         });
 
         display.closeButtonHandler().addClickHandler(new ClickHandler() {
@@ -96,7 +135,10 @@ public class DogovorPresenter {
         display.changeClientHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                new ClientPresenter(new ClientView(), eventBus);
+                if (!strahovatel.getFullName().equals("  ")) {
+                    clickClient = "update";
+                    new ClientPresenter(new ClientView(), eventBus);
+                }
             }
         });
 
@@ -140,7 +182,18 @@ public class DogovorPresenter {
                 }
 
                 if (dogovorInBase.equals("yes")) {
-//                    greetingService.updateDogovor()
+                    greetingService.updateDogovor(dogovor.getId(), dogovor, new AsyncCallback<Boolean>() {
+                        @Override
+                        public void onFailure(Throwable throwable) {
+                            Window.alert("Не сохранено");
+                        }
+
+                        @Override
+                        public void onSuccess(Boolean aBoolean) {
+                            Mytask.list.add(dogovor);
+                            d.getOpenDialogBox().hide();
+                        }
+                    });
                 }
             }
         });
@@ -264,42 +317,6 @@ public class DogovorPresenter {
                 }
             }
         });
-
-        d.getStrSumma().setText(existDogovor.getStrSumma().toString());
-        d.getTextBoxGodPostroiki().setText(existDogovor.getYear());
-        d.getTextBoxPloshadb().setText(existDogovor.getSquair());
-        d.getComboBoxTipNedvizhimosti().clear();
-        d.getComboBoxTipNedvizhimosti().addItem(existDogovor.getType());
-        for (String s : listNedvizhimosti) {
-            d.getComboBoxTipNedvizhimosti().addItem(s);
-        }
-        d.getDateBoxStart().setValue(existDogovor.getStart());
-        d.getDateBoxEnd().setValue(existDogovor.getEnd());
-        d.getTextBoxPremiya().setText(existDogovor.getPremiya());
-        d.getDateBoxDataRascheta().setValue(existDogovor.getDateRasheta());
-        d.getTextBoxNomerDogovora().setText(existDogovor.getId().toString());
-//        d.getDateBoxDataZakluchenDogovora().setValue(existDogovor.getDataZakl());
-        d.getTextBoxFIO().setText(existDogovor.getStrahovatel().getFullName());
-        d.getDateBoxDataRozhdeniya().setValue(existDogovor.getStrahovatel().getBirth());
-        d.getTextBoxPassportSeriya().setText(String.valueOf(existDogovor.getStrahovatel().getPassportSeria()));
-        d.getTextBoxPassportNomer().setText(String.valueOf(existDogovor.getStrahovatel().getPassportNumber()));
-//        listBoxCountries.addItem(existDogovor.getAddressOb().getState());
-        d.getListBoxCountries().clear();
-        d.getListBoxCountries().addItem(existDogovor.getAddressOb().getState());
-        for (String s : countries) {
-            d.getListBoxCountries().addItem(s);
-        }
-        d.getTextBoxIndex().setText(existDogovor.getAddressOb().getIndex());
-        d.getTextBoxRespKraiObl().setText(existDogovor.getAddressOb().getKrai());
-        d.getTextBoxRayon().setText(existDogovor.getAddressOb().getDistrict());
-        d.getTextBoxNaselPunkt().setText(existDogovor.getAddressOb().getTown());
-        d.getTextBoxStreet().setText(existDogovor.getAddressOb().getStreet());
-        d.getTextBoxDom().setText(existDogovor.getAddressOb().getHome().toString());
-        d.getTextBoxKorpus().setText(existDogovor.getAddressOb().getKorpus());
-        d.getTextBoxStroenie().setText(existDogovor.getAddressOb().getStroenie());
-        d.getTextBoxKvartira().setText(existDogovor.getAddressOb().getFlat().toString());
-        d.getTextAreaComment().setText(existDogovor.getAddressOb().getComment());
-        strahovatel = existDogovor.getStrahovatel();
 
     }
 

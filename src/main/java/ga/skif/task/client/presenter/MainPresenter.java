@@ -45,6 +45,7 @@ public class MainPresenter {
             @Override
             public void onClick(ClickEvent clickEvent) {
                 existDogovor = new Dogovor();
+                clickDogovor = "create";
 //                DogovorPresenter dogovorPresenter =
                         new DogovorPresenter(new DogovorView(), eventBus);
 //                dogovorPresenter.go(container);
@@ -56,6 +57,7 @@ public class MainPresenter {
         display.setOpenButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
+                clickDogovor = "open";
                 existDogovor = ((SingleSelectionModel<Dogovor>) display.setSelectionModelCellTable()).getSelectedObject();
                 if (existDogovor.getId().toString().length()>0)
                         new DogovorPresenter(new DogovorView(), eventBus);

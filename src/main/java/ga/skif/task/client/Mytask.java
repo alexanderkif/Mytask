@@ -26,6 +26,10 @@ public class Mytask implements EntryPoint {
 
     public static Dogovor existDogovor = new Dogovor();
 
+    public static String clickClient = "";
+
+    public static String clickDogovor = "";
+
     public static List<String> listNedvizhimosti = asList("Квартира","Дом","Комната");
 
     public static List<String> countries = asList("Россия","Белоруссия","Казахстан");

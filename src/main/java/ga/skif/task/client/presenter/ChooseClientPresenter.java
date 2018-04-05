@@ -21,13 +21,18 @@ public class ChooseClientPresenter {
 
     public interface Display {
         HasClickHandlers chooseBtnHandler();
+
         SelectionChangeEvent.HasSelectionChangedHandlers setSelectionModelCellTable();
+
         HasClickHandlers newButtonHandler();
+
         HasClickHandlers closeButtonHandler();
+
         HasClickHandlers searchButtonHandler();
 //        HasKeyUpHandlers numberKeyUpHandler();
 
         Widget asWidget();
+
         ChooseClientView getViewInstance();
     }
 
@@ -58,8 +63,8 @@ public class ChooseClientPresenter {
         d.getDialogVibor().center();
         d.getDataProvider().setList(asList());
 
-        Window.alert(strahovatel.toString());
-        Window.alert(existDogovor.toString());
+//        Window.alert(strahovatel.toString());
+//        Window.alert(existDogovor.toString());
 
 //        d.getTextBoxFamily().setText(strahovatel.getLastName());
 //        d.getTextBoxName().setText(strahovatel.getFirstName());
@@ -83,11 +88,11 @@ public class ChooseClientPresenter {
 
                             @Override
                             public void onSuccess(List<Strahovatel> strahovatels) {
-                                if (strahovatels.size()==0){
+                                if (strahovatels.size() == 0) {
                                     Window.alert("Ничего не найдено.");
 //                                    strahTable.setRowData(strahovatels);
                                     d.getDataProvider().setList(strahovatels);
-                                }else {
+                                } else {
                                     //Window.alert("Поиск удачен. " + strahovatels.get(0).getFullName());
 //                                    strahTable.setRowData(strahovatels);
                                     d.getDataProvider().setList(strahovatels);
@@ -100,8 +105,9 @@ public class ChooseClientPresenter {
         display.newButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-                strahovatel = new Strahovatel("","","");
-                ((SingleSelectionModel<Strahovatel>)display.setSelectionModelCellTable()).clear();
+//                strahovatel = new Strahovatel("", "", "");
+                clickClient = "create";
+                ((SingleSelectionModel<Strahovatel>) display.setSelectionModelCellTable()).clear();
                 new ClientPresenter(new ClientView(), eventBus);
             }
         });
@@ -109,7 +115,7 @@ public class ChooseClientPresenter {
         display.setSelectionModelCellTable().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
             @Override
             public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
-                Strahovatel strah = ((SingleSelectionModel<Strahovatel>)display.setSelectionModelCellTable()).getSelectedObject();
+                Strahovatel strah = ((SingleSelectionModel<Strahovatel>) display.setSelectionModelCellTable()).getSelectedObject();
                 if (!strah.getFullName().equals("  ")) {
                     strahovatel.setId(strah.getId());
                     strahovatel.setFirstName(strah.getFirstName());

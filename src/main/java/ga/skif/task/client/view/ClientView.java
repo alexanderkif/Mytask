@@ -27,78 +27,109 @@ public class ClientView implements HasWidgets, ClientPresenter.Display {
         dialogClient.setText("Клиент");
         dialogClient.setAnimationEnabled(true);
 
-        AbsolutePanel absolutePanel2 = new AbsolutePanel();
-        absolutePanel2.setSize("700px", "200px");
+        VerticalPanel verticalPanel = new VerticalPanel();
+        verticalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        verticalPanel.setSpacing(5);
+//        verticalPanel.setWidth("700px");
+//        verticalPanel.setSize("700px", "200px");
+
+        HorizontalPanel horizontalPanel = new HorizontalPanel();
+        horizontalPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        horizontalPanel.setSpacing(5);
 
         Label label_1 = new Label("ФИО");
-        absolutePanel2.add(label_1, 10, 25);
+        horizontalPanel.add(label_1);
         label_1.setSize("30px", "24px");
+        label_1.setStyleName("gwt-label-dog");
 
         textBoxFamily1 = new TextBox();
-        absolutePanel2.add(textBoxFamily1, 60, 17);
-        textBoxFamily1.setSize("190px", "24px");
+        horizontalPanel.add(textBoxFamily1);
+        textBoxFamily1.setSize("200px", "24px");
 
         textBoxName1 = new TextBox();
-        absolutePanel2.add(textBoxName1, 270, 17);
-        textBoxName1.setSize("190px", "24px");
+        horizontalPanel.add(textBoxName1);
+        textBoxName1.setSize("200px", "24px");
 
         textBoxName21 = new TextBox();
-        absolutePanel2.add(textBoxName21, 480, 17);
-        textBoxName21.setSize("190px", "24px");
+        horizontalPanel.add(textBoxName21);
+        textBoxName21.setSize("200px", "24px");
+
+        verticalPanel.add(horizontalPanel);
+
+        HorizontalPanel labelPanel = new HorizontalPanel();
+        labelPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        labelPanel.setSpacing(5);
 
         Label label_2 = new Label("(фамилия)");
         label_2.setStyleName("gwt-Label-mini");
-        absolutePanel2.add(label_2, 130, 55);
-        label_2.setSize("68px", "16px");
+        labelPanel.add(label_2);
+        label_2.setSize("200px", "16px");
 
         Label label_3 = new Label("(имя)");
         label_3.setStyleName("gwt-Label-mini");
-        absolutePanel2.add(label_3, 340, 55);
-        label_3.setSize("68px", "16px");
+        labelPanel.add(label_3);
+        label_3.setSize("200px", "16px");
 
         Label label_4 = new Label("(отчество)");
         label_4.setStyleName("gwt-Label-mini");
-        absolutePanel2.add(label_4, 550, 55);
-        label_4.setSize("68px", "16px");
+        labelPanel.add(label_4);
+        label_4.setSize("200px", "16px");
+
+        verticalPanel.add(labelPanel);
+
+        HorizontalPanel datePanel = new HorizontalPanel();
+        datePanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        datePanel.setSpacing(5);
 
         Label label_11 = new Label("Дата рождения");
-        absolutePanel2.add(label_11, 30, 110);
+        datePanel.add(label_11);
         label_11.setSize("120px", "24px");
+        label_11.setStyleName("gwt-label-dog");
 
         dateBoxDataRozhdeniya2 = new DateBox();
         dateBoxDataRozhdeniya2.setFormat(new DateBox.DefaultFormat(dateFormat));
-        absolutePanel2.add(dateBoxDataRozhdeniya2, 130, 100);
+        datePanel.add(dateBoxDataRozhdeniya2);
         dateBoxDataRozhdeniya2.setSize("80px", "16px");
 
         Label label_12 = new Label("Паспорт серия");
-        absolutePanel2.add(label_12, 260, 110);
+        datePanel.add(label_12);
         label_12.setSize("100px", "24px");
+        label_12.setStyleName("gwt-label-dog");
 
         textBoxPassportSeriya2 = new TextBox();
-        absolutePanel2.add(textBoxPassportSeriya2, 360, 100);
+        datePanel.add(textBoxPassportSeriya2);
         textBoxPassportSeriya2.setSize("80px", "20px");
 
         Label label_13 = new Label("№");
-        absolutePanel2.add(label_13, 460, 110);
+        datePanel.add(label_13);
         label_13.setSize("30px", "24px");
+        label_13.setStyleName("gwt-label-dog");
 
         Label label_id = new Label("");
-        absolutePanel2.add(label_id, 10, 3);
+        datePanel.add(label_id);
 //        label_id.setVisible(false);
 
         textBoxPassportNomer2 = new TextBox();
-        absolutePanel2.add(textBoxPassportNomer2, 490, 100);
+        datePanel.add(textBoxPassportNomer2);
         textBoxPassportNomer2.setSize("180px", "20px");
+
+        verticalPanel.add(datePanel);
+
+        HorizontalPanel buttonPanel = new HorizontalPanel();
+        buttonPanel.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_CENTER);
+        buttonPanel.setSpacing(5);
 
         saveBtn = new Button("Сохранить");
         saveBtn.getElement().setId("saveBtn");
-        absolutePanel2.add(saveBtn, 250, 160);
+        buttonPanel.add(saveBtn);
 
         closeButton = new Button("Отменить");
         closeButton.getElement().setId("closeButton");
-        absolutePanel2.add(closeButton, 350, 160);
+        buttonPanel.add(closeButton);
 
-        dialogClient.setWidget(absolutePanel2);
+        verticalPanel.add(buttonPanel);
+
+        dialogClient.setWidget(verticalPanel);
 
     }
 
