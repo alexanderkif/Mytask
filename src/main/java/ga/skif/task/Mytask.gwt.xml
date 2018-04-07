@@ -18,6 +18,11 @@
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
 
   <!-- Other module inherits                                      -->
+  <!--<inherits name="org.hibernate.validator.HibernateValidator" />-->
+  <!--<replace-with-->
+          <!--class="ga.skif.task.client.entity.SampleValidatorFactory">-->
+      <!--<when-type-is class="javax.validation.ValidatorFactory" />-->
+  <!--</replace-with>-->
 
   <!-- Specify the app entry point class.                         -->
   <entry-point class='ga.skif.task.client.Mytask'/>

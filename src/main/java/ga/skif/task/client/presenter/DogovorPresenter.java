@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.gwt.validation.client.impl.Validation;
 import ga.skif.task.client.event.ListUpdateEvent;
 import ga.skif.task.client.view.ClientView;
 import ga.skif.task.client.view.ChooseClientView;
@@ -16,8 +17,12 @@ import ga.skif.task.client.entity.Dogovor;
 import ga.skif.task.client.event.ChooseClientEvent;
 import ga.skif.task.client.event.ChooseClientEventHandler;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static ga.skif.task.client.Mytask.*;
@@ -28,25 +33,17 @@ public class DogovorPresenter {
 
     public interface Display {
         HasClickHandlers closeButtonHandler();
-
         HasClickHandlers raschetButtonHandler();
-
         HasClickHandlers saveButtonHandler();
-
         HasKeyUpHandlers numberKeyUpHandler();
-
         HasClickHandlers chooseClientHandler();
-
         HasClickHandlers changeClientHandler();
-
         Widget asWidget();
-
         DogovorView getViewInstance();
     }
 
     final Display display;
     final SimpleEventBus eventBus;
-    final DateTimeFormat yearFormat = DateTimeFormat.getFormat("yyyy");
     final Date today = new Date();
 
 
@@ -64,6 +61,7 @@ public class DogovorPresenter {
 
 //        Window.alert(strahovatel.toString());
 //        Window.alert(existDogovor.toString());
+
 
         if (clickDogovor.equals("open")) {
             d.getStrSumma().setText(existDogovor.getStrSumma().toString());
@@ -243,110 +241,26 @@ public class DogovorPresenter {
             @Override
             public void onClick(ClickEvent event) {
 
-                Integer strSum = 0;
-                Double koTH = 0.0, koGP = 0.0, koPL = 0.0;
-                String errString = "";
+//                Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+//                Set<ConstraintViolation<Dogovor>> violations = validator.validate(existDogovor, Dogovor.Minimal.class);
 
-                if (!isInteger(d.getStrSumma().getText())) {
-                    errString += "Страховая сумма должна быть целым числом. ";
-                } else {
-                    strSum = Integer.valueOf(d.getStrSumma().getText());
-                }
+                List<String> list = existDogovor.raschet(d.getStrSumma().getText(),
+                        d.getComboBoxTipNedvizhimosti().getSelectedItemText(),
+                        d.getTextBoxGodPostroiki().getText(),
+                        d.getTextBoxPloshadb().getText(),
+                        d.getDateBoxStart().getValue(),
+                        d.getDateBoxEnd().getValue()
+                        );
 
-                if (Objects.equals(d.getComboBoxTipNedvizhimosti().getSelectedItemText(), "")) {
-                    errString += "Тип недвижимости должен быть выбран. ";
-                } else {
-                    switch (d.getComboBoxTipNedvizhimosti().getSelectedItemText()) {
-                        case "Квартира":
-                            koTH = 1.7;
-                            break;
-                        case "Дом":
-                            koTH = 1.5;
-                            break;
-                        default:
-                            koTH = 1.3;
-                    }
-                }
+                d.getError().setText(list.get(0));
 
-                if (!isInteger(d.getTextBoxGodPostroiki().getText()) || d.getTextBoxGodPostroiki().getText().length() != 4) {
-                    errString += "Введите год постройки (4 цифры). ";
-                } else {
-                    if (Integer.valueOf(d.getTextBoxGodPostroiki().getText()) > Integer.valueOf(yearFormat.format(today))) {
-                        errString += "Дом еще не построен. ";
-                    } else {
-                        if (Integer.valueOf(d.getTextBoxGodPostroiki().getText()) < 2000) {
-                            koGP = 1.3;
-                        } else {
-                            if (Integer.valueOf(d.getTextBoxGodPostroiki().getText()) < 2014) {
-                                koGP = 1.6;
-                            } else {
-                                koGP = 2.0;
-                            }
-                        }
-                    }
-                }
-
-                if (!isNumeric(d.getTextBoxPloshadb().getText())) {
-                    errString += "Введите правильно площадь. ";
-                } else {
-                    if (Double.valueOf(d.getTextBoxPloshadb().getText()) < 50) {
-                        koPL = 1.2;
-                    } else {
-                        if (Double.valueOf(d.getTextBoxPloshadb().getText()) < 100) {
-                            koPL = 1.5;
-                        } else {
-                            koPL = 2.0;
-                        }
-                    }
-                }
-
-                if (d.getDateBoxStart().getValue().getTime() - today.getTime() < -1000 * 60 * 60 * 24) {
-                    errString += "Дата начала договора не может быть меньше текущей даты. ";
-                }
-
-                if (d.getDateBoxEnd().getValue().getTime() - d.getDateBoxStart().getValue().getTime() < 0) {
-                    errString += "Дата окончания договора не может быть меньше даты начала. ";
-                }
-
-                if (TimeUnit.DAYS.convert(
-                        d.getDateBoxEnd().getValue().getTime() - d.getDateBoxStart().getValue().getTime(),
-                        TimeUnit.MILLISECONDS) > 365) {
-                    errString += "Договор не может действовать дольше года. ";
-                }
-
-                d.getError().setText(errString);
-
-                if (errString.equals("")) {
+                if (list.get(0).equals("")) {
                     d.getDateBoxDataRascheta().setValue(today);
-                    //Страховая премия = (Страховая сумма / кол-во дней) * Коэф.ТН * Коэф.ГП * Коэф.Пл
-                    double prem = ((int) (strSum * koTH * koGP * koPL * 100 / TimeUnit.DAYS.convert(
-                            d.getDateBoxEnd().getValue().getTime() - d.getDateBoxStart().getValue().getTime(),
-                            TimeUnit.MILLISECONDS))) / 100.0;
-                    d.getTextBoxPremiya().setText(String.valueOf(prem));
+                    d.getTextBoxPremiya().setText(list.get(1));
                 }
             }
         });
 
-    }
-
-    private static boolean isNumeric(String str) {
-        try {
-            double d = Double.parseDouble(str);
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        return true;
-    }
-
-    private static boolean isInteger(String str) {
-        try {
-            double d = Double.parseDouble(str);
-            if (d % 1 == 0) {
-                return true;
-            }
-        } catch (NumberFormatException ignored) {
-        }
-        return false;
     }
 
 }
