@@ -1,4 +1,6 @@
-# Created by .ignore support plugin (hsz.mobi)
-/.gitignore
-/target/
-/.idea/vcs.xml
+
+
+target/
+/src/main/resources/gwt-unitCache/
+/src/main/resources/static/Modul/
+/mytask.iml
