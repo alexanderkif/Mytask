@@ -1,14 +1,11 @@
 package ga.saha.gwt.shared;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,53 +20,38 @@ import static java.util.Arrays.asList;
 public class Dogovor implements Serializable {
 
     @Id
-//    @NotNull
-//    @Size(min = 6, max=6, message = "Number must be 6 digits.")
     @Column(name = "iddog", unique = true, nullable = false)
     private Long iddog;
-    //    @NotNull
     @Column(name = "datazakl", nullable = false)
     private Date datazakl;
-    //    @NotNull
     @Column(name = "strahovatelid", nullable = false)
     private Long strahovatelid;
-    //    @NotNull(groups = Minimal.class)
     @Column(name = "strsumma", nullable = false)
     private Integer strsumma;
-    //    @NotNull(groups = Minimal.class)
     @Column(name = "startdate", nullable = false)
     private Date startdate;
-    //    @NotNull(groups = Minimal.class)
     @Column(name = "enddate", nullable = false)
     private Date enddate;
-    //    @NotEmpty(groups = Minimal.class, message = "Тип недвижимости должен быть выбран. Валидатор")
     @Column(name = "type", nullable = false)
     private String type;
-    //    @NotEmpty
-//    @Size(groups = Minimal.class, min = 4, max=4, message = "Year must be 4 digits.")
     @Column(name = "year", nullable = false)
     private  String year;
-    //    @NotEmpty(groups = Minimal.class, message = "Введите правильно площадь. Валидатор")
     @Column(name = "squair", nullable = false)
     private  String squair;
     @Column(name = "daterasheta")
     private  Date daterasheta;
     @Column(name = "premiya")
     private  String premiya;
-    //    @NotEmpty
     @Column(name = "state", nullable = false)
     private String state;
     @Column(name = "index")
     private String index;
-    //    @NotEmpty
     @Column(name = "krai", nullable = false)
     private String krai;
     @Column(name = "district")
     private String district;
-    //    @NotEmpty
     @Column(name = "town", nullable = false)
     private String town;
-    //    @NotEmpty
     @Column(name = "street", nullable = false)
     private String street;
     @Column(name = "home")
@@ -78,15 +60,12 @@ public class Dogovor implements Serializable {
     private String korpus;
     @Column(name = "stroenie")
     private String stroenie;
-    //    @NotNull
     @Column(name = "flat", nullable = false)
     private Integer flat;
     @Column(name = "comment")
     private String comment;
     @Column(name = "fullname")
     private String fullname;
-
-//    public interface Minimal { }
 
     public Dogovor() {
     }

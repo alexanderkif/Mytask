@@ -1,7 +1,5 @@
 package ga.saha.gwt.shared;
 
-import com.google.gwt.core.client.JavaScriptObject;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -10,24 +8,15 @@ import java.util.Date;
 @Table(name = "strahovatels")
 public class Strahovatel implements Serializable {
 
-    private static final long serialVersionUID = -1798070786993154676L;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idstrah", unique = true, nullable = false)
     private Long idstrah;
-//    @NotEmpty
     private String lastname;
-//    @NotEmpty
     private String firstname;
     private String firstname2;
-//    @NotNull
     private Date birth;
-//    @NotNull
-//    @Size(min = 4, max=4, message = "Seriya must be 4 digits.")
     private Integer passportseria;
-//    @NotNull
-//    @Size(min = 6, max=6, message = "Number must be 6 digits.")
     private Integer passportnumber;
 
     public Strahovatel(String lastname, String firstname, String firstname2) {

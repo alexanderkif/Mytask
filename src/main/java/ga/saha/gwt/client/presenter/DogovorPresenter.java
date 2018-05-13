@@ -50,11 +50,11 @@ public class DogovorPresenter {
         DogovorView getViewInstance();
     }
 
-    final Display display;
-    final SimpleEventBus eventBus;
-    final Date today = new Date();
-    Dogovor existDogovor;
-    Long iddog;
+    private final Display display;
+    private final SimpleEventBus eventBus;
+    private final Date today = new Date();
+    private Dogovor existDogovor;
+    private Long iddog;
 
 
     public DogovorPresenter(Display display, SimpleEventBus eventBus, Long iddog) {
@@ -198,33 +198,33 @@ public class DogovorPresenter {
         display.saveButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
-
                 String url = "/savedogovor";
-                if (iddog!=0L) {
+                if (iddog != 0L) {
                     url = "/updatedogovor/" + Long.valueOf(d.getTextBoxNomerDogovora().getText());
                 }
-                String strahstring = "{\"strahovatelid\":" + strahovatel.getIdstrah()
-                        + ", \"datazakl\":" + d.getDateBoxDataZakluchenDogovora().getValue().getTime()
-                        + ", \"startdate\":" + d.getDateBoxStart().getValue().getTime()
-                        + ", \"enddate\":" + d.getDateBoxEnd().getValue().getTime()
-                        + ", \"daterasheta\":" + d.getDateBoxDataRascheta().getValue().getTime()
-                        + ", \"strsumma\":" + Integer.valueOf(d.getStrSumma().getText())
-                        + ", \"home\":" + Integer.valueOf(d.getTextBoxDom().getText())
-                        + ", \"flat\":" + Integer.valueOf(d.getTextBoxKvartira().getText())
-                        + ", \"type\":\"" + d.getComboBoxTipNedvizhimosti().getSelectedItemText() + "\""
-                        + ", \"year\":\"" + d.getTextBoxGodPostroiki().getText() + "\""
-                        + ", \"squair\":\"" + d.getTextBoxPloshadb().getText() + "\""
-                        + ", \"premiya\":\"" + d.getTextBoxPremiya().getText() + "\""
-                        + ", \"state\":\"" + d.getListBoxCountries().getSelectedItemText() + "\""
-                        + ", \"index\":\"" + d.getTextBoxIndex().getText() + "\""
-                        + ", \"krai\":\"" + d.getTextBoxRespKraiObl().getText() + "\""
-                        + ", \"district\":\"" + d.getTextBoxRayon().getText() + "\""
-                        + ", \"town\":\"" + d.getTextBoxNaselPunkt().getText() + "\""
-                        + ", \"street\":\"" + d.getTextBoxStreet().getText() + "\""
-                        + ", \"korpus\":\"" + d.getTextBoxKorpus().getText() + "\""
-                        + ", \"stroenie\":\"" + d.getTextBoxStroenie().getText() + "\""
-                        + ", \"comment\":\"" + d.getTextAreaComment().getText() + "\""
-                        + ", \"fullname\":\"" + d.getTextBoxFIO().getText() + "\"}";
+                String strahstring = "{\"strahovatelid\":" + strahovatel.getIdstrah() +
+                        ", \"iddog\":" + Integer.valueOf(d.getTextBoxNomerDogovora().getText()) +
+                        ", \"datazakl\":" + d.getDateBoxDataZakluchenDogovora().getValue().getTime() +
+                        ", \"startdate\":" + d.getDateBoxStart().getValue().getTime() +
+                        ", \"enddate\":" + d.getDateBoxEnd().getValue().getTime() +
+                        ", \"daterasheta\":" + d.getDateBoxDataRascheta().getValue().getTime() +
+                        ", \"strsumma\":" + Integer.valueOf(d.getStrSumma().getText()) +
+                        ", \"home\":" + Integer.valueOf(d.getTextBoxDom().getText()) +
+                        ", \"flat\":" + Integer.valueOf(d.getTextBoxKvartira().getText()) +
+                        ", \"type\":\"" + d.getComboBoxTipNedvizhimosti().getSelectedItemText() + "\"" +
+                        ", \"year\":\"" + d.getTextBoxGodPostroiki().getText() + "\"" +
+                        ", \"squair\":\"" + d.getTextBoxPloshadb().getText() + "\"" +
+                        ", \"premiya\":\"" + d.getTextBoxPremiya().getText() + "\"" +
+                        ", \"state\":\"" + d.getListBoxCountries().getSelectedItemText() + "\"" +
+                        ", \"index\":\"" + d.getTextBoxIndex().getText() + "\"" +
+                        ", \"krai\":\"" + d.getTextBoxRespKraiObl().getText() + "\"" +
+                        ", \"district\":\"" + d.getTextBoxRayon().getText() + "\"" +
+                        ", \"town\":\"" + d.getTextBoxNaselPunkt().getText() + "\"" +
+                        ", \"street\":\"" + d.getTextBoxStreet().getText() + "\"" +
+                        ", \"korpus\":\"" + d.getTextBoxKorpus().getText() + "\"" +
+                        ", \"stroenie\":\"" + d.getTextBoxStroenie().getText() + "\"" +
+                        ", \"comment\":\"" + d.getTextAreaComment().getText() + "\"" +
+                        ", \"fullname\":\"" + d.getTextBoxFIO().getText() + "\"}";
 
 //                Window.alert("url: "+url+"    strahstring: "+strahstring);
 //                    JSONArray postdata=new JSONArray();
@@ -287,9 +287,6 @@ public class DogovorPresenter {
         display.raschetButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent event) {
-
-//                Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-//                Set<ConstraintViolation<Dogovor>> violations = validator.validate(existDogovor, Dogovor.Minimal.class);
 
                 List<String> list = existDogovor.raschet(d.getStrSumma().getText(), d.getComboBoxTipNedvizhimosti().getSelectedItemText(), d.getTextBoxGodPostroiki().getText(), d.getTextBoxPloshadb().getText(), d.getDateBoxStart().getValue(), d.getDateBoxEnd().getValue());
 

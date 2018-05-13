@@ -58,12 +58,12 @@ public class MainPresenter {
         eventBus.addHandler(ListUpdateEvent.TYPE, new ListUpdateEventHandler(){
             @Override
             public void onListUpdate(ListUpdateEvent chooseClientEvent) {
-                display.getViewInstance().getDataProvider().refresh();
+//                display.getViewInstance().getDataProvider().refresh();
+                getDogovorsToDataProvider();
             }
         });
 
 
-//        OpenDogovor handler2 = new OpenDogovor();
         display.setOpenButtonHandler().addClickHandler(new ClickHandler() {
             @Override
             public void onClick(ClickEvent clickEvent) {
@@ -73,13 +73,10 @@ public class MainPresenter {
             }
         });
 
-        display.setSelectionModelCellTable().addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-            @Override
-            public void onSelectionChange(SelectionChangeEvent selectionChangeEvent) {
-//                existDogovor = ((SingleSelectionModel<Dogovor>) display.setSelectionModelCellTable()).getSelectedObject();
-            }
-        });
+        getDogovorsToDataProvider();
+    }
 
+    private void getDogovorsToDataProvider() {
         String url = "/getdogovors";
         RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
         try {
@@ -103,19 +100,6 @@ public class MainPresenter {
         } catch (RequestException ex) {
             Window.alert(ex.getMessage());
         }
-//        greetingService.findDogovors( new AsyncCallback<List<Dogovor>>() {
-//            @Override
-//            public void onFailure(Throwable throwable) {
-//                Window.alert("Не могу загрузить договоры. "+throwable);
-//            }
-//
-//            @Override
-//            public void onSuccess(List<Dogovor> dlist) {
-//                list.addAll(dlist);
-//                Window.alert("dlist: "+list);
-//                display.getViewInstance().getDataProvider().setList(list);
-//            }
-//        });
     }
 
     private List<Dogovor> parseJsonDogovors(String json) {
