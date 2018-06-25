@@ -3,6 +3,7 @@ package ga.saha.gwt.server;
 import ga.saha.gwt.shared.Dogovor;
 import ga.saha.gwt.shared.Strahovatel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.websocket.server.PathParam;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("/api")
 public class RestControl {
 
     @Autowired
@@ -26,13 +28,13 @@ public class RestControl {
 
     @RequestMapping(value = "/getdogovor/{id}", method = RequestMethod.GET)
     public @ResponseBody Dogovor getDogovorById(@PathVariable Long id) {
-        System.out.println("getdogovor/{id}: "+id);
+        System.out.println("/api/getdogovor/{id}: "+id);
         return dogovorRepository.findById(id).orElse(null);
     }
 
     @RequestMapping(value = "/getstrahovatel/{id}", method = RequestMethod.GET)
     public @ResponseBody Strahovatel getStrahovatelById(@PathVariable Long id) {
-        System.out.println("getstrahovatel/{id}: "+id);
+        System.out.println("/api/getstrahovatel/{id}: "+id);
         return strahovatelRepository.findById(id).orElse(null);
     }
 
@@ -77,7 +79,7 @@ public class RestControl {
 
     @RequestMapping(value = "/updatestrahovatel/{id}", method = RequestMethod.POST)
     public @ResponseBody Strahovatel update(@PathVariable Long id, @RequestBody Strahovatel strahovatel) {
-        System.out.println("updatestrahovatel/{id}: "+id+", strahovatel:"+strahovatel);
+        System.out.println("/api/updatestrahovatel/{id}: "+id+", strahovatel:"+strahovatel);
         Strahovatel existing = strahovatelRepository.findById(id).orElse(null);
         if(existing != null) strahovatel.setIdstrah(existing.getIdstrah());
         return strahovatelRepository.save(strahovatel);
@@ -91,7 +93,7 @@ public class RestControl {
 
     @RequestMapping(value = "/updatedogovor/{id}", method = RequestMethod.POST)
     public @ResponseBody Dogovor update(@PathVariable Long id, @RequestBody Dogovor dogovor) {
-        System.out.println("updatedogovor/{id}: "+id+", dogovor:"+dogovor);
+        System.out.println("/api/updatedogovor/{id}: "+id+", dogovor:"+dogovor);
         Dogovor existing = dogovorRepository.findById(id).orElse(null);
         if(existing != null) dogovor.setIddog(existing.getIddog());
         return dogovorRepository.save(dogovor);

@@ -22,8 +22,8 @@ public class Dogovor implements Serializable {
     @Id
     @Column(name = "iddog", unique = true, nullable = false)
     private Long iddog;
-    @Column(name = "datazakl", nullable = false)
-    private Date datazakl;
+    @Column(name = "regdate", nullable = false)
+    private Date regdate;
     @Column(name = "strahovatelid", nullable = false)
     private Long strahovatelid;
     @Column(name = "strsumma", nullable = false)
@@ -36,12 +36,12 @@ public class Dogovor implements Serializable {
     private String type;
     @Column(name = "year", nullable = false)
     private  String year;
-    @Column(name = "squair", nullable = false)
-    private  String squair;
-    @Column(name = "daterasheta")
-    private  Date daterasheta;
-    @Column(name = "premiya")
-    private  String premiya;
+    @Column(name = "square", nullable = false)
+    private  String square;
+    @Column(name = "countdate")
+    private  Date countdate;
+    @Column(name = "bonus")
+    private  String bonus;
     @Column(name = "state", nullable = false)
     private String state;
     @Column(name = "index")
@@ -54,8 +54,8 @@ public class Dogovor implements Serializable {
     private String town;
     @Column(name = "street", nullable = false)
     private String street;
-    @Column(name = "home")
-    private Integer home;
+    @Column(name = "house")
+    private Integer house;
     @Column(name = "korpus")
     private String korpus;
     @Column(name = "stroenie")
@@ -70,25 +70,25 @@ public class Dogovor implements Serializable {
     public Dogovor() {
     }
 
-    public Dogovor(Long iddog, Date datazakl, Long strahovatelid, Integer strsumma, Date startdate, Date enddate, String type, String year, String squair, Date daterasheta, String premiya, String state, String index, String krai, String district, String town, String street, Integer home, String korpus, String stroenie, Integer flat, String comment, String fullname) {
+    public Dogovor(Long iddog, Date regdate, Long strahovatelid, Integer strsumma, Date startdate, Date enddate, String type, String year, String square, Date countdate, String bonus, String state, String index, String krai, String district, String town, String street, Integer house, String korpus, String stroenie, Integer flat, String comment, String fullname) {
         this.iddog = iddog;
-        this.datazakl = datazakl;
+        this.regdate = regdate;
         this.strahovatelid = strahovatelid;
         this.strsumma = strsumma;
         this.startdate = startdate;
         this.enddate = enddate;
         this.type = type;
         this.year = year;
-        this.squair = squair;
-        this.daterasheta = daterasheta;
-        this.premiya = premiya;
+        this.square = square;
+        this.countdate = countdate;
+        this.bonus = bonus;
         this.state = state;
         this.index = index;
         this.krai = krai;
         this.district = district;
         this.town = town;
         this.street = street;
-        this.home = home;
+        this.house = house;
         this.korpus = korpus;
         this.stroenie = stroenie;
         this.flat = flat;
@@ -205,23 +205,23 @@ public class Dogovor implements Serializable {
     public String toString() {
         return "{" +
                 "iddog:" + iddog +
-                ", datazakl:" + datazakl +
+                ", regdate:" + regdate +
                 ", strahovatelid:" + strahovatelid +
                 ", strsumma:" + strsumma +
                 ", startdate:" + startdate +
                 ", enddate:" + enddate +
                 ", type:'" + type + '\'' +
                 ", year:'" + year + '\'' +
-                ", squair:'" + squair + '\'' +
-                ", daterasheta:" + daterasheta +
-                ", premiya:'" + premiya + '\'' +
+                ", square:'" + square + '\'' +
+                ", countdate:" + countdate +
+                ", bonus:'" + bonus + '\'' +
                 ", state:'" + state + '\'' +
                 ", index:'" + index + '\'' +
                 ", krai:'" + krai + '\'' +
                 ", district:'" + district + '\'' +
                 ", town:'" + town + '\'' +
                 ", street:'" + street + '\'' +
-                ", home:" + home +
+                ", house:" + house +
                 ", korpus:'" + korpus + '\'' +
                 ", stroenie:'" + stroenie + '\'' +
                 ", flat:" + flat +
@@ -237,12 +237,12 @@ public class Dogovor implements Serializable {
         this.iddog = iddog;
     }
 
-    public Date getDatazakl() {
-        return datazakl;
+    public Date getRegdate() {
+        return regdate;
     }
 
-    public void setDatazakl(Date datazakl) {
-        this.datazakl = datazakl;
+    public void setRegdate(Date regdate) {
+        this.regdate = regdate;
     }
 
     public Long getStrahovatelid() {
@@ -293,28 +293,28 @@ public class Dogovor implements Serializable {
         this.year = year;
     }
 
-    public String getSquair() {
-        return squair;
+    public String getSquare() {
+        return square;
     }
 
-    public void setSquair(String squair) {
-        this.squair = squair;
+    public void setSquare(String square) {
+        this.square = square;
     }
 
-    public Date getDaterasheta() {
-        return daterasheta;
+    public Date getCountdate() {
+        return countdate;
     }
 
-    public void setDaterasheta(Date daterasheta) {
-        this.daterasheta = daterasheta;
+    public void setCountdate(Date countdate) {
+        this.countdate = countdate;
     }
 
-    public String getPremiya() {
-        return premiya;
+    public String getBonus() {
+        return bonus;
     }
 
-    public void setPremiya(String premiya) {
-        this.premiya = premiya;
+    public void setBonus(String bonus) {
+        this.bonus = bonus;
     }
 
     public String getState() {
@@ -365,12 +365,12 @@ public class Dogovor implements Serializable {
         this.street = street;
     }
 
-    public Integer getHome() {
-        return home;
+    public Integer getHouse() {
+        return house;
     }
 
-    public void setHome(Integer home) {
-        this.home = home;
+    public void setHouse(Integer house) {
+        this.house = house;
     }
 
     public String getKorpus() {

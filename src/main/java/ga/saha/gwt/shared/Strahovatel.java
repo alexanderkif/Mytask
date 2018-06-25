@@ -1,5 +1,7 @@
 package ga.saha.gwt.shared;
 
+import com.google.gwt.core.client.JavaScriptObject;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
