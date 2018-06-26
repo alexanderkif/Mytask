@@ -23,6 +23,18 @@ export default new Vuex.Store({
     getStrahovatels: state => state.strahovatels
   },
   actions: {
+    saveStrahovatel (context, strahovatel) {
+      if (strahovatel.idstrah) {
+        axios
+        .post(SERVER_URL + '/api/updatestrahovatel/' + strahovatel.idstrah, strahovatel)
+        .catch(e => { console.log(e) })
+      } else {
+        axios
+        .post(SERVER_URL + '/api/savestrahovatel', strahovatel)
+        .catch(e => { console.log(e) })
+      }
+      // context.commit('saveStrahovatel', strahovatel)
+    },
     saveDogovor (context, dogovor) {
       if (dogovor.iddog) {
         axios

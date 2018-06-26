@@ -145,6 +145,9 @@ export default {
     Estate
   },
   computed: {
+    strahovatel () {
+      return this.$store.getters.getStrahovatel
+    },
     isValidCount () {
       return (!this.validMainForm || this.$store.getters.getValidCount)
     },
@@ -201,7 +204,8 @@ export default {
     dogovorSave () {
       this.validMainForm = this.$refs.mainForm.validate()
       if (!this.isValidCount) {
-        console.log('this.isValidCount ' + this.isValidCount)
+        this.dogovor.strahovatelid = this.strahovatel.idstrah
+        this.dogovor.fullname = this.strahovatel.lastname + ' ' + this.strahovatel.firstname + ' ' + this.strahovatel.firstname2
         this.$store.dispatch('saveDogovor', this.dogovor)
         this.$store.dispatch('setShowOneDogovor', false)
       } else {

@@ -23,66 +23,163 @@
                 <v-toolbar-title>Выбор страхователя</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-toolbar-items>
-                  <v-btn flat @click.native="dialog = false">Новый клиент</v-btn>
+                  <v-btn v-if="!show" flat @click.native="show = true">Новый клиент</v-btn>
+                  <v-btn v-if="show" flat @click.native="show = false">Список клиентов</v-btn>
                 </v-toolbar-items>
               </v-toolbar>
-              <v-layout row wrap mt-5>
-                <v-flex xs8 offset-xs2 text-xs-left>
-                    ПОИСК СТРАХОВАТЕЛЯ
-                </v-flex>
-              </v-layout>
-              <v-layout row wrap>
-                <v-flex xs12 sm8 offset-sm2>
-                    <v-divider></v-divider>
-                </v-flex>
-              </v-layout>
-              <v-layout row wrap my-3>
-                <v-flex xs4 sm2 offset-sm2>
-                  <v-text-field
-                    v-model.trim="lastname"
-                    label="Фамилия"
-                    @change="getStrahovatels"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs4 sm2 offset-sm1>
-                  <v-text-field
-                    v-model.trim="firstname"
-                    label="Имя"
-                    @change="getStrahovatels"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs4 sm2 offset-sm1>
-                  <v-text-field
-                    v-model.trim="firstname2"
-                    label="Отчество"
-                    @change="getStrahovatels"
-                    ></v-text-field>
-                </v-flex>
-              </v-layout>
-              <v-layout row wrap>
-                <v-flex xs12 md10 offset-md1 mb-5>
-                <v-data-table
-                    v-model="selected"
-                    :headers="headers"
-                    :items="strahovatels"
-                    item-key="iddog"
-                    class="elevation-1"
-                >
-                    <template slot="items" slot-scope="props">
-                    <tr :active="props.selected" @click="openSelected(props.item)">
-                    <td class="text-xs-right">{{ props.item.lastname }} {{ props.item.firstname }} {{ props.item.firstname2 }}</td>
-                    <td class="text-xs-center">{{ props.item.birth }}</td>
-                    <td class="text-xs-left">{{ props.item.passportseria }} - {{ props.item.passportnumber }}</td>
-                    </tr>
-                    </template>
-                </v-data-table>
-                </v-flex>
-              </v-layout>
-              <!-- <v-layout v-if="caseToShow === 'change'" row wrap my-5>
-                <v-flex xs12 md10 offset-md1>
-                  Изменить
-                </v-flex>
-              </v-layout> -->
+              <transition name="bounce" mode="out-in">
+                <v-container v-if="!show">
+                  <v-layout row wrap mt-5>
+                    <v-flex xs8 offset-xs2 text-xs-left>
+                        ПОИСК СТРАХОВАТЕЛЯ
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap>
+                    <v-flex xs12 sm8 offset-sm2>
+                        <v-divider></v-divider>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap my-3>
+                    <v-flex xs4 sm2 offset-sm2>
+                      <v-text-field
+                        v-model.trim="lastname"
+                        label="Фамилия"
+                        @change="getStrahovatels"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs4 sm2 offset-sm1>
+                      <v-text-field
+                        v-model.trim="firstname"
+                        label="Имя"
+                        @change="getStrahovatels"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs4 sm2 offset-sm1>
+                      <v-text-field
+                        v-model.trim="firstname2"
+                        label="Отчество"
+                        @change="getStrahovatels"
+                        ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap>
+                    <v-flex xs12 md10 offset-md1 mb-5>
+                    <v-data-table
+                        v-model="selected"
+                        :headers="headers"
+                        :items="strahovatels"
+                        item-key="iddog"
+                        class="elevation-1"
+                    >
+                        <template slot="items" slot-scope="props">
+                        <tr :active="props.selected" @click="openSelected(props.item)">
+                        <td class="text-xs-right">{{ props.item.lastname }} {{ props.item.firstname }} {{ props.item.firstname2 }}</td>
+                        <td class="text-xs-center">{{ props.item.birth }}</td>
+                        <td class="text-xs-left">{{ props.item.passportseria }} - {{ props.item.passportnumber }}</td>
+                        </tr>
+                        </template>
+                    </v-data-table>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </transition>
+                  <!-- switch -->
+              <transition name="bounce2" :duration="{ before: 500 }">
+                <v-container v-if="show">
+                  <v-layout row wrap mt-5>
+                    <v-flex xs8 offset-xs2 text-xs-left>
+                        НОВЫЙ СТРАХОВАТЕЛЬ
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap>
+                    <v-flex xs12 sm8 offset-sm2>
+                        <v-divider></v-divider>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap my-3>
+                    <v-flex xs4 sm2 offset-sm2>
+                      <v-text-field
+                        v-model.trim="lastname"
+                        label="Фамилия"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs4 sm2 offset-sm1>
+                      <v-text-field
+                        v-model.trim="firstname"
+                        label="Имя"
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs4 sm2 offset-sm1>
+                      <v-text-field
+                        v-model.trim="firstname2"
+                        label="Отчество"
+                        ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap my-3>
+                    <v-flex xs12 md2 offset-md2>
+                      <v-menu
+                          ref="menuBirthDate"
+                          :close-on-content-click="false"
+                          v-model="menuBirthDate1"
+                          :nudge-right="40"
+                          lazy
+                          transition="scale-transition"
+                          offset-y
+                          full-width
+                          min-width="290px"
+                      >
+                          <v-text-field
+                          slot="activator"
+                          v-model="birth"
+                          label="Дата рождения"
+                          prepend-icon="event"
+                          readonly
+                          :rules="[v => !!v || 'Обязательное поле']"
+                          required
+                          ></v-text-field>
+                          <v-date-picker
+                          ref="picker"
+                          v-model="birth"
+                          :max="new Date().toISOString().substr(0, 10)"
+                          min="1950-01-01"
+                          @change="saveBirthDate"
+                          ></v-date-picker>
+                      </v-menu>
+                    </v-flex>
+                    <v-flex xs2 md2 offset-md1 pt-4 pr-3 text-xs-right>
+                        Паспорт
+                    </v-flex>
+                    <v-flex xs4 md1>
+                        <v-text-field
+                        v-model="passportseria"
+                        label="Серия"
+                        :rules="[v => !!v || 'Обязательное поле']"
+                        required
+                        ></v-text-field>
+                    </v-flex>
+                    <v-flex xs6 md2>
+                        <v-text-field
+                        v-model="passportnumber"
+                        label="Номер"
+                        :rules="[v => !!v || 'Обязательное поле']"
+                        required
+                        ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                  <v-layout row wrap my-3>
+                    <v-flex xs6 text-xs-right pr-3>
+                      <v-btn 
+                      @click="createStrahovatel()"
+                      >Сохранить</v-btn>
+                    </v-flex>
+                    <v-flex xs6 text-xs-left pl-3>
+                      <v-btn @click="dialog = false"
+                      >Отмена</v-btn>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </transition>
             </v-card>
           </v-dialog>
       </v-flex>
@@ -149,13 +246,16 @@
             required
             ></v-text-field>
         </v-flex>
-    </v-layout> 
-  </div> 
+    </v-layout>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'Client',
+  props: {
+    selected: null
+  },
   data () {
     return {
       menuBirthDate: false,
@@ -166,6 +266,10 @@ export default {
       lastname: '',
       firstname: '',
       firstname2: '',
+      birth: null,
+      passportseria: null,
+      passportnumber: null,
+      show: false,
       headers: [
         {
           text: 'ФИО',
@@ -201,8 +305,23 @@ export default {
       this.$store.dispatch('getStrahovatels', this.lastname + '=' + this.firstname + '=' + this.firstname2)
     },
     openSelected (item) {
-      this.$store.dispatch('setStrahovatel', item)
       this.dialog = false
+      this.$store.dispatch('setStrahovatel', item)
+    },
+    createStrahovatel () {
+      this.strahovatel.idstrah = null
+      this.strahovatel.lastname = this.lastname
+      this.strahovatel.firstname = this.firstname
+      this.strahovatel.firstname2 = this.firstname2
+      this.strahovatel.birth = this.birth
+      this.strahovatel.passportseria = this.passportseria
+      this.strahovatel.passportnumber = this.passportnumber
+      this.dialog = false
+      this.$store.dispatch('saveStrahovatel', this.strahovatel)
+    },
+    saveStrahovatel () {
+      this.dialog = false
+      this.$store.dispatch('saveStrahovatel', this.strahovatel)
     }
   },
   watch: {
@@ -212,3 +331,31 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.bounce-enter-active {
+  transition-delay: 1s;
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+.bounce2-enter-active {
+  transition-delay: 1s;
+  animation: bounce-in .5s;
+}
+.bounce2-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
