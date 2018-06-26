@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 Vue.use(Vuex)
-
+const SERVER_URL = 'https://dogov.herokuapp.com/'
 export default new Vuex.Store({
   state: {
     validCount: false,
@@ -37,7 +37,7 @@ export default new Vuex.Store({
     },
     getDogovors (context) {
       axios
-      .get('http://192.168.10.188:8080/api/getdogovors') // TO DO status 200
+      .get(SERVER_URL + '/api/getdogovors') // TO DO status 200
       .then(response => {
         response.data.forEach(dogovor => {
           dogovor.startdate = dogovor.startdate.substr(0, 10)
@@ -60,7 +60,7 @@ export default new Vuex.Store({
     },
     searchDogovor (context, iddog) {
       axios
-      .get('http://192.168.10.188:8080/api/getdogovor/' + iddog) // TO DO status 200
+      .get(SERVER_URL + '/api/getdogovor/' + iddog) // TO DO status 200
       .then(response => {
         var dogovor = response.data
         dogovor.startdate = response.data.startdate.substr(0, 10)
@@ -74,7 +74,7 @@ export default new Vuex.Store({
     getStrahovatel (context, strahovatelid) {
       if (strahovatelid) {
         axios
-        .get('http://192.168.10.188:8080/api/getstrahovatel/' + strahovatelid)
+        .get(SERVER_URL + '/api/getstrahovatel/' + strahovatelid)
         .then(response => {
           var strahovatel = response.data
           strahovatel.birth = response.data.birth.substr(0, 10)
@@ -88,7 +88,7 @@ export default new Vuex.Store({
       var firstname = fio.split('=')[1]
       var firstname2 = fio.split('=')[2]
       axios
-      .get('http://192.168.10.188:8080/api/getstrahovatels/?lastname=' + lastname + '&firstname=' + firstname + '&firstname2=' + firstname2)
+      .get(SERVER_URL + '/api/getstrahovatels/?lastname=' + lastname + '&firstname=' + firstname + '&firstname2=' + firstname2)
       .then(response => {
         response.data.forEach(strahovatel => {
           strahovatel.birth = strahovatel.birth.substr(0, 10)
