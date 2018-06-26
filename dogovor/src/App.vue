@@ -200,12 +200,13 @@ export default {
     },
     dogovorSave () {
       this.validMainForm = this.$refs.mainForm.validate()
-      if (this.isValidCount) {
-        console.log('this.isValidCount ' + this.isValidCount) // TO DO
-        // alert('this.isValidCount ' + this.isValidCount)
+      if (!this.isValidCount) {
+        console.log('this.isValidCount ' + this.isValidCount)
+        this.$store.dispatch('saveDogovor', this.dogovor)
+        this.$store.dispatch('setShowOneDogovor', false)
       } else {
         console.log('this.isValidCount ' + this.isValidCount)
-        // alert('this.isValidCount ' + this.isValidCount)
+        alert('Не сохранено')
       }
     },
     toTheDogovorsList () {

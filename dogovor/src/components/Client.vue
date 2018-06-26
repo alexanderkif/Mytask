@@ -96,7 +96,7 @@
           ></v-text-field>
       </v-flex>
       <v-flex xs12 md2 text-xs-center pt-3>
-              <v-btn small>Изменить</v-btn>
+          <v-btn small>Изменить</v-btn>
       </v-flex>
     </v-layout>
     <v-layout row wrap>

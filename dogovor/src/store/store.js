@@ -3,7 +3,8 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 Vue.use(Vuex)
-const SERVER_URL = 'https://dogov.herokuapp.com/'
+// const SERVER_URL = 'https://dogov.herokuapp.com'
+const SERVER_URL = 'http://localhost'
 export default new Vuex.Store({
   state: {
     validCount: false,
@@ -22,6 +23,17 @@ export default new Vuex.Store({
     getStrahovatels: state => state.strahovatels
   },
   actions: {
+    saveDogovor (context, dogovor) {
+      if (dogovor.iddog) {
+        axios
+        .post(SERVER_URL + '/api/updatedogovor/' + dogovor.iddog, dogovor)
+        .catch(e => { console.log(e) })
+      } else {
+        axios
+        .post(SERVER_URL + '/api/savedogovor', dogovor)
+        .catch(e => { console.log(e) })
+      }
+    },
     createDogovor (context) {
       context.commit('setDogovor', {})
       context.commit('setStrahovatel', {})
