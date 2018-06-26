@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="defi5ehhh1g1kv@ec2-23-21-197-231.compute-1.amazonaws.com" uuid="b3c4c1c8-7fd5-438b-b02a-be6b9be02aed">
+    <data-source source="LOCAL" name="d4rjqnh0pbs4o6@ec2-23-23-245-89.compute-1.amazonaws.com" uuid="b3c4c1c8-7fd5-438b-b02a-be6b9be02aed">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <configured-by-url>true</configured-by-url>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://ec2-23-21-197-231.compute-1.amazonaws.com:5432/defi5ehhh1g1kv?sslmode=require</jdbc-url>
+      <jdbc-url>jdbc:postgresql://ec2-23-23-245-89.compute-1.amazonaws.com:5432/d4rjqnh0pbs4o6?sslmode=require</jdbc-url>
       <driver-properties>
         <property name="ApplicationName" value="DataGrip" />
       </driver-properties>
