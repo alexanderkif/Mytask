@@ -2,7 +2,7 @@
   <artifact name="mytask:GWT">
     <output-path>$PROJECT_DIR$/src/main/resources/static</output-path>
     <root id="root">
-      <element id="gwt-compiler-output" facet="mytask/gwt/GWT" />
+      <element id="gwt-compiler-output" facet="Mytask/gwt/GWT" />
     </root>
   </artifact>
 </component>

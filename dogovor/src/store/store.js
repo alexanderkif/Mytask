@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 Vue.use(Vuex)
-const SERVER_URL = 'https://dogov.herokuapp.com'
+const SERVER_URL = 'http://dogov.herokuapp.com'
 // const SERVER_URL = 'http://localhost'
 
 export default new Vuex.Store({
