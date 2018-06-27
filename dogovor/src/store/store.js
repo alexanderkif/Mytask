@@ -13,7 +13,9 @@ export default new Vuex.Store({
     strahovatel: {},
     dogovors: [],
     strahovatels: [],
-    showOneDogovor: false
+    showOneDogovor: false,
+    dogovorExist: true,
+    strahovatelExist: true
   },
   getters: {
     getValidCount: state => state.validCount,
@@ -21,9 +23,22 @@ export default new Vuex.Store({
     getStrahovatel: state => state.strahovatel,
     getAllDogovors: state => state.dogovors,
     getShowOneDogovor: state => state.showOneDogovor,
-    getStrahovatels: state => state.strahovatels
+    getStrahovatels: state => state.strahovatels,
+    isDogovorExist: state => state.dogovorExist
   },
   actions: {
+    checkDogovor (context, iddog) {
+      axios
+      .get(SERVER_URL + '/api/getdogovor/' + iddog)
+      .then(response => {
+        if (response.data.iddog) {
+          context.commit('checkDogovor', true)
+        } else {
+          context.commit('checkDogovor', false)
+        }
+      })
+      .catch(e => { console.log(e) })
+    },
     saveStrahovatel (context, strahovatel) {
       if (strahovatel.idstrah) {
         axios
@@ -124,6 +139,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    checkDogovor (state, status) {
+      state.dogovorExist = status
+    },
     setDogovor (state, dogovor) {
       state.dogovor = dogovor
     },

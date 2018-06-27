@@ -61,6 +61,7 @@
                     :rules="dogovorNumberRules"
                     label="Номер договора"
                     required
+                    @input="checkDogovor"
                     ></v-text-field>
             </v-flex>
             <v-flex xs6 md3 offset-md4>
@@ -168,7 +169,8 @@ export default {
       validMainForm: false,
       dogovorNumberRules: [
         v => !!v || 'Обязательное поле',
-        v => (v && /^[1-9]\d{5}$/.test(v)) || 'Введите 6 цифр'
+        v => (v && /^[1-9]\d{5}$/.test(v)) || 'Введите 6 цифр',
+        v => !this.$store.getters.isDogovorExist || 'Номер уже существует'
       ],
       dogovorSearchRules: [
         v => (!v || /^[1-9]\d{5}$/.test(v)) || 'Введите 6 цифр'
@@ -199,6 +201,11 @@ export default {
       if (this.dogovorSearch.length === 6 && /^[1-9]\d{5}$/.test(this.dogovorSearch)) {
         this.$store.dispatch('searchDogovor', this.dogovorSearch)
         this.$store.dispatch('setShowOneDogovor', true)
+      }
+    },
+    checkDogovor () {
+      if (this.dogovor.iddog.length === 6 && /^[1-9]\d{5}$/.test(this.dogovor.iddog)) {
+        this.$store.dispatch('checkDogovor', this.dogovor.iddog)
       }
     },
     dogovorSave () {

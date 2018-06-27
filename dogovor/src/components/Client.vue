@@ -121,7 +121,7 @@
                       <v-menu
                           ref="menuBirthDate"
                           :close-on-content-click="false"
-                          v-model="menuBirthDate1"
+                          v-model="menuBirthDate"
                           :nudge-right="40"
                           lazy
                           transition="scale-transition"
