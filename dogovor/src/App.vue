@@ -206,6 +206,7 @@ export default {
       if (!this.isValidCount) {
         this.dogovor.strahovatelid = this.strahovatel.idstrah
         this.dogovor.fullname = this.strahovatel.lastname + ' ' + this.strahovatel.firstname + ' ' + this.strahovatel.firstname2
+        alert(this.dogovor.fullname + ' id ' + this.dogovor.iddog)
         this.$store.dispatch('saveDogovor', this.dogovor)
         this.$store.dispatch('setShowOneDogovor', false)
       } else {
