@@ -55,10 +55,19 @@
             </v-flex>
         </v-layout>
         <v-layout row wrap mt-5>
-            <v-flex xs6 md3 offset-md1>
+            <v-flex v-if="newDogovor" xs6 md3 offset-md1>
                     <v-text-field
                     v-model="dogovor.iddog"
                     :rules="dogovorNumberRules"
+                    label="Номер договора"
+                    required
+                    @input="checkDogovor"
+                    ></v-text-field>
+            </v-flex>
+            <v-flex v-if="!newDogovor" xs6 md3 offset-md1>
+                    <v-text-field
+                    v-model="dogovor.iddog"
+                    :rules="dogovorNumberRulesWithoutCheck"
                     label="Номер договора"
                     required
                     @input="checkDogovor"
@@ -167,10 +176,15 @@ export default {
       dogovorSearch: null,
       // showOneDogovor: false,
       validMainForm: false,
+      newDogovor: false,
       dogovorNumberRules: [
         v => !!v || 'Обязательное поле',
         v => (v && /^[1-9]\d{5}$/.test(v)) || 'Введите 6 цифр',
         v => !this.$store.getters.isDogovorExist || 'Номер уже существует'
+      ],
+      dogovorNumberRulesWithoutCheck: [
+        v => !!v || 'Обязательное поле',
+        v => (v && /^[1-9]\d{5}$/.test(v)) || 'Введите 6 цифр'
       ],
       dogovorSearchRules: [
         v => (!v || /^[1-9]\d{5}$/.test(v)) || 'Введите 6 цифр'
@@ -190,6 +204,7 @@ export default {
     createDogovor () {
       this.$store.dispatch('createDogovor')
       this.$store.dispatch('setShowOneDogovor', true)
+      this.newDogovor = true
       if (!this.dogovor.regdate) {
         this.$store.dispatch('setNewRegDate')
       }
@@ -215,6 +230,7 @@ export default {
         this.dogovor.fullname = this.strahovatel.lastname + ' ' + this.strahovatel.firstname + ' ' + this.strahovatel.firstname2
         this.$store.dispatch('saveDogovor', this.dogovor)
         this.$store.dispatch('setShowOneDogovor', false)
+        this.newDogovor = false
       } else {
         console.log('this.isValidCount ' + this.isValidCount)
         alert('Не сохранено')

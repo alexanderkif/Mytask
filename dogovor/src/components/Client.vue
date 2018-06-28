@@ -28,7 +28,7 @@
                 </v-toolbar-items>
               </v-toolbar>
               <transition name="bounce" mode="out-in">
-                <v-container v-if="!show">
+                <v-container v-if="!show" key="search">
                   <v-layout row wrap mt-5>
                     <v-flex xs8 offset-xs2 text-xs-left>
                         ПОИСК СТРАХОВАТЕЛЯ
@@ -82,10 +82,10 @@
                     </v-flex>
                   </v-layout>
                 </v-container>
-              </transition>
+              <!-- </transition> -->
                   <!-- switch -->
-              <transition name="bounce2" :duration="{ before: 500 }">
-                <v-container v-if="show">
+              <!-- <transition name="bounce2" :duration="{ before: 500 }"> -->
+                <v-container v-if="show" key="newstrah">
                   <v-layout row wrap mt-5>
                     <v-flex xs8 offset-xs2 text-xs-left>
                         НОВЫЙ СТРАХОВАТЕЛЬ
@@ -351,8 +351,8 @@ export default {
   0% {
     transform: scale(0);
   }
-  50% {
-    transform: scale(1.5);
+  70% {
+    transform: scale(1.2);
   }
   100% {
     transform: scale(1);

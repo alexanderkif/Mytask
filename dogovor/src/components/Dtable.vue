@@ -39,16 +39,11 @@
     data () {
       return {
         headers: [
-          {
-            text: 'Серия-номер',
-            align: 'center',
-            sortable: false,
-            value: 'iddoc'
-          },
+          { text: 'Серия-номер', align: 'center', value: 'iddoc' },
           { text: 'Дата заключения', align: 'center', value: 'regdate' },
           { text: 'Страхователь', align: 'left', value: 'fullname' },
           { text: 'Премия', align: 'right', value: 'bonus' },
-          { text: 'Срок действия', align: 'center', value: 'dates' }
+          { text: 'Срок действия', align: 'center', sortable: false, value: 'dates' }
         ]
       }
     },
@@ -60,6 +55,7 @@
     methods: {
       openSelected (item) {
         // alert('Clicked ' + item.iddog)
+        // this.$store.dispatch('searchDogovor', item.iddog)
         this.$store.dispatch('setDogovor', item)
         this.$store.dispatch('setShowOneDogovor', true)
       },
