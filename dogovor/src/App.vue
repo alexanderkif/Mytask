@@ -84,7 +84,7 @@
             </v-flex>
         </v-layout>
         
-        <Client/>
+        <Client :dark="dark"/>
 
         <Estate/>
 

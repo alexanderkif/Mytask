@@ -186,32 +186,34 @@
       <!-- </v-flex>
       <v-flex xs12 md2 offset-md1 text-xs-center pt-3> -->
       <!-- Dailog change -->
-        <v-dialog v-model="dialog2" max-width="800px">
-          <v-container class="cont">
+        <v-dialog v-model="dialog2" max-width="1000px">
+          <v-container :style="dark?'background: #424242;':'background: #F5F5F5;'">
             <v-layout row wrap mt-5>
-              <v-flex xs8 offset-xs2 text-xs-left>
+              <v-flex xs10 offset-xs1 text-xs-left>
                   ИЗМЕНЕНИЕ ДАННЫХ
               </v-flex>
             </v-layout>
             <v-layout row wrap>
-              <v-flex xs12 sm8 offset-sm2>
+              <v-flex xs12 sm10 offset-sm1>
                   <v-divider></v-divider>
               </v-flex>
             </v-layout>
-            <v-layout row wrap my-3>
-              <v-flex xs4 sm2 offset-sm2>
+            <v-layout row wrap my-3 justify-space-around>
+              <v-flex xs4 sm3>
                 <v-text-field
                   v-model.trim="strahovatel.lastname"
                   label="Фамилия"
+                  :rules="[v => !!v || 'Обязательное поле']"
                   ></v-text-field>
               </v-flex>
-              <v-flex xs4 sm2 offset-sm1>
+              <v-flex xs4 sm3>
                 <v-text-field
                   v-model.trim="strahovatel.firstname"
                   label="Имя"
+                  :rules="[v => !!v || 'Обязательное поле']"
                   ></v-text-field>
               </v-flex>
-              <v-flex xs4 sm2 offset-sm1>
+              <v-flex xs4 sm3>
                 <v-text-field
                   v-model.trim="strahovatel.firstname2"
                   label="Отчество"
@@ -361,7 +363,8 @@
 export default {
   name: 'Client',
   props: {
-    selected: null
+    selected: null,
+    dark: false
   },
   data () {
     return {
@@ -459,13 +462,6 @@ export default {
   animation: bounce-in .5s;
 }
 .bounce-leave-active {
-  animation: bounce-in .5s reverse;
-}
-.bounce2-enter-active {
-  transition-delay: 1s;
-  animation: bounce-in .5s;
-}
-.bounce2-leave-active {
   animation: bounce-in .5s reverse;
 }
 @keyframes bounce-in {
