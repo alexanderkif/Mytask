@@ -45,25 +45,29 @@ public class RestControl {
         System.out.println("getstrahovatels lastname:"+lastname+" firstname:"+firstname+" firstname2:"+firstname2);
         List<Strahovatel> list = new ArrayList<>();
         if (!lastname.equals("")&&!firstname.equals("")&&!firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByLastnameAndFirstnameAndFirstname2(lastname, firstname, firstname2));
+            list.addAll(strahovatelRepository
+                    .findByLastnameContainingAndFirstnameContainingAndFirstname2ContainingAllIgnoreCase(lastname, firstname, firstname2));
         }
         if (lastname.equals("")&&!firstname.equals("")&&!firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByFirstnameAndFirstname2(firstname, firstname2));
+            list.addAll(strahovatelRepository
+                    .findByFirstnameContainingAndFirstname2ContainingAllIgnoreCase(firstname, firstname2));
         }
         if (!lastname.equals("")&&firstname.equals("")&&!firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByLastnameAndFirstname2(lastname, firstname2));
+            list.addAll(strahovatelRepository
+                    .findByLastnameContainingAndFirstname2ContainingAllIgnoreCase(lastname, firstname2));
         }
         if (!lastname.equals("")&&!firstname.equals("")&&firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByLastnameAndFirstname(lastname, firstname));
+            list.addAll(strahovatelRepository
+                    .findByLastnameContainingAndFirstnameContainingAllIgnoreCase(lastname, firstname));
         }
         if (lastname.equals("")&&firstname.equals("")&&!firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByFirstname2(firstname2));
+            list.addAll(strahovatelRepository.findByFirstname2ContainingIgnoreCase(firstname2));
         }
         if (!lastname.equals("")&&firstname.equals("")&&firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByLastname(lastname));
+            list.addAll(strahovatelRepository.findByLastnameContainingIgnoreCase(lastname));
         }
         if (lastname.equals("")&&!firstname.equals("")&&firstname2.equals("")) {
-            list.addAll(strahovatelRepository.findByFirstname(firstname));
+            list.addAll(strahovatelRepository.findByFirstnameContainingIgnoreCase(firstname));
         }
         if (lastname.equals("")&&firstname.equals("")&&firstname2.equals("")) {
             strahovatelRepository.findAll().forEach(list::add);

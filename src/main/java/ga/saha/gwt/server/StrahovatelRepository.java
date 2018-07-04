@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface StrahovatelRepository extends Serializable, CrudRepository<Strahovatel,Long>{
 
-    List<Strahovatel> findByLastnameAndFirstnameAndFirstname2(String lastname, String firstname, String firstname2);
+    List<Strahovatel> findByLastnameContainingAndFirstnameContainingAndFirstname2ContainingAllIgnoreCase(String lastname, String firstname, String firstname2);
 
-    List<Strahovatel> findByLastnameAndFirstname(String lastname, String firstname);
+    List<Strahovatel> findByLastnameContainingAndFirstnameContainingAllIgnoreCase(String lastname, String firstname);
 
-    List<Strahovatel> findByLastnameAndFirstname2(String lastname, String firstname2);
+    List<Strahovatel> findByLastnameContainingAndFirstname2ContainingAllIgnoreCase(String lastname, String firstname2);
 
-    List<Strahovatel> findByFirstnameAndFirstname2(String firstname, String firstname2);
+    List<Strahovatel> findByFirstnameContainingAndFirstname2ContainingAllIgnoreCase(String firstname, String firstname2);
 
-    List<Strahovatel> findByFirstname2(String firstname2);
+    List<Strahovatel> findByFirstname2ContainingIgnoreCase(String firstname2);
 
-    List<Strahovatel> findByLastname(String lastname);
+    List<Strahovatel> findByLastnameContainingIgnoreCase(String lastname);
 
-    List<Strahovatel> findByFirstname(String firstname);
+    List<Strahovatel> findByFirstnameContainingIgnoreCase(String firstname);
 }
